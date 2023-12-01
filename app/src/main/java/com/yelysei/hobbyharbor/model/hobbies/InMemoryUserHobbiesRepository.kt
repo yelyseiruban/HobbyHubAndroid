@@ -1,14 +1,17 @@
-package com.yelysei.hobbyharbor.service
+package com.yelysei.hobbyharbor.model.hobbies
 
-import com.yelysei.hobbyharbor.exceptions.UserHobbyNotFoundException
-import com.yelysei.hobbyharbor.model.Hobby
-import com.yelysei.hobbyharbor.model.Progress
-import com.yelysei.hobbyharbor.model.UserHobby
+class InMemoryUserHobbiesRepository() : UserHobbiesRepository {
+    override var userHobbies: MutableList<UserHobby> = mutableListOf()
+    override fun addUserHobby(userHobby: UserHobby) {
+        userHobbies.add(userHobby)
+        notifyChanges()
+    }
 
-typealias UserHobbiesListener = (userHobbies: List<UserHobby>) -> Unit
+    override fun addUserHobbyExperience(uhId: Long, action: Action) {
+        val userHobby: UserHobby = getUserHobbyById(uhId)
+        userHobby.progress.history.add(action)
+    }
 
-class UserHobbiesService {
-    private var userHobbies = mutableListOf<UserHobby>()
     private val listeners = mutableSetOf<UserHobbiesListener>()
     init {
         userHobbies.add(
@@ -55,32 +58,20 @@ class UserHobbiesService {
         )
     }
 
-    fun getUserHobbies(): List<UserHobby> {
-        return userHobbies;
+    override fun getUserHobbyById(id: Long): UserHobby {
+        return userHobbies.first { it.id == id }
     }
 
-    fun getById(id: Long): UserHobby {
-        return userHobbies.firstOrNull { it.id == id } ?: throw UserHobbyNotFoundException()
+    override fun addListener(listener: UserHobbiesListener) {
+        listeners += listener
+        listener(userHobbies)
     }
 
-    fun deleteUserHobby(userHobby: UserHobby) {
-        val indexToDelete = userHobbies.indexOfFirst { it.id == userHobby.id };
-        if (indexToDelete != -1) {
-            userHobbies.removeAt(indexToDelete);
-            notifyChanges()
-        }
+    override fun removeListener(listener: UserHobbiesListener) {
+        listeners -= listener
     }
 
-    fun addListener(listener: UserHobbiesListener) {
-        listeners.add(listener)
-        listener.invoke(userHobbies)
-    }
-
-    fun removeListener(listener: UserHobbiesListener) {
-        listeners.remove(listener);
-    }
-
-    private fun notifyChanges() {
-        listeners.forEach{ it.invoke(userHobbies) }
+    fun notifyChanges() {
+        listeners.forEach { it(userHobbies) }
     }
 }
