@@ -1,4 +1,4 @@
-package com.yelysei.hobbyharbor.views.adaptors
+package com.yelysei.hobbyharbor.views.hobbydetails
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yelysei.hobbyharbor.R
 import com.yelysei.hobbyharbor.databinding.ItemUserActionBinding
-import com.yelysei.hobbyharbor.model.Action
+import com.yelysei.hobbyharbor.model.hobbies.Action
 
 interface HobbyDetailsActionListener {
     fun editAction(userAction: Action)

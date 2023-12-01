@@ -17,4 +17,8 @@
     <string name="goal_edit">Goad Edit</string>
     <string name="edit_action">Edit action</string>
     <string name="notification_button_pressed">Notification button pressed</string>
+    <string name="open_settings">Open settings</string>
+    <string name="open_user_profile">Open user profile</string>
+    <string name="user_profile_pressed">User Profile Pressed</string>
+    <string name="settings_pressed">Settings Pressed</string>
 </resources>

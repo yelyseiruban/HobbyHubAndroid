@@ -1,4 +1,4 @@
-package com.yelysei.hobbyharbor
+package com.yelysei.hobbyharbor.utils
 
 class Event<T>(
     private val value: T

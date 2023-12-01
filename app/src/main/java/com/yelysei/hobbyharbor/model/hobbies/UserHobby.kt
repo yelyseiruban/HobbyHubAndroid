@@ -1,4 +1,4 @@
-package com.yelysei.hobbyharbor.model
+package com.yelysei.hobbyharbor.model.hobbies
 
 import java.sql.Date
 

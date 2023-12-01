@@ -1,4 +1,4 @@
-package com.yelysei.hobbyharbor.model
+package com.yelysei.hobbyharbor.model.hobbies
 
 data class Hobby(
     val hobbyName: String,

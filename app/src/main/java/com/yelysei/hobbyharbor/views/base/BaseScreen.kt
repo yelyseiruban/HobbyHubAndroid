@@ -1,4 +1,4 @@
-package com.yelysei.hobbyharbor.views.screens.base
+package com.yelysei.hobbyharbor.views.base
 
 import java.io.Serializable
 

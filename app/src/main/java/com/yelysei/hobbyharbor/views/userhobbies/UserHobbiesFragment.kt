@@ -1,21 +1,18 @@
-package com.yelysei.hobbyharbor.views.screens.userhobbies
+package com.yelysei.hobbyharbor.views.userhobbies
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yelysei.hobbyharbor.R
-import com.yelysei.hobbyharbor.views.adaptors.UserHobbiesAdapter
-import com.yelysei.hobbyharbor.views.adaptors.UserHobbyActionListener
-import com.yelysei.hobbyharbor.views.adaptors.VerticalSpaceItemDecoration
 import com.yelysei.hobbyharbor.databinding.FragmentUserHobbiesBinding
-import com.yelysei.hobbyharbor.model.UserHobby
-import com.yelysei.hobbyharbor.views.screens.base.BaseFragment
-import com.yelysei.hobbyharbor.views.screens.base.BaseScreen
-import com.yelysei.hobbyharbor.views.screens.base.screenViewModel
+import com.yelysei.hobbyharbor.model.hobbies.UserHobby
+import com.yelysei.hobbyharbor.views.VerticalSpaceItemDecoration
+import com.yelysei.hobbyharbor.views.base.BaseFragment
+import com.yelysei.hobbyharbor.views.base.BaseScreen
+import com.yelysei.hobbyharbor.views.base.screenViewModel
 
 
 class UserHobbiesFragment : BaseFragment(){
@@ -40,9 +37,9 @@ class UserHobbiesFragment : BaseFragment(){
             }
         })
 
-        viewModel.userHobbies.observe(viewLifecycleOwner, Observer {
+        viewModel.userHobbies.observe(viewLifecycleOwner) {
             adapter.userHobbies = it
-        })
+        }
 
         //recycler view look configuration
         val layoutManager = LinearLayoutManager(requireContext())
@@ -58,7 +55,7 @@ class UserHobbiesFragment : BaseFragment(){
         //recycler view max height 75% of screen height
         val constraintSet = ConstraintSet()
         constraintSet.clone(binding.constraintLayout)
-        val maxHeightInPixels = (0.75 * resources.displayMetrics.heightPixels).toInt()
+        val maxHeightInPixels = (0.65 * resources.displayMetrics.heightPixels).toInt()
         constraintSet.constrainHeight(R.id.recyclerViewUserHobbies, ConstraintSet.WRAP_CONTENT)
         constraintSet.constrainMaxHeight(R.id.recyclerViewUserHobbies, maxHeightInPixels)
 
@@ -68,8 +65,7 @@ class UserHobbiesFragment : BaseFragment(){
     }
 
     companion object {
-        @JvmField
-        val VERTICAL_ITEM_SPACE = 64
+        const val VERTICAL_ITEM_SPACE = 64
     }
 
 }

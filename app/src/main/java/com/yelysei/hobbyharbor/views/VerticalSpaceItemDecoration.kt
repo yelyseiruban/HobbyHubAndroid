@@ -1,4 +1,4 @@
-package com.yelysei.hobbyharbor.views.adaptors
+package com.yelysei.hobbyharbor.views
 
 import android.graphics.Rect
 import android.view.View

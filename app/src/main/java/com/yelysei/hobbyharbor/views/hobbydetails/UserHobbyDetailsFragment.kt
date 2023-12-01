@@ -1,21 +1,18 @@
-package com.yelysei.hobbyharbor.views.screens.hobbydetails
+package com.yelysei.hobbyharbor.views.hobbydetails
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.yelysei.hobbyharbor.views.adaptors.HobbyDetailsActionListener
-import com.yelysei.hobbyharbor.views.adaptors.UserActionsAdapter
-import com.yelysei.hobbyharbor.views.adaptors.VerticalSpaceItemDecoration
 import com.yelysei.hobbyharbor.databinding.FragmentUserHobbyDetailsBinding
-import com.yelysei.hobbyharbor.model.Action
-import com.yelysei.hobbyharbor.views.screens.base.BaseFragment
-import com.yelysei.hobbyharbor.views.screens.base.BaseScreen
-import com.yelysei.hobbyharbor.views.screens.base.screenViewModel
+import com.yelysei.hobbyharbor.model.hobbies.Action
+import com.yelysei.hobbyharbor.views.VerticalSpaceItemDecoration
+import com.yelysei.hobbyharbor.views.base.BaseFragment
+import com.yelysei.hobbyharbor.views.base.BaseScreen
+import com.yelysei.hobbyharbor.views.base.screenViewModel
 
-class UserHobbyDetailsFragment: BaseFragment() {
+class UserHobbyDetailsFragment: BaseFragment(){
 
     override val viewModel by screenViewModel<UserHobbyDetailsViewModel>()
 

@@ -1,13 +1,12 @@
-package com.yelysei.hobbyharbor.views.adaptors
+package com.yelysei.hobbyharbor.views.userhobbies
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.yelysei.hobbyharbor.R
 import com.yelysei.hobbyharbor.databinding.ItemUserHobbyBinding
-import com.yelysei.hobbyharbor.model.UserHobby
+import com.yelysei.hobbyharbor.model.hobbies.UserHobby
 
 interface UserHobbyActionListener {
     fun onUserHobbyDetails(userHobby: UserHobby)
@@ -30,7 +29,7 @@ class UserHobbiesAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserHobbiesViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = ItemUserHobbyBinding.inflate(inflater, parent, false);
+        val binding = ItemUserHobbyBinding.inflate(inflater, parent, false)
 
         binding.root.setOnClickListener(this)
 
