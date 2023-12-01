@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">HobbyHarbor</string>
+    <string name="my_hobbies">My Hobbies:</string>
+    <string name="back_to_user_hobbies">Back to user hobbies</string>
+    <string name="turn_on_turn_off_notification_for_hobby">Turn On/ Turn Off notification for hobby</string>
+    <string name="total">Total:</string>
+    <string name="goal">Goal:</string>
+    <string name="edit_total_progress_value">Edit total progress value</string>
+    <string name="edit_goal_value">Edit goal value</string>
+    <string name="add_user_hobby_experience">Add User Hobby Experience</string>
+    <string name="add_experience">Add experience</string>
+    <string name="image_view_history_of_progress">Image View History of Progress</string>
+    <string name="history">History</string>
+    <string name="arrow_right_points_user_action">Arrow Right points user action</string>
+    <string name="edit_user_action">Edit user action</string>
+    <string name="add_new_user_hobby_button">Add new user hobby button</string>
+    <string name="goal_edit">Goad Edit</string>
+    <string name="edit_action">Edit action</string>
+</resources>

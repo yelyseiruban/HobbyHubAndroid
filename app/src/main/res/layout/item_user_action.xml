@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/ivArrowRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_arrow_right"
+        app:layout_constraintTop_toTopOf="@id/tvActionDate"
+        app:layout_constraintBottom_toBottomOf="@id/tvActionDate"
+        app:layout_constraintStart_toStartOf="parent"
+        android:contentDescription="@string/arrow_right_points_user_action" />
+
+    <TextView
+        android:id="@+id/tvActionDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Monday, 10.08.2023"
+        android:textSize="25sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ivArrowRight"
+        />
+
+    <TextView
+        android:id="@+id/tvTimeBorders"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        tools:text="07:00 - 09:00"
+        app:layout_constraintTop_toBottomOf="@id/tvActionDate"
+        app:layout_constraintStart_toStartOf="@id/tvActionDate"
+        />
+
+    <ImageButton
+        android:id="@+id/buttonEditAction"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_edit_small"
+        android:background="?selectableItemBackgroundBorderless"
+        app:layout_constraintTop_toTopOf="@id/tvActionDate"
+        app:layout_constraintBottom_toBottomOf="@id/tvTimeBorders"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/edit_user_action" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
