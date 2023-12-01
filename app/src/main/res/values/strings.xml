@@ -16,4 +16,5 @@
     <string name="add_new_user_hobby_button">Add new user hobby button</string>
     <string name="goal_edit">Goad Edit</string>
     <string name="edit_action">Edit action</string>
+    <string name="notification_button_pressed">Notification button pressed</string>
 </resources>

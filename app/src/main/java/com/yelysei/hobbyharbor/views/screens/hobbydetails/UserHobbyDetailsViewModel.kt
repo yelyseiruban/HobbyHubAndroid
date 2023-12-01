@@ -12,7 +12,7 @@ import com.yelysei.hobbyharbor.service.UserHobbiesService
 class UserHobbyDetailsViewModel(
     private val navigator: Navigator,
     screen: UserHobbyDetailsFragment.Screen,
-    private val userHobbiesService: UserHobbiesService
+    userHobbiesService: UserHobbiesService
 ) : BaseViewModel(){
 
     private val _userHobby = MutableLiveData<UserHobby>()
@@ -20,7 +20,7 @@ class UserHobbyDetailsViewModel(
 
     init {
         try {
-            _userHobby.value = userHobbiesService.getById(screen.uhId);
+            _userHobby.value = userHobbiesService.getById(screen.uhId)
         } catch (e: UserHobbyNotFoundException) {
             e.printStackTrace()
         }
@@ -40,5 +40,9 @@ class UserHobbyDetailsViewModel(
 
     fun onBackPressed() {
         navigator.goBack()
+    }
+
+    fun onNotificationPressed() {
+        navigator.toast(R.string.notification_button_pressed)
     }
 }
