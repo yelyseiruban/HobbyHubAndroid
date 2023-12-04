@@ -1,12 +1,13 @@
 package com.yelysei.hobbyharbor.app.views.hobbydetails
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yelysei.hobbyharbor.R
-import com.yelysei.hobbyharbor.databinding.ItemUserActionBinding
 import com.yelysei.hobbyharbor.app.model.userhobbies.Action
+import com.yelysei.hobbyharbor.databinding.ItemUserActionBinding
 
 interface HobbyDetailsActionListener {
     fun editAction(userAction: Action)
@@ -17,6 +18,7 @@ class UserActionsAdapter(
 ) : RecyclerView.Adapter<UserActionsAdapter.ProgressHistoryViewHolder>(), View.OnClickListener {
 
     var userActions: List<Action> = emptyList()
+        @SuppressLint("NotifyDataSetChanged")
         set(value) {
             field = value
             notifyDataSetChanged()

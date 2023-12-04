@@ -5,12 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.yelysei.hobbyharbor.databinding.FragmentUserHobbyDetailsBinding
-import com.yelysei.hobbyharbor.app.model.userhobbies.Action
-import com.yelysei.foundation.views.VerticalSpaceItemDecoration
 import com.yelysei.foundation.views.BaseFragment
 import com.yelysei.foundation.views.BaseScreen
+import com.yelysei.foundation.views.VerticalSpaceItemDecoration
 import com.yelysei.foundation.views.screenViewModel
+import com.yelysei.hobbyharbor.app.model.userhobbies.Action
+import com.yelysei.hobbyharbor.databinding.FragmentUserHobbyDetailsBinding
 
 class UserHobbyDetailsFragment: BaseFragment(){
 
@@ -33,7 +33,6 @@ class UserHobbyDetailsFragment: BaseFragment(){
             override fun editAction(userAction: Action) {
                 viewModel.onEditAction()
             }
-
         })
 
         viewModel.userHobby.observe(viewLifecycleOwner) {
@@ -44,6 +43,8 @@ class UserHobbyDetailsFragment: BaseFragment(){
                 adapter.userActions = it.progress.history
             }
         }
+
+        viewModel
 
         //recycler view config space between items
         val layoutManager = LinearLayoutManager(requireContext())

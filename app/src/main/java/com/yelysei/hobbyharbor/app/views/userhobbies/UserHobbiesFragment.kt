@@ -6,16 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.yelysei.hobbyharbor.R
-import com.yelysei.hobbyharbor.databinding.FragmentUserHobbiesBinding
-import com.yelysei.hobbyharbor.app.model.userhobbies.UserHobby
-import com.yelysei.foundation.views.VerticalSpaceItemDecoration
 import com.yelysei.foundation.views.BaseFragment
 import com.yelysei.foundation.views.BaseScreen
+import com.yelysei.foundation.views.VerticalSpaceItemDecoration
 import com.yelysei.foundation.views.screenViewModel
+import com.yelysei.hobbyharbor.R
+import com.yelysei.hobbyharbor.app.model.userhobbies.UserHobby
+import com.yelysei.hobbyharbor.databinding.FragmentUserHobbiesBinding
 
 
-class UserHobbiesFragment : BaseFragment(){
+class UserHobbiesFragment : BaseFragment() {
 
     class Screen : BaseScreen
 
@@ -31,7 +31,7 @@ class UserHobbiesFragment : BaseFragment(){
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentUserHobbiesBinding.inflate(inflater, container, false)
-        adapter = UserHobbiesAdapter(object: UserHobbyActionListener {
+        adapter = UserHobbiesAdapter(object : UserHobbyActionListener {
             override fun onUserHobbyDetails(userHobby: UserHobby) {
                 viewModel.onUserHobbyPressed(userHobby.id)
             }
@@ -41,14 +41,18 @@ class UserHobbiesFragment : BaseFragment(){
             adapter.userHobbies = it
         }
 
+        binding.buttonAddUserHobby.setOnClickListener {
+            viewModel.onAddPressed()
+        }
+
         //recycler view look configuration
         val layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerViewUserHobbies.layoutManager = layoutManager
         //recycler view space between items
         binding.recyclerViewUserHobbies.addItemDecoration(
             VerticalSpaceItemDecoration(
-            VERTICAL_ITEM_SPACE
-        )
+                VERTICAL_ITEM_SPACE
+            )
         )
         binding.recyclerViewUserHobbies.adapter = adapter
 

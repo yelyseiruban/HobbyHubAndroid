@@ -21,4 +21,13 @@
     <string name="open_user_profile">Open user profile</string>
     <string name="user_profile_pressed">User Profile Pressed</string>
     <string name="settings_pressed">Settings Pressed</string>
+    <string name="error_message_loading_data">Error! Please try again later</string>
+    <string name="try_again">Try Again</string>
+    <string name="categories">Categories:</string>
+    <string name="add_new_category_button">Add new category batton</string>
+    <string name="category_icon">Category Icon</string>
+    <string name="category">Category</string>
+    <string name="category_clicked">category clicked\n</string>
+    <string name="try_again_pressed">Try again pressed\n</string>
+    <string name="try_again_pressed_not_yet_implemented">Try again pressed but not yet implemented</string>
 </resources>

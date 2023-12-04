@@ -8,15 +8,16 @@ import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
 import com.yelysei.foundation.ARG_SCREEN
 import com.yelysei.foundation.BaseApplication
+import com.yelysei.foundation.views.activity.ActivityDelegateHolder
 import java.lang.reflect.Constructor
 
 inline fun <reified VM : ViewModel> BaseFragment.screenViewModel() = viewModels<VM> {
     val application = requireActivity().application as BaseApplication
     val screen = requireArguments().getSerializable(ARG_SCREEN) as BaseScreen
 
-    val activityScopeViewModel = (requireActivity() as FragmentsHolder).getActivityScopeViewModel()
+    val activityScopeViewModel = (requireActivity() as ActivityDelegateHolder).delegate.getActivityScopeViewModel()
 
-    val dependencies = listOf(screen, activityScopeViewModel) + application.repositories
+    val dependencies = listOf(screen) + activityScopeViewModel.sideEffectMediators + application.singletonScopeDependencies
 
     ViewModelFactory(dependencies, this)
 }

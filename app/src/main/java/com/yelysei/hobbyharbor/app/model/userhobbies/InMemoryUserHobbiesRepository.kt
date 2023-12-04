@@ -15,6 +15,23 @@ class InMemoryUserHobbiesRepository() : UserHobbiesRepository {
     }
 
     private val listeners = mutableSetOf<UserHobbiesListener>()
+
+    override fun getUserHobbyById(id: Long): UserHobby {
+        return userHobbies.first { it.id == id }
+    }
+
+    override fun addListener(listener: UserHobbiesListener) {
+        listeners += listener
+        listener(userHobbies)
+    }
+
+    override fun removeListener(listener: UserHobbiesListener) {
+        listeners -= listener
+    }
+
+    fun notifyChanges() {
+        listeners.forEach { it(userHobbies) }
+    }
     init {
         userHobbies.add(
             UserHobby(
@@ -58,22 +75,5 @@ class InMemoryUserHobbiesRepository() : UserHobbiesRepository {
                 Progress(mutableListOf(), 129, 20)
             )
         )
-    }
-
-    override fun getUserHobbyById(id: Long): UserHobby {
-        return userHobbies.first { it.id == id }
-    }
-
-    override fun addListener(listener: UserHobbiesListener) {
-        listeners += listener
-        listener(userHobbies)
-    }
-
-    override fun removeListener(listener: UserHobbiesListener) {
-        listeners -= listener
-    }
-
-    fun notifyChanges() {
-        listeners.forEach { it(userHobbies) }
     }
 }

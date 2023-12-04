@@ -1,26 +1,24 @@
 package com.yelysei.foundation
 
 import androidx.lifecycle.ViewModel
-import com.yelysei.foundation.navigator.IntermediateNavigator
-import com.yelysei.foundation.navigator.Navigator
-import com.yelysei.foundation.uiactions.UiActions
+import com.yelysei.foundation.sideeffects.SideEffectMediator
+import com.yelysei.foundation.sideeffects.SideEffectMediatorsHolder
 
 const val ARG_SCREEN = "ARG_SCREEN"
-class ActivityScopeViewModel(
-    val uiActions: UiActions,
-    val navigator: IntermediateNavigator
-) : ViewModel(), Navigator by navigator, UiActions by uiActions {
 
+/**
+ * Holder for side-effects mediators.
+ * It is based on activity view-model because instances of side-effect mediators
+ * should be available from fragments' view-models (usually they are passed to the view-model constructor).
+ */
+class ActivityScopeViewModel : ViewModel() {
+
+    internal val sideEffectMediatorsHolder = SideEffectMediatorsHolder()
+
+    val sideEffectMediators: List<SideEffectMediator<*>>
+        get() = sideEffectMediatorsHolder.mediators
     override fun onCleared() {
         super.onCleared()
-        navigator.clear()
+        sideEffectMediatorsHolder.clear()
     }
-    fun onSettingsPressed() {
-//        toast(R.string.settings_pressed)
-    }
-
-    fun onUserProfilePressed() {
-//        toast(R.string.user_profile_pressed)
-    }
-
 }

@@ -1,4 +1,4 @@
-package com.yelysei.foundation.navigator
+package com.yelysei.foundation.sideeffects.navigator
 
 import com.yelysei.foundation.views.BaseScreen
 
