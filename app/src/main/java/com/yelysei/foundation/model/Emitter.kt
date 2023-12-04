@@ -1,10 +1,6 @@
-package com.yelysei.foundation.model.tasks.callback
-
-import com.yelysei.foundation.model.FinalResult
+package com.yelysei.foundation.model
 
 typealias CancelListener = () -> Unit
-
-typealias ExecutionListener<T> = (Emitter<T>) -> Unit
 
 /**
  * Emitter instance is passed to [CallbackTask.create] as an argument so you can use it

@@ -1,6 +1,6 @@
 package com.yelysei.foundation.utils
 
-import com.yelysei.foundation.model.tasks.dispatchers.Dispatcher
+import com.yelysei.foundation.model.dispatchers.Dispatcher
 
 typealias ResourceAction<T> = (T) -> Unit
 

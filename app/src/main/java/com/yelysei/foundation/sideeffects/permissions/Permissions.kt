@@ -1,6 +1,5 @@
 package com.yelysei.foundation.sideeffects.permissions
 
-import com.yelysei.foundation.model.tasks.Task
 import com.yelysei.foundation.sideeffects.permissions.plugin.PermissionStatus
 
 /**
@@ -21,6 +20,6 @@ interface Permissions {
      * Request the specified permission.
      * See [PermissionStatus]
      */
-    fun requestPermission(permission: String): Task<PermissionStatus>
+    suspend fun requestPermission(permission: String): PermissionStatus
 
 }

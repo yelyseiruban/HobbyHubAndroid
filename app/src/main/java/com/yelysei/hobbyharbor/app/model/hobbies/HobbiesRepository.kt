@@ -1,18 +1,17 @@
 package com.yelysei.hobbyharbor.app.model.hobbies
 
 import com.yelysei.foundation.model.Repository
-import com.yelysei.foundation.model.tasks.Task
 
 typealias HobbiesListener = (hobbies: List<Hobby>) -> Unit
 typealias CategoriesListener = (categories: List<String>) -> Unit
 interface HobbiesRepository : Repository {
-    fun getAvailableHobbies(): Task<List<Hobby>>
+    suspend fun getAvailableHobbies(): List<Hobby>
 
-    fun getAvailableCategories(): Task<List<String>>
+    suspend fun getAvailableCategories(): List<String>
 
-    fun getAvailableHobbiesForCategory(categoryName: String): Task<List<Hobby>>
+    suspend fun getAvailableHobbiesForCategory(categoryName: String): List<Hobby>
 
-    fun addHobby(hobby: Hobby): Task<Unit>
+    suspend fun addHobby(hobby: Hobby)
 
     fun addHobbiesListener(listener: HobbiesListener)
 

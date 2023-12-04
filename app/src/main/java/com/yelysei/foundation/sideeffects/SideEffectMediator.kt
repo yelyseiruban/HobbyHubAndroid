@@ -1,7 +1,7 @@
 package com.yelysei.foundation.sideeffects
 
-import com.yelysei.foundation.model.tasks.dispatchers.Dispatcher
-import com.yelysei.foundation.model.tasks.dispatchers.MainThreadDispatcher
+import com.yelysei.foundation.model.dispatchers.Dispatcher
+import com.yelysei.foundation.model.dispatchers.MainThreadDispatcher
 import com.yelysei.foundation.utils.ResourceActions
 
 /**

@@ -2,7 +2,7 @@ package com.yelysei.foundation.sideeffects.toasts.plugin
 
 import android.content.Context
 import android.widget.Toast
-import com.yelysei.foundation.model.tasks.dispatchers.MainThreadDispatcher
+import com.yelysei.foundation.model.dispatchers.MainThreadDispatcher
 import com.yelysei.foundation.sideeffects.SideEffectMediator
 
 /**

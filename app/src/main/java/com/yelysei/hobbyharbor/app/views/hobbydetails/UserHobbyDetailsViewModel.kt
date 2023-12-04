@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import com.yelysei.foundation.model.UserHobbyNotFoundException
-import com.yelysei.foundation.model.tasks.dispatchers.Dispatcher
 import com.yelysei.foundation.sideeffects.navigator.Navigator
 import com.yelysei.foundation.sideeffects.toasts.plugin.Toasts
 import com.yelysei.foundation.views.BaseViewModel
@@ -15,10 +14,9 @@ class UserHobbyDetailsViewModel(
     screen: UserHobbyDetailsFragment.Screen,
     private val navigator: Navigator,
     private val toasts: Toasts,
-    dispatcher: Dispatcher,
     hobbiesRepository: UserHobbiesRepository,
     savedStateHandle: SavedStateHandle
-) : BaseViewModel(dispatcher){
+) : BaseViewModel(){
 
     private val _userHobbyId = savedStateHandle.getLiveData("userHobby", screen.uhId)
     private val _userHobby = MutableLiveData<UserHobby>()

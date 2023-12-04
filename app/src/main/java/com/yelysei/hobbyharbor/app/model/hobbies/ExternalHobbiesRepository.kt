@@ -1,35 +1,40 @@
 package com.yelysei.hobbyharbor.app.model.hobbies
 
-import com.yelysei.foundation.model.tasks.Task
-import com.yelysei.foundation.model.tasks.factories.TasksFactory
-import com.yelysei.foundation.model.tasks.ThreadUtils
+import com.yelysei.hobbyharbor.app.model.coroutines.IoDispatcher
+import com.yelysei.hobbyharbor.app.model.coroutines.WorkerDispatcher
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 
-class ExternalHobbiesRepository (
-    private val tasksFactory: TasksFactory,
-    private val threadUtils: ThreadUtils
+class ExternalHobbiesRepository(
+    private val ioDispatcher: IoDispatcher,
+    private val workerDispatcher: WorkerDispatcher
 ) : HobbiesRepository {
     private val hobbiesListeners = mutableSetOf<HobbiesListener>()
     private val categoriesListeners = mutableSetOf<CategoriesListener>()
 
-    override fun getAvailableHobbies(): Task<List<Hobby>> = tasksFactory.async {
-        threadUtils.sleep(1000)
-        return@async AVAILABLE_HOBBIES
+    init {
+//        categories = getAvailableCategories()
     }
 
-    override fun getAvailableCategories(): Task<List<String>>  = tasksFactory.async {
-        threadUtils.sleep(1000)
+    override suspend fun getAvailableHobbies(): List<Hobby> = withContext(ioDispatcher.value) {
+        delay(1000)
+        return@withContext AVAILABLE_HOBBIES
+    }
+
+    override suspend fun getAvailableCategories(): List<String> = withContext(workerDispatcher.value){
+        delay(1000)
         val categories = mutableSetOf<String>()
         AVAILABLE_HOBBIES.forEach { hobby: Hobby ->  categories.add(hobby.categoryName) }
-        return@async categories.toList()
+        return@withContext categories.toList()
     }
 
-    override fun getAvailableHobbiesForCategory(categoryName: String): Task<List<Hobby>> = tasksFactory.async {
-        threadUtils.sleep(1000)
-        return@async AVAILABLE_HOBBIES.filter { hobby: Hobby -> hobby.categoryName == categoryName }
+    override suspend fun getAvailableHobbiesForCategory(categoryName: String): List<Hobby> = withContext(workerDispatcher.value) {
+        delay(1000)
+        return@withContext AVAILABLE_HOBBIES.filter { hobby: Hobby -> hobby.categoryName == categoryName }
     }
 
-    override fun addHobby(hobby: Hobby): Task<Unit> = tasksFactory.async {
-        threadUtils.sleep(1000)
+    override suspend fun addHobby(hobby: Hobby) = withContext(ioDispatcher.value) {
+        delay(1000)
         AVAILABLE_HOBBIES.add(hobby)
         notifyChanges()
     }
@@ -52,7 +57,7 @@ class ExternalHobbiesRepository (
 
     fun notifyChanges() {
         hobbiesListeners.forEach { it(AVAILABLE_HOBBIES) }
-        categoriesListeners.forEach { it(getAvailableCategories().await()) }
+//        categoriesListeners.forEach { it(getAvailableCategories()) }
     }
 
     companion object {
