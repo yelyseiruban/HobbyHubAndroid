@@ -1,6 +1,7 @@
 package com.yelysei.foundation.sideeffects.navigator.plugin
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.annotation.AnimRes
 import androidx.annotation.IdRes
@@ -50,6 +51,7 @@ class StackFragmentNavigator(
     override fun onBackPressed(): Boolean {
         val fragment = requireActivity().supportFragmentManager.findFragmentById(containerId)
         return if (fragment is BaseFragment) {
+            Log.d("Debug", "fragment.viewModel.onBackPressed()")
             fragment.viewModel.onBackPressed()
         } else {
             false

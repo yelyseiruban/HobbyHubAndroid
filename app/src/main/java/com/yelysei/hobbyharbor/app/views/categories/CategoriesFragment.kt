@@ -47,6 +47,10 @@ class CategoriesFragment : BaseFragment() {
             viewModel.tryAgain()
         }
 
+        binding.buttonBack.setOnClickListener {
+            viewModel.onBackPressed()
+        }
+
         //width in db without paddings
         val widthInDp = getScreenWidthInDp(requireContext()) - 40
         Log.d("widthInPixels", widthInDp.toString())

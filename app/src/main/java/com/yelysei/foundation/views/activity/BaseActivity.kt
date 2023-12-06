@@ -2,6 +2,7 @@ package com.yelysei.foundation.views.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.yelysei.foundation.sideeffects.SideEffectPluginsManager
 
@@ -28,6 +29,7 @@ abstract class BaseActivity : AppCompatActivity(), ActivityDelegateHolder {
     }
 
     override fun onBackPressed() {
+        Log.d("Debug", "onBackPressed BaseActivity")
         if (!delegate.onBackPressed()) super.onBackPressed()
     }
 

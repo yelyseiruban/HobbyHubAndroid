@@ -1,6 +1,7 @@
 package com.yelysei.hobbyharbor.app.views.categories
 
 import com.yelysei.foundation.model.PendingResult
+import com.yelysei.foundation.sideeffects.navigator.Navigator
 import com.yelysei.foundation.sideeffects.toasts.plugin.Toasts
 import com.yelysei.foundation.views.BaseViewModel
 import com.yelysei.foundation.views.LiveResult
@@ -9,6 +10,7 @@ import com.yelysei.hobbyharbor.app.model.hobbies.HobbiesRepository
 
 class CategoriesViewModel(
     private val toasts: Toasts,
+    private val navigator: Navigator,
     private val hobbiesRepository: HobbiesRepository
 ) : BaseViewModel() {
 
@@ -30,6 +32,11 @@ class CategoriesViewModel(
 
     fun tryAgain() {
         load()
+    }
+
+    override fun onBackPressed(): Boolean {
+        navigator.goBack()
+        return true
     }
 
     private fun load() = into(_categories) {

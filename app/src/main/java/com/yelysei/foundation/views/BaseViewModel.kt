@@ -2,9 +2,7 @@ package com.yelysei.foundation.views
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asFlow
 import com.yelysei.foundation.model.ErrorResult
 import com.yelysei.foundation.model.Result
 import com.yelysei.foundation.model.SuccessResult
@@ -57,25 +55,6 @@ open class BaseViewModel: ViewModel() {
                 stateFlow.value = ErrorResult(e)
             }
         }
-    }
-
-    fun <T> SavedStateHandle.getStateFlow(key: String, initialValue: T): MutableStateFlow<T> {
-        val savedStateHandle = this
-        val mutableFlow = MutableStateFlow(savedStateHandle[key] ?: initialValue)
-
-        viewModelScope.launch {
-            mutableFlow.collect{
-                savedStateHandle[key] = it
-            }
-        }
-
-        viewModelScope.launch {
-            savedStateHandle.getLiveData<T>(key).asFlow().collect {
-                mutableFlow.value = it
-            }
-        }
-
-        return mutableFlow
     }
 
     private fun clearViewModelScope() {

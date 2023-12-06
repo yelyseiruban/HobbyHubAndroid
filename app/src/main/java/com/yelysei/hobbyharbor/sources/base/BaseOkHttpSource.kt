@@ -32,7 +32,7 @@ open class BaseOkHttpSource(
      * Suspending function which wraps OkHttp [Call.enqueue] method for making
      * HTTP requests and wraps external exceptions into subclasses for [AppException].
      *
-     * @throws ConnecitonException
+     * @throws ConnectionException
      * @throws BackendException
      * @throws ParseBackendResponseException
      * */

@@ -45,7 +45,7 @@ class UserHobbyDetailsViewModel(
 
     override fun onBackPressed(): Boolean {
         navigator.goBack()
-        return false
+        return true
     }
 
     fun onNotificationPressed() {
