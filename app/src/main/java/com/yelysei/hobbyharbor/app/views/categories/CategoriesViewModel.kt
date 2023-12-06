@@ -1,12 +1,10 @@
 package com.yelysei.hobbyharbor.app.views.categories
 
 import com.yelysei.foundation.model.PendingResult
-import com.yelysei.foundation.model.SuccessResult
 import com.yelysei.foundation.sideeffects.toasts.plugin.Toasts
 import com.yelysei.foundation.views.BaseViewModel
 import com.yelysei.foundation.views.LiveResult
 import com.yelysei.foundation.views.MutableLiveResult
-import com.yelysei.hobbyharbor.app.model.hobbies.CategoriesListener
 import com.yelysei.hobbyharbor.app.model.hobbies.HobbiesRepository
 
 class CategoriesViewModel(
@@ -17,12 +15,12 @@ class CategoriesViewModel(
     private val _categories = MutableLiveResult<List<String>>(PendingResult())
     val categories: LiveResult<List<String>> = _categories
 
-    private val categoriesListener: CategoriesListener = {categories ->
-        _categories.postValue(SuccessResult(categories))
-    }
-
     init {
-        hobbiesRepository.addCategoryListener(categoriesListener)
+//        viewModelScope.launch {
+//            hobbiesRepository.listenCurrentHobbies().collect() {
+//                _categories.postValue(SuccessResult(hobbiesRepository.getAvailableCategories()))
+//            }
+//        }
         load()
     }
 
@@ -35,6 +33,7 @@ class CategoriesViewModel(
     }
 
     private fun load() = into(_categories) {
+        _categories.value = PendingResult()
         hobbiesRepository.getAvailableCategories()
     }
 

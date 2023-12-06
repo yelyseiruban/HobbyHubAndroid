@@ -2,19 +2,25 @@ package com.yelysei.hobbyharbor.app.model.hobbies
 
 import com.yelysei.hobbyharbor.app.model.coroutines.IoDispatcher
 import com.yelysei.hobbyharbor.app.model.coroutines.WorkerDispatcher
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 
 class ExternalHobbiesRepository(
     private val ioDispatcher: IoDispatcher,
     private val workerDispatcher: WorkerDispatcher
 ) : HobbiesRepository {
-    private val hobbiesListeners = mutableSetOf<HobbiesListener>()
-    private val categoriesListeners = mutableSetOf<CategoriesListener>()
+    private val currentHobbiesFlow = MutableSharedFlow<List<Hobby>>(
+        replay = 0,
+        extraBufferCapacity = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
 
-    init {
-//        categories = getAvailableCategories()
-    }
+    override fun listenCurrentHobbies(): Flow<List<Hobby>> = currentHobbiesFlow
 
     override suspend fun getAvailableHobbies(): List<Hobby> = withContext(ioDispatcher.value) {
         delay(1000)
@@ -33,32 +39,16 @@ class ExternalHobbiesRepository(
         return@withContext AVAILABLE_HOBBIES.filter { hobby: Hobby -> hobby.categoryName == categoryName }
     }
 
-    override suspend fun addHobby(hobby: Hobby) = withContext(ioDispatcher.value) {
-        delay(1000)
-        AVAILABLE_HOBBIES.add(hobby)
-        notifyChanges()
-    }
-
-    override fun addHobbiesListener(listener: HobbiesListener) {
-        hobbiesListeners += listener
-    }
-
-    override fun removeHobbiesListener(listener: HobbiesListener) {
-        hobbiesListeners -= listener
-    }
-
-    override fun addCategoryListener(listener: CategoriesListener) {
-        categoriesListeners += listener
-    }
-
-    override fun removeCategoryListener(listener: CategoriesListener) {
-        categoriesListeners -= listener
-    }
-
-    fun notifyChanges() {
-        hobbiesListeners.forEach { it(AVAILABLE_HOBBIES) }
-//        categoriesListeners.forEach { it(getAvailableCategories()) }
-    }
+    override fun addHobby(hobby: Hobby): Flow<Int> = flow {
+        var progress = 0
+        while (progress < 100) {
+            progress += 2
+            delay(30)
+            emit(progress)
+        }
+        AVAILABLE_HOBBIES += hobby
+        currentHobbiesFlow.emit(AVAILABLE_HOBBIES)
+    }.flowOn(ioDispatcher.value)
 
     companion object {
         private val AVAILABLE_HOBBIES = mutableListOf(

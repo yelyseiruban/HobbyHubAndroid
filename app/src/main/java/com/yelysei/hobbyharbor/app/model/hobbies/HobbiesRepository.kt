@@ -1,6 +1,7 @@
 package com.yelysei.hobbyharbor.app.model.hobbies
 
 import com.yelysei.foundation.model.Repository
+import kotlinx.coroutines.flow.Flow
 
 typealias HobbiesListener = (hobbies: List<Hobby>) -> Unit
 typealias CategoriesListener = (categories: List<String>) -> Unit
@@ -11,13 +12,8 @@ interface HobbiesRepository : Repository {
 
     suspend fun getAvailableHobbiesForCategory(categoryName: String): List<Hobby>
 
-    suspend fun addHobby(hobby: Hobby)
+    fun addHobby(hobby: Hobby): Flow<Int>
 
-    fun addHobbiesListener(listener: HobbiesListener)
+    fun listenCurrentHobbies(): Flow<List<Hobby>>
 
-    fun removeHobbiesListener(listener: HobbiesListener)
-
-    fun addCategoryListener(listener: CategoriesListener)
-
-    fun removeCategoryListener(listener: CategoriesListener)
 }
