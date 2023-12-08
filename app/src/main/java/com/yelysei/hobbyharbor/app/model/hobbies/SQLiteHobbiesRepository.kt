@@ -1,5 +1,6 @@
 package com.yelysei.hobbyharbor.app.model.hobbies
 
+import android.database.sqlite.SQLiteDatabase
 import com.yelysei.hobbyharbor.app.model.coroutines.IoDispatcher
 import com.yelysei.hobbyharbor.app.model.coroutines.WorkerDispatcher
 import kotlinx.coroutines.channels.BufferOverflow
@@ -10,7 +11,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 
-class ExternalHobbiesRepository(
+class SQLiteHobbiesRepository(
+    private val database: SQLiteDatabase,
     private val ioDispatcher: IoDispatcher,
     private val workerDispatcher: WorkerDispatcher
 ) : HobbiesRepository {

@@ -2,7 +2,7 @@ package com.yelysei.hobbyharbor.app.model.userhobbies
 
 import com.yelysei.hobbyharbor.app.model.hobbies.Hobby
 
-class InMemoryUserHobbiesRepository() : UserHobbiesRepository {
+class SQLiteUserHobbiesRepository() : UserHobbiesRepository {
     override var userHobbies: MutableList<UserHobby> = mutableListOf()
     override fun addUserHobby(userHobby: UserHobby) {
         userHobbies.add(userHobby)
