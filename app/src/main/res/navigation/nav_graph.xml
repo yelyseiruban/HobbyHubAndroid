@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/userHobbiesFragment">
+
+    <fragment
+        android:id="@+id/userHobbiesFragment"
+        android:name="com.yelysei.hobbyharbor.app.views.userhobbies.UserHobbiesFragment"
+        android:label="fragment_user_hobbies"
+        tools:layout="@layout/fragment_user_hobbies" >
+        <action
+            android:id="@+id/action_userHobbiesFragment_to_userHobbyDetailsFragment"
+            app:destination="@id/userHobbyDetailsFragment" />
+        <action
+            android:id="@+id/action_userHobbiesFragment_to_categoriesFragment"
+            app:destination="@id/categoriesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/categoriesFragment"
+        android:name="com.yelysei.hobbyharbor.app.views.categories.CategoriesFragment"
+        android:label="fragment_categories"
+        tools:layout="@layout/fragment_categories" />
+    <fragment
+        android:id="@+id/userHobbyDetailsFragment"
+        android:name="com.yelysei.hobbyharbor.app.views.hobbydetails.UserHobbyDetailsFragment"
+        android:label="fragment_user_hobby_details"
+        tools:layout="@layout/fragment_user_hobby_details" />
+</navigation>
