@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".app.views.userhobbies.UserHobbiesFragment"
+    tools:context=".screens.main.userhobbies.UserHobbiesFragment"
     >
 
     <TextView
@@ -42,5 +42,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:contentDescription="@string/add_new_user_hobby_button" />
+
+
+    <include layout="@layout/part_result" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

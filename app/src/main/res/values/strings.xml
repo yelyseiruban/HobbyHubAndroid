@@ -30,4 +30,5 @@
     <string name="category_clicked">category clicked\n</string>
     <string name="try_again_pressed">Try again pressed\n</string>
     <string name="try_again_pressed_not_yet_implemented">Try again pressed but not yet implemented</string>
+    <string name="please_wait">Please wait...</string>
 </resources>
