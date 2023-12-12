@@ -9,14 +9,17 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.yelysei.hobbyharbor.Repositories
 import com.yelysei.hobbyharbor.databinding.FragmentUserHobbyDetailsBinding
+import com.yelysei.hobbyharbor.model.userhobbies.entities.Action
+import com.yelysei.hobbyharbor.model.userhobbies.entities.getProgressInHours
+import com.yelysei.hobbyharbor.screens.renderSimpleResult
 import com.yelysei.hobbyharbor.utils.viewModelCreator
 
 class UserHobbyDetailsFragment: Fragment(){
     private lateinit var binding: FragmentUserHobbyDetailsBinding
 
-    private val viewModel by viewModelCreator { UserHobbyDetailsViewModel(Repositories.userHobbiesRepository) }
-
     private val args: UserHobbyDetailsFragmentArgs by navArgs()
+
+    private val viewModel by viewModelCreator { UserHobbyDetailsViewModel(args.uhId, Repositories.userHobbiesRepository) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,16 +27,30 @@ class UserHobbyDetailsFragment: Fragment(){
         savedInstanceState: Bundle?
     ): View {
 
-//        viewModel.load(args.uhId)
         binding = FragmentUserHobbyDetailsBinding.inflate(inflater, container, false)
+        val adapter: UserActionsAdapter = UserActionsAdapter(object : HobbyDetailsActionListener {
+            override fun editAction(userAction: Action) {
+                TODO("Not yet implemented")
+            }
+        })
+
+
+        viewModel.userHobby.observe(viewLifecycleOwner) { result ->
+            renderSimpleResult(binding.root, result) {
+                binding.tvHobbyName.text = it.hobby.hobbyName
+                binding.tvGoalValue.text = it.progress.goal.toString()
+                binding.tvTotalValue.text = it.getProgressInHours().toString()
+                adapter.userActions = it.progress.actions
+            }
+        }
+
+        binding.recyclerViewUserActions.adapter = adapter
+
+
 
         binding.buttonNavigateUp.setOnClickListener {
             findNavController().navigateUp()
         }
-
-//        binding.tvHobbyName.text = viewModel.getUserHobbyName()
-//        binding.tvTotalValue.text = viewModel.getTotalValue().toString()
-//        binding.tvGoalValue.text = viewModel.getGoalValue().toString()
 
         return binding.root
     }

@@ -2,6 +2,6 @@ package com.yelysei.hobbyharbor.model.userhobbies.entities
 
 data class Progress (
     val id: Int,
-    var history: MutableList<Action>,
+    var actions: MutableList<Action>,
     val goal: Int
 )

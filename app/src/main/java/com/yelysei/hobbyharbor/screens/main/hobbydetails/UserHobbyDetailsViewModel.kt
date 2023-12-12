@@ -1,26 +1,28 @@
 package com.yelysei.hobbyharbor.screens.main.hobbydetails
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.yelysei.hobbyharbor.model.results.PendingResult
+import com.yelysei.hobbyharbor.model.results.SuccessResult
 import com.yelysei.hobbyharbor.model.userhobbies.UserHobbiesRepository
 import com.yelysei.hobbyharbor.model.userhobbies.entities.UserHobby
-import com.yelysei.hobbyharbor.model.userhobbies.entities.getProgressInHours
+import com.yelysei.hobbyharbor.screens.main.LiveResult
+import com.yelysei.hobbyharbor.screens.main.MutableLiveResult
+import kotlinx.coroutines.launch
 
 class UserHobbyDetailsViewModel(
+    uhId: Int,
     private val userHobbiesRepository: UserHobbiesRepository,
 ) : ViewModel() {
 
-    private val _userHobby =  MutableLiveData<UserHobby>()
-    val userHobby: LiveData<UserHobby> = _userHobby
+    private val _userHobby =  MutableLiveResult<UserHobby>(PendingResult())
+    val userHobby: LiveResult<UserHobby> = _userHobby
 
-    fun load(uhId: Int) {
-//        viewModelScope.launch {
-//            _userHobby.value = userHobbiesRepository.getUserHobbyById(uhId)
-//        }
+    init {
+        viewModelScope.launch {
+            userHobbiesRepository.getUserHobbyById(uhId).collect {
+                _userHobby.value = SuccessResult(it)
+            }
+        }
     }
-
-    fun getUserHobbyName() = userHobby.value?.hobby?.hobbyName
-    fun getTotalValue() = userHobby.value?.getProgressInHours()
-    fun getGoalValue() = userHobby.value?.progress?.goal
 }

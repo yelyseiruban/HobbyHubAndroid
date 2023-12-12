@@ -25,7 +25,6 @@ class UserHobbiesViewModel(
         viewModelScope.launch {
             try {
                 userHobbiesRepository.getUserHobbies().collect {
-                    Log.d("Debug", it.toString())
                     _userHobbies.value = SuccessResult(it)
                 }
             } catch (e: NoUserHobbiesFoundException) {

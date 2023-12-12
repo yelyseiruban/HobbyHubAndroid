@@ -1,5 +1,6 @@
 package com.yelysei.hobbyharbor.screens.main.categories
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yelysei.hobbyharbor.model.hobbies.HobbiesRepository
@@ -17,6 +18,7 @@ class CategoriesViewModel(
 
     init {
         load()
+        Log.d("debug CategoriesViewModel", categories.value.toString())
     }
 
     fun tryAgain() {

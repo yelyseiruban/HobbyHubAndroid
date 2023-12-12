@@ -15,7 +15,7 @@ interface HobbiesDao {
     @Query("SELECT * FROM hobbies")
     fun getHobbies(): Flow<List<HobbyDbEntity>>
 
-    @Query("SELECT DISTINCT category_name FROM  hobbies")
+    @Query("SELECT DISTINCT category_name FROM hobbies")
     fun getCategories(): Flow<List<String>>
 
     @Insert(entity = HobbyDbEntity::class)

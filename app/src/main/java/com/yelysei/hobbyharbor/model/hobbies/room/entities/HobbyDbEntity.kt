@@ -20,9 +20,9 @@ data class HobbyDbEntity(
     @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "hobby_name") val hobbyName: String,
     @ColumnInfo(name = "category_name") val categoryName: String,
-    val cost: String,
-    val place: String,
-    val people: String
+    val cost: String?,
+    val place: String?,
+    val people: String?
 ) {
     fun toHobby(): Hobby = Hobby(
         id,

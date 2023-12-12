@@ -45,7 +45,7 @@ data class UserHobbiesInTuple(
         }
 }
 
-data class ProgressUpdateGoalTuple(
-    val id: Int,
-    val goal: Int
+data class UserHobbyInsertTuple(
+    @ColumnInfo(name = "hobby_id") val hobbyId: Int,
+    @ColumnInfo(name = "progress_id") val progressId: Int
 )

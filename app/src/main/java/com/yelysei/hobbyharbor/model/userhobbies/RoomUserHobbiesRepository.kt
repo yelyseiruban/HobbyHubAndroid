@@ -21,9 +21,13 @@ class RoomUserHobbiesRepository(
     private val defaultDispatcher: CoroutineDispatcher
 ) : UserHobbiesRepository {
 
-    override suspend fun getUserHobbyById(id: Int): UserHobby {
-        val userHobby = userHobbiesDao.findUserHobbyById(id).toUserHobby()
-        userHobby.progress.history = getActionsByProgressId(userHobby.progress.id)
+    override suspend fun getUserHobbyById(id: Int): Flow<UserHobby> {
+        val userHobby = userHobbiesDao.findUserHobbyById(id).map {
+            it.toUserHobby()
+        }
+        userHobby.map {
+            it.progress.actions = getActionsByProgressId(it.progress.id)
+        }
         return userHobby
     }
 
@@ -42,7 +46,7 @@ class RoomUserHobbiesRepository(
             it.map {userHobbiesInTuple ->
                 val userHobby = userHobbiesInTuple.toUserHobby()
                 val actions = getActionsByProgressId(userHobby.progress.id)
-                userHobby.progress.history = actions
+                userHobby.progress.actions = actions
                 return@map userHobby
             }
         }

@@ -32,7 +32,7 @@ interface UserHobbiesDao {
                 "ON user_hobbies.progress_id = progresses.id " +
             "WHERE user_hobbies.id = :id"
     )
-    suspend fun findUserHobbyById(id: Int): UserHobbiesInTuple
+    fun findUserHobbyById(id: Int): Flow<UserHobbiesInTuple>
 
     @Insert
     suspend fun addUserHobby(userHobby: UserHobbyDbEntity)
