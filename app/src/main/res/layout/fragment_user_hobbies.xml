@@ -3,8 +3,11 @@
     android:id="@+id/constraintLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".screens.main.userhobbies.UserHobbiesFragment"
+    >
 
     <TextView
         android:id="@+id/pageTitle"
@@ -14,7 +17,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginStart="26dp"
         android:text="@string/my_hobbies"
-        android:textColor="@color/black"
+
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
@@ -39,5 +42,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:contentDescription="@string/add_new_user_hobby_button" />
+
+
+    <include layout="@layout/part_result" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

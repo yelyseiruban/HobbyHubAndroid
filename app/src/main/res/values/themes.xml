@@ -5,6 +5,7 @@
         <item name="colorPrimary">@color/gray</item>
         <item name="colorSecondary">@color/black</item>
         <item name="colorTertiary">@color/black</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="Theme.HobbyHarbor" parent="Base.Theme.HobbyHarbor" />
