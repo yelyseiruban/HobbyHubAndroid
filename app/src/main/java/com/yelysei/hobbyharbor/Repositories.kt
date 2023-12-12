@@ -1,26 +1,28 @@
 package com.yelysei.hobbyharbor
 
 import android.content.Context
-import android.database.sqlite.SQLiteDatabase
+import androidx.room.Room
+import com.yelysei.hobbyharbor.model.AppDatabase
 import com.yelysei.hobbyharbor.model.hobbies.HobbiesRepository
-import com.yelysei.hobbyharbor.model.hobbies.SQLiteHobbiesRepository
-import com.yelysei.hobbyharbor.model.sqlite.AppSQLiteHelper
-import com.yelysei.hobbyharbor.model.userhobbies.SQLiteUserHobbiesRepository
+import com.yelysei.hobbyharbor.model.hobbies.RoomHobbiesRepository
+import com.yelysei.hobbyharbor.model.userhobbies.RoomUserHobbiesRepository
 import com.yelysei.hobbyharbor.model.userhobbies.UserHobbiesRepository
 import kotlinx.coroutines.Dispatchers
 
 object Repositories {
     private lateinit var applicationContext: Context
 
-    private val database: SQLiteDatabase by lazy<SQLiteDatabase> {
-        AppSQLiteHelper(applicationContext).writableDatabase
+    private val database: AppDatabase by lazy<AppDatabase> {
+        Room.databaseBuilder(applicationContext, AppDatabase::class.java, "database.db")
+            .createFromAsset("initial_database.db")
+            .build()
     }
 
     val hobbiesRepository: HobbiesRepository by lazy {
-        SQLiteHobbiesRepository(database, Dispatchers.IO, Dispatchers.Default)
+        RoomHobbiesRepository(database.getHobbiesDao(), Dispatchers.IO, Dispatchers.Default)
     }
     val userHobbiesRepository: UserHobbiesRepository by lazy {
-        SQLiteUserHobbiesRepository(database, Dispatchers.IO, Dispatchers.Default)
+        RoomUserHobbiesRepository(database.getUserHobbiesDao(), Dispatchers.IO, Dispatchers.Default)
     }
 
     fun init(context: Context) {

@@ -10,7 +10,7 @@ import java.util.Calendar
  * @param dateFormat Date format
  * @return String representing date in specified format
  */
-fun getDate(milliSeconds: Long, dateFormat: String): String {
+fun getDate(milliSeconds: Int, dateFormat: String): String {
 
     // Create a DateFormatter object for displaying date in specified format.
 
@@ -19,6 +19,6 @@ fun getDate(milliSeconds: Long, dateFormat: String): String {
     // Create a calendar object that will convert the date and time value in milliseconds to date.
 
     val calendar: Calendar = Calendar.getInstance()
-    calendar.setTimeInMillis(milliSeconds)
+    calendar.setTimeInMillis(milliSeconds.toLong())
     return formatter.format(calendar.getTime())
 }

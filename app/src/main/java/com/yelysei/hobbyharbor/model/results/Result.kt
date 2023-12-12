@@ -1,8 +1,5 @@
 package com.yelysei.hobbyharbor.model.results
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-
 typealias Mapper<Input, Output> = (Input) -> Output
 
 sealed class Result<T> {
@@ -34,6 +31,3 @@ fun <T> Result<T>?.takeSuccess(): T? {
     else
         null
 }
-
-typealias MutableLiveResult<T> = MutableLiveData<Result<T>>
-typealias LiveResult<T> = LiveData<Result<T>>

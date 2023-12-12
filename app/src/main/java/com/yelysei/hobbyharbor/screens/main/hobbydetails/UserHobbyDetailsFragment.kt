@@ -27,8 +27,8 @@ class UserHobbyDetailsFragment: Fragment(){
 //        viewModel.load(args.uhId)
         binding = FragmentUserHobbyDetailsBinding.inflate(inflater, container, false)
 
-        binding.buttonBack.setOnClickListener {
-            findNavController().popBackStack()
+        binding.buttonNavigateUp.setOnClickListener {
+            findNavController().navigateUp()
         }
 
 //        binding.tvHobbyName.text = viewModel.getUserHobbyName()

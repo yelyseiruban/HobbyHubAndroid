@@ -27,6 +27,7 @@ class UserHobbiesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        viewModel.load()
         binding = FragmentUserHobbiesBinding.inflate(layoutInflater, container, false)
 
         adapter = UserHobbiesAdapter(object : UserHobbyActionListener {
@@ -67,9 +68,4 @@ class UserHobbiesFragment : Fragment() {
         val direction = UserHobbiesFragmentDirections.actionUserHobbiesFragmentToUserHobbyDetailsFragment(uhId)
         findNavController().navigate(direction)
     }
-
-    companion object {
-        const val VERTICAL_ITEM_SPACE = 64
-    }
-
 }

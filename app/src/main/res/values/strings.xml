@@ -31,4 +31,11 @@
     <string name="try_again_pressed">Try again pressed\n</string>
     <string name="try_again_pressed_not_yet_implemented">Try again pressed but not yet implemented</string>
     <string name="please_wait">Please wait...</string>
+    <string name="back_to_categories">Back to categories</string>
+    <string name="traveling">Traveling</string>
+    <string name="add_custom_hobby_description">Add Custom Hobby Button (show new screen to specify your hobby)</string>
+    <string name="choose_hobby_from_the_list">Choose hobby from the list:</string>
+    <string name="please_set_up_your_goal_for_the_hobby">Please set up your goal in hours for the hobby:</string>
+    <string name="goal_hint">Goal</string>
+    <string name="submit">Submit</string>
 </resources>

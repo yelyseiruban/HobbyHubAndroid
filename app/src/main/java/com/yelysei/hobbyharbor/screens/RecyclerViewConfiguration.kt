@@ -1,5 +1,6 @@
 package com.yelysei.hobbyharbor.screens
 
+import android.util.TypedValue
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
@@ -20,11 +21,16 @@ fun Fragment.recyclerViewConfigureView(configuration: Configuration) {
     if (configuration.maxHeight != null && configuration.constraintLayout != null){
         val constraintSet = ConstraintSet()
         constraintSet.clone(configuration.constraintLayout)
-        val maxHeightInPixels = (configuration.maxHeight * resources.displayMetrics.heightPixels).toInt()
-        constraintSet.constrainHeight(recyclerViewId, ConstraintSet.WRAP_CONTENT)
-        constraintSet.constrainMaxHeight(recyclerViewId, maxHeightInPixels)
 
-        constraintSet.applyTo(configuration.constraintLayout)
+        val tv = TypedValue()
+        if (requireActivity().theme.resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
+            val actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, resources.displayMetrics)
+            val maxHeightInPixels = (configuration.maxHeight * resources.displayMetrics.heightPixels - actionBarHeight).toInt()
+            constraintSet.constrainHeight(recyclerViewId, ConstraintSet.WRAP_CONTENT)
+            constraintSet.constrainMaxHeight(recyclerViewId, maxHeightInPixels)
+
+            constraintSet.applyTo(configuration.constraintLayout)
+        }
     }
 }
 

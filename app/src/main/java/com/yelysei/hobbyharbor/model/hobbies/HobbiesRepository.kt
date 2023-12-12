@@ -10,6 +10,6 @@ interface HobbiesRepository  {
 
     suspend fun getAvailableHobbiesForCategory(categoryName: String): List<Hobby>
 
-    fun addCustomHobby(hobby: Hobby)
+    suspend fun addCustomHobby(hobby: Hobby)
 
 }

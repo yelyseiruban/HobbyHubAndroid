@@ -3,4 +3,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#D9D9D9</color>
+    <color name="darkGray">#B5B5B5</color>
+    <color name="progressColor">#BA000000</color>
+    <color name="submit_button_color">#009688</color>
 </resources>
