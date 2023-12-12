@@ -15,7 +15,7 @@ class UserHobbyDetailsViewModel(
     private val userHobbiesRepository: UserHobbiesRepository,
 ) : ViewModel() {
 
-    private val _userHobby =  MutableLiveResult<UserHobby>(PendingResult())
+    private val _userHobby = MutableLiveResult<UserHobby>(PendingResult())
     val userHobby: LiveResult<UserHobby> = _userHobby
 
     init {
