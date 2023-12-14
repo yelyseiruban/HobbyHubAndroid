@@ -20,8 +20,8 @@ import com.yelysei.hobbyharbor.model.userhobbies.entities.Action
 )
 data class ActionDbEntity(
     @PrimaryKey(autoGenerate = true) val id: Int,
-    @ColumnInfo(name = "start_date") val startDate: Int,
-    @ColumnInfo(name = "end_date") val endDate: Int,
+    @ColumnInfo(name = "start_date") val startDate: Long,
+    @ColumnInfo(name = "end_date") val endDate: Long,
     @ColumnInfo(name = "progress_id") val progressId: Int
 ) {
 

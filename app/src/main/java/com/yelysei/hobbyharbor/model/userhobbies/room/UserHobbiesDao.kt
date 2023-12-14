@@ -1,4 +1,4 @@
-package com.yelysei.hobbyharbor.model.userhobbies.room;
+package com.yelysei.hobbyharbor.model.userhobbies.room
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -38,7 +38,7 @@ interface UserHobbiesDao {
     suspend fun addUserHobby(userHobby: UserHobbyDbEntity)
 
     @Query("SELECT * FROM actions WHERE actions.progress_id = :progressId")
-    suspend fun findUserActionsByProgressId(progressId: Int): List<ActionDbEntity>?
+    fun findUserActionsByProgressId(progressId: Int): Flow<List<ActionDbEntity>>?
 
     @Insert
     suspend fun insertProgress(progressDbEntity: ProgressDbEntity): Long

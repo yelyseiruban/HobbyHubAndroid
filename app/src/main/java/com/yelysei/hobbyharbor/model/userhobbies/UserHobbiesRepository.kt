@@ -12,5 +12,7 @@ interface UserHobbiesRepository  {
 
     suspend fun addUserHobby(hobby: Hobby, goal: Int)
 
-    suspend fun addUserHobbyAction(uhId: Int, action: Action)
+    suspend fun addUserHobbyExperience(progressId: Int, action: Action)
+
+    suspend fun getActionsByProgressId(progressId: Int): Flow<List<Action>>
 }

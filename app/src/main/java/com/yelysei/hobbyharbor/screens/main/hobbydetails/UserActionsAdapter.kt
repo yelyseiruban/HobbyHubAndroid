@@ -44,7 +44,13 @@ class UserActionsAdapter(
         val userAction = userActions[position]
         with(holder.binding) {
             holder.itemView.tag = userAction
-            tvActionDate.text = getDate(userAction.startTime, "dd.MM.yyyy")
+            val startDate = getDate(userAction.startTime, "dd.MM.yyyy")
+            val endDate = getDate(userAction.endTime, "dd.MM.yyy")
+            var displayedDate = startDate
+            if (startDate != endDate) {
+                displayedDate = "$startDate - $endDate"
+            }
+            tvActionDate.text = displayedDate
             val timeBorders = "${getDate(userAction.startTime, "hh:mm")} - ${getDate(userAction.endTime, "hh:mm")}"
             tvTimeBorders.text = timeBorders
         }

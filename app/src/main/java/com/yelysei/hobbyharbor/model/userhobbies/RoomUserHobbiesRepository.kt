@@ -11,6 +11,7 @@ import com.yelysei.hobbyharbor.model.userhobbies.room.entities.ProgressDbEntity
 import com.yelysei.hobbyharbor.model.userhobbies.room.entities.UserHobbyDbEntity
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
@@ -22,13 +23,10 @@ class RoomUserHobbiesRepository(
 ) : UserHobbiesRepository {
 
     override suspend fun getUserHobbyById(id: Int): Flow<UserHobby> {
-        val userHobby = userHobbiesDao.findUserHobbyById(id).map {
+        val userHobbyFlow = userHobbiesDao.findUserHobbyById(id).map {
             it.toUserHobby()
         }
-        userHobby.map {
-            it.progress.actions = getActionsByProgressId(it.progress.id)
-        }
-        return userHobby
+        return userHobbyFlow
     }
 
     override suspend fun addUserHobby(hobby: Hobby, goal: Int) = withContext(ioDispatcher) {
@@ -36,28 +34,29 @@ class RoomUserHobbiesRepository(
         userHobbiesDao.insertUserHobby(UserHobbyDbEntity(id = 0, hobbyId = hobby.id ?: throw NoHobbyIdException(), progressId = progressId))
     }
 
-    override suspend fun addUserHobbyAction(uhId: Int, action: Action) = withContext(ioDispatcher) {
-        val progressId = userHobbiesDao.findProgressIdByUserHobbyId(uhId)
+    override suspend fun addUserHobbyExperience(progressId: Int,  action: Action) = withContext(ioDispatcher) {
         userHobbiesDao.insertUserHobbyAction(ActionDbEntity.fromAction(action, progressId))
     }
 
     override suspend fun getUserHobbies(): Flow<List<UserHobby>> = withContext(ioDispatcher) {
-        val flow = userHobbiesDao.getUserHobbies().map {
+        val userHobbiesFlow = userHobbiesDao.getUserHobbies().map {
             it.map {userHobbiesInTuple ->
                 val userHobby = userHobbiesInTuple.toUserHobby()
                 val actions = getActionsByProgressId(userHobby.progress.id)
-                userHobby.progress.actions = actions
+                userHobby.progress.actions = actions.first()
                 return@map userHobby
             }
         }
-        return@withContext flow
+        return@withContext userHobbiesFlow
     }
 
-    private suspend fun getActionsByProgressId(progressId: Int): MutableList<Action> {
-        val actionsDbEntity = userHobbiesDao.findUserActionsByProgressId(progressId)
-        val actions = actionsDbEntity?.map {
-            it.toAction()
+    override suspend fun getActionsByProgressId(progressId: Int): Flow<List<Action>> {
+        val actionsDbEntityFlow = userHobbiesDao.findUserActionsByProgressId(progressId)
+        val actions = actionsDbEntityFlow?.map {actionsDbEntity ->
+            actionsDbEntity.map {
+                it.toAction()
+            }
         } ?: throw NoActionsByProgressIdException()
-        return  actions.toMutableList()
+        return actions
     }
 }

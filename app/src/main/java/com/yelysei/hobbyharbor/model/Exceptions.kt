@@ -16,11 +16,13 @@ class NoHobbiesBySpecifiedCategoryName: AppException()
 
 class NoActionsByProgressIdException : AppException()
 
-class AddHobbyNameAlreadyEgsistsException : AppException()
+class HobbyNameAlreadyExistsException : AppException()
 
-class AddHobbyStartingProgressGreaterThanDesiredException : AppException()
+class HobbyStartingProgressGreaterThanDesiredException : AppException()
 
 class AddHobbyStartingProgressLowerThanDesiredException : AppException()
+
+class UserHobbyIsNotLoadedException : AppException()
 
 /*
 Exepctions handled by input:
