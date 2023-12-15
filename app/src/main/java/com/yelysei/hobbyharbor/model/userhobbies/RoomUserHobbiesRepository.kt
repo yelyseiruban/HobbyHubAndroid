@@ -1,7 +1,9 @@
 package com.yelysei.hobbyharbor.model.userhobbies
 
+import android.database.sqlite.SQLiteConstraintException
 import com.yelysei.hobbyharbor.model.NoActionsByProgressIdException
 import com.yelysei.hobbyharbor.model.NoHobbyIdException
+import com.yelysei.hobbyharbor.model.UserHobbyAlreadyAddedException
 import com.yelysei.hobbyharbor.model.hobbies.entities.Hobby
 import com.yelysei.hobbyharbor.model.userhobbies.entities.Action
 import com.yelysei.hobbyharbor.model.userhobbies.entities.UserHobby
@@ -31,7 +33,12 @@ class RoomUserHobbiesRepository(
 
     override suspend fun addUserHobby(hobby: Hobby, goal: Int) = withContext(ioDispatcher) {
         val progressId = userHobbiesDao.insertProgress(ProgressDbEntity(id = 0, goal)).toInt()
-        userHobbiesDao.insertUserHobby(UserHobbyDbEntity(id = 0, hobbyId = hobby.id ?: throw NoHobbyIdException(), progressId = progressId))
+        try {
+            userHobbiesDao.insertUserHobby(UserHobbyDbEntity(id = 0, hobbyId = hobby.id ?: throw NoHobbyIdException(), progressId = progressId))
+        } catch (e: SQLiteConstraintException) {
+            throw UserHobbyAlreadyAddedException()
+        }
+
     }
 
     override suspend fun addUserHobbyExperience(progressId: Int,  action: Action) = withContext(ioDispatcher) {

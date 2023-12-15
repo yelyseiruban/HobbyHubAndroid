@@ -22,11 +22,12 @@ import com.yelysei.hobbyharbor.screens.Configuration
 import com.yelysei.hobbyharbor.screens.onTryAgain
 import com.yelysei.hobbyharbor.screens.recyclerViewConfigureView
 import com.yelysei.hobbyharbor.screens.renderSimpleResult
+import com.yelysei.hobbyharbor.screens.uiactions.UiActionsImpl
 import com.yelysei.hobbyharbor.utils.viewModelCreator
 
 class CategorizedHobbiesFragment : Fragment() {
     private val args: CategorizedHobbiesFragmentArgs by navArgs()
-    private val viewModel by viewModelCreator { CategorizedHobbiesViewModel(args.categoryName, hobbiesRepository, userHobbiesRepository) }
+    private val viewModel by viewModelCreator { CategorizedHobbiesViewModel(args.categoryName, hobbiesRepository, userHobbiesRepository, UiActionsImpl(context)) }
     private lateinit var binding: FragmentCategorizedHobbiesBinding
 
     override fun onCreateView(
@@ -40,7 +41,7 @@ class CategorizedHobbiesFragment : Fragment() {
         binding.tvCategoryNameTitle.text = args.categoryName
 
         val adapter = HobbiesAdapter {
-            onHobbyClick(it)
+            showAddHobbyDialog(it)
         }
 
         viewModel.categorizedHobbies.observe(viewLifecycleOwner) { result ->
@@ -69,10 +70,6 @@ class CategorizedHobbiesFragment : Fragment() {
         return binding.root
     }
 
-    private fun onHobbyClick(hobby: Hobby) {
-        showAddHobbyDialog(hobby)
-    }
-
     private fun showAddHobbyDialog(hobby: Hobby) {
         val dialog = Dialog(requireContext())
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -85,11 +82,9 @@ class CategorizedHobbiesFragment : Fragment() {
                 val goal = goalEditText.text.toString().toInt()
                 viewModel.addUserHobby(hobby, goal)
                 dialog.dismiss()
-                Toast.makeText(context, "New hobby has been added", Toast.LENGTH_SHORT).show()
                 findNavController().navigate(R.id.userHobbiesFragment)
             } catch (e: NumberFormatException) {
                 Toast.makeText(context, "Specified goal is not correct", Toast.LENGTH_SHORT).show()
-
             }
         }
         dialog.show()

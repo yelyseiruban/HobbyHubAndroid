@@ -10,6 +10,9 @@ interface UserHobbiesRepository  {
 
     suspend fun getUserHobbies(): Flow<List<UserHobby>>
 
+    /**
+     * @throws UserHobbyAlreadyAddedException
+     */
     suspend fun addUserHobby(hobby: Hobby, goal: Int)
 
     suspend fun addUserHobbyExperience(progressId: Int, action: Action)

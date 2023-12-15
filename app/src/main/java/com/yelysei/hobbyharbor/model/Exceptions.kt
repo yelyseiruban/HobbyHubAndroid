@@ -12,6 +12,8 @@ class NoHobbyIdException: AppException()
 
 class InsertUserHobbyException: AppException()
 
+class UserHobbyAlreadyAddedException: AppException()
+
 class NoHobbiesBySpecifiedCategoryName: AppException()
 
 class NoActionsByProgressIdException : AppException()
