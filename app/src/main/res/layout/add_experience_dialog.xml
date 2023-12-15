@@ -16,29 +16,52 @@
         app:layout_constraintStart_toStartOf="parent"
         />
 
-    <TextView
+    <Button
         android:id="@+id/tvFrom"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="?selectableItemBackground"
         android:textSize="20sp"
         android:text="@string/from"
+        android:textColor="@color/black"
+        android:padding="5dp"
         android:layout_marginTop="20dp"
+        android:background="?selectableItemBackground"
         app:layout_constraintTop_toBottomOf="@id/tvTitle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         />
     <TextView
+        android:id="@+id/fromValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@id/tvFrom"
+        app:layout_constraintBottom_toBottomOf="@id/tvFrom"
+        app:layout_constraintTop_toTopOf="@id/tvFrom"
+        />
+    <Button
         android:id="@+id/tvTill"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="?selectableItemBackground"
+        android:padding="5dp"
         android:textSize="20sp"
         android:layout_marginTop="20dp"
+        android:textColor="@color/black"
         android:text="@string/till"
+        android:background="?selectableItemBackground"
+        android:backgroundTint="@color/gray"
         app:layout_constraintTop_toBottomOf="@id/tvFrom"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toStartOf="@id/tillValue"
+        />
+    <TextView
+        android:id="@+id/tillValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@id/tvTill"
+        app:layout_constraintStart_toStartOf="@id/fromValue"
+        app:layout_constraintTop_toTopOf="@id/tvTill"
+        />
 
     <Button
         android:id="@+id/submitButton"

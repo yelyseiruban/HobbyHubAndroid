@@ -6,13 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
 import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
-import com.yelysei.hobbyharbor.R
 import com.yelysei.hobbyharbor.databinding.AddExperienceDialogBinding
 import com.yelysei.hobbyharbor.utils.getFormattedDate
 import java.util.Calendar
@@ -35,8 +33,8 @@ class AddExperienceDialog(
     }
 
     private lateinit var submitButton: Button
-    private lateinit var tvFrom: TextView
-    private lateinit var tvTill: TextView
+    private lateinit var tvFrom: Button
+    private lateinit var tvTill: Button
 
 
     fun show() {
@@ -81,11 +79,11 @@ class AddExperienceDialog(
             val selectedDate = getFormattedDate(it, "dd.MM.yyyy")
             when (settingValue) {
                 SettingValue.FROM -> {
-                    tvFrom.text = context.getString(R.string.from_date, selectedDate)
+                    binding.fromValue.text = selectedDate
                     from = it
                 }
                 SettingValue.TILL -> {
-                    tvTill.text = context.getString(R.string.till_date, selectedDate)
+                    binding.tillValue.text = selectedDate
                     till = it
                 }
             }
@@ -100,15 +98,14 @@ class AddExperienceDialog(
                 SettingValue.FROM -> {
                     from += selectedTimeInMilliseconds
                     val selectedDate = getFormattedDate(from, "dd.MM.yyyy HH:mm")
-                    tvFrom.text = context.getString(R.string.from_date, selectedDate)
+                    binding.fromValue.text = selectedDate
                     setState.isFromSet = true
                     renderSubmitButton()
                 }
                 SettingValue.TILL -> {
                     till += selectedTimeInMilliseconds
                     val selectedDate = getFormattedDate(till, "dd.MM.yyyy HH:mm")
-
-                    tvTill.text = context.getString(R.string.till_date, selectedDate)
+                    binding.tillValue.text = selectedDate
                     setState.isTillSet = true
                     renderSubmitButton()
                 }
