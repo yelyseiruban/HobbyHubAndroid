@@ -2,13 +2,13 @@ package com.yelysei.hobbyharbor.screens.main.categorizedhobbies
 
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -81,10 +81,16 @@ class CategorizedHobbiesFragment : Fragment() {
         val goalEditText: EditText = dialog.findViewById(R.id.progressGoal)
         val submitButton: Button = dialog.findViewById(R.id.submitButton)
         submitButton.setOnClickListener {
-            val goal = goalEditText.text.toString().toInt()
-            Log.d("Debug", "CategorizedHobbiesFragment")
-            viewModel.addUserHobby(hobby, goal)
-            dialog.dismiss()
+            try {
+                val goal = goalEditText.text.toString().toInt()
+                viewModel.addUserHobby(hobby, goal)
+                dialog.dismiss()
+                Toast.makeText(context, "New hobby has been added", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.userHobbiesFragment)
+            } catch (e: NumberFormatException) {
+                Toast.makeText(context, "Specified goal is not correct", Toast.LENGTH_SHORT).show()
+
+            }
         }
         dialog.show()
     }

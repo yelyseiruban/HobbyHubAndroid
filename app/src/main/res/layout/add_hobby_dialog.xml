@@ -36,6 +36,7 @@
         android:layout_gravity="end"
         android:layout_marginTop="16dp"
         android:textColor="@color/white"
-        android:background="@color/submit_button_color"
+        style="@style/SubmitButton"
+        android:background="@drawable/submit_button"
         />
 </LinearLayout>

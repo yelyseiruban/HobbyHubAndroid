@@ -1,9 +1,7 @@
 package com.yelysei.hobbyharbor.screens.main.userhobbies
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.yelysei.hobbyharbor.model.NoUserHobbiesFoundException
 import com.yelysei.hobbyharbor.model.results.PendingResult
 import com.yelysei.hobbyharbor.model.results.SuccessResult
 import com.yelysei.hobbyharbor.model.userhobbies.UserHobbiesRepository
@@ -23,13 +21,8 @@ class UserHobbiesViewModel(
 
     fun load() {
         viewModelScope.launch {
-            try {
-                userHobbiesRepository.getUserHobbies().collect {
-                    _userHobbies.value = SuccessResult(it)
-                }
-            } catch (e: NoUserHobbiesFoundException) {
-                Log.d("Exception", "No User Hobbies Found Exception")
-                _userHobbies.value = SuccessResult(listOf())
+            userHobbiesRepository.getUserHobbies().collect {
+                _userHobbies.value = SuccessResult(it)
             }
         }
     }

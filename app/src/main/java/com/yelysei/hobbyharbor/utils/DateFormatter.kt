@@ -10,7 +10,7 @@ import java.util.Calendar
  * @param dateFormat Date format
  * @return String representing date in specified format
  */
-fun getDate(milliSeconds: Long, dateFormat: String): String {
+fun getFormattedDate(milliSeconds: Long, dateFormat: String): String {
 
     // Create a DateFormatter object for displaying date in specified format.
 
@@ -34,4 +34,13 @@ fun getTimeInMillis(year: Int, month: Int, day: Int, hour: Int, minute: Int): Lo
     calendar.set(Calendar.MILLISECOND, 0)
 
     return calendar.timeInMillis
+}
+
+
+fun getDate(milliSeconds: Long): String {
+    return getFormattedDate(milliSeconds, "dd.MM.yyyy")
+}
+
+fun getTime(milliSeconds: Long): String {
+    return getFormattedDate(milliSeconds, "HH:mm")
 }

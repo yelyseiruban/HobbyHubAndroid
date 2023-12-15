@@ -1,6 +1,5 @@
 package com.yelysei.hobbyharbor.screens.main.categorizedhobbies
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yelysei.hobbyharbor.model.hobbies.HobbiesRepository
@@ -27,8 +26,8 @@ class CategorizedHobbiesViewModel(
     }
 
     fun addUserHobby(hobby: Hobby, goal: Int) {
+
         viewModelScope.launch {
-            Log.d("Debug", "categorizedHobbiesViewModel $hobby $goal")
             userHobbiesRepository.addUserHobby(hobby, goal)
         }
     }

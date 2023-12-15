@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="35sp"
-            android:textColor="?android:attr/textColorPrimary"
+            android:textColor="@color/black"
             android:layout_gravity="start"
             android:text="@string/app_name" />
 

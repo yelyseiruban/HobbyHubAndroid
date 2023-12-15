@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yelysei.hobbyharbor.Repositories
 import com.yelysei.hobbyharbor.databinding.FragmentUserHobbiesBinding
+import com.yelysei.hobbyharbor.model.NoUserHobbiesFoundException
 import com.yelysei.hobbyharbor.model.userhobbies.entities.UserHobby
 import com.yelysei.hobbyharbor.screens.Configuration
 import com.yelysei.hobbyharbor.screens.recyclerViewConfigureView
@@ -27,7 +29,12 @@ class UserHobbiesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel.load()
+        try {
+            viewModel.load()
+        } catch (e: NoUserHobbiesFoundException) {
+            Toast.makeText(context, "You have not added hobbies yet, click on add button", Toast.LENGTH_SHORT).show()
+        }
+
         binding = FragmentUserHobbiesBinding.inflate(layoutInflater, container, false)
 
         adapter = UserHobbiesAdapter(object : UserHobbyActionListener {

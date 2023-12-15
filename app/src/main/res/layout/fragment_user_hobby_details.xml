@@ -23,15 +23,17 @@
         />
     <TextView
         android:id="@+id/tvHobbyName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textSize="30sp"
-
         tools:text="Hobby Name"
         android:layout_marginStart="12dp"
+        android:ellipsize="end"
+        android:maxLines="1"
         app:layout_constraintStart_toEndOf="@id/buttonNavigateUp"
         app:layout_constraintTop_toTopOf="@id/buttonNavigateUp"
         app:layout_constraintBottom_toBottomOf="@id/buttonNavigateUp"
+        app:layout_constraintEnd_toStartOf="@id/buttonNotification"
         />
 
     <ImageButton
@@ -101,19 +103,6 @@
         />
 
     <ImageButton
-        android:id="@+id/buttonEditTotal"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@drawable/ic_edit"
-        android:layout_marginStart="6dp"
-        android:background="?android:selectableItemBackgroundBorderless"
-        app:layout_constraintStart_toEndOf="@id/tvTotalValue"
-        app:layout_constraintBottom_toBottomOf="@id/tvTotalValue"
-        app:layout_constraintTop_toTopOf="@id/tvTotalValue"
-        android:contentDescription="@string/edit_total_progress_value"
-        />
-
-    <ImageButton
         android:id="@+id/buttonEditGoal"
         android:layout_width="48dp"
         android:layout_height="48dp"
@@ -141,9 +130,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:textSize="30sp"
+            android:textSize="26sp"
 
             android:background="?selectableItemBackground"
+            android:textColor="@color/black"
+            android:textAllCaps="true"
             android:text="@string/add_experience"
             android:textStyle="normal"
             android:padding="5dp"

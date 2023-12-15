@@ -1,12 +1,44 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.HobbyHarbor" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="Base.Theme.HobbyHarbor" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <item name="colorPrimary">@color/gray</item>
-        <item name="colorSecondary">@color/black</item>
-        <item name="colorTertiary">@color/black</item>
+        <item name="android:textColorPrimary">@color/black</item>
+        <item name="colorPrimaryDark">@color/darkGray</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="colorSecondary">@color/gray</item>
+        <item name="colorTertiary">@color/gray</item>
         <item name="android:textColor">@color/black</item>
+        <item name="materialCalendarTheme">@style/MaterialCalendarTheme</item>
     </style>
 
-    <style name="Theme.HobbyHarbor" parent="Base.Theme.HobbyHarbor" />
+    <style name="MaterialCalendarTheme" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <item name="colorPrimary">@color/darkGray</item>
+        <item name="colorSurface">@color/lightGray</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <item name="backgroundTint">@color/darkGray</item>
+
+        <!--Title Style-->
+        <item name="materialCalendarHeaderTitle">@style/HeaderTitle</item>
+
+        <!---->
+        <item name="materialCalendarYearNavigationButton">
+            @style/Widget.Material3.MaterialCalendar.YearNavigationButton
+        </item>
+
+    </style>
+
+    <style name="HeaderTitle" parent="@style/TextAppearance.AppCompat">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:layout_marginTop">12dp</item>
+        <item name="textAllCaps">true</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="Theme.HobbyHarbor" parent="Base.Theme.HobbyHarbor"/>
+
+    <style name="SubmitButton" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/primaryColor</item>
+        <item name="background">@drawable/submit_button</item>
+    </style>
 </resources>
