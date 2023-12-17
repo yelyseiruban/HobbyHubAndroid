@@ -52,17 +52,38 @@ class UserHobbyDetailsViewModel(
         }
 
     }
-    fun addUserExperience(from: Long, till: Long) {
+
+    fun userExperienceInteraction(interaction: UserExperienceInteraction, from: Long, till: Long, id: Int? = null) {
         val userHobby = _userHobby.value.takeSuccess() ?: throw UserHobbyIsNotLoadedException()
         val progressId = userHobby.progress.id
 
         val action = Action (
-            id = 0,
+            id = id ?: 0,
             startTime = from,
             endTime = till
         )
         viewModelScope.launch {
-            userHobbiesRepository.addUserHobbyExperience(progressId, action)
+            when(interaction) {
+                UserExperienceInteraction.ADD -> {
+                    userHobbiesRepository.addUserHobbyExperience(progressId, action)
+                }
+                UserExperienceInteraction.UPDATE -> {
+                    userHobbiesRepository.updateUserHobbyExperience(progressId, action)
+                }
+            }
         }
+
     }
+
+    fun addUserExperience(from: Long, till: Long) {
+        userExperienceInteraction(UserExperienceInteraction.ADD, from, till)
+    }
+
+    fun editUserExperience(from: Long, till: Long, actionId: Int) {
+        userExperienceInteraction(UserExperienceInteraction.UPDATE, from, till, actionId)
+    }
+}
+
+enum class UserExperienceInteraction {
+    UPDATE, ADD
 }

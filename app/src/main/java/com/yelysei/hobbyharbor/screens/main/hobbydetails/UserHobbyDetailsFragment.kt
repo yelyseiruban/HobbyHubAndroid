@@ -17,7 +17,7 @@ import com.yelysei.hobbyharbor.model.results.takeSuccess
 import com.yelysei.hobbyharbor.model.userhobbies.entities.Action
 import com.yelysei.hobbyharbor.model.userhobbies.entities.getProgressInHours
 import com.yelysei.hobbyharbor.screens.Configuration
-import com.yelysei.hobbyharbor.screens.dialogs.AddExperienceDialog
+import com.yelysei.hobbyharbor.screens.dialogs.ExperienceTimeDialog
 import com.yelysei.hobbyharbor.screens.dialogs.SubmitClickListener
 import com.yelysei.hobbyharbor.screens.recyclerViewConfigureView
 import com.yelysei.hobbyharbor.screens.renderSimpleResult
@@ -36,9 +36,19 @@ class UserHobbyDetailsFragment: Fragment(){
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentUserHobbyDetailsBinding.inflate(inflater, container, false)
-        val adapter: UserActionsAdapter = UserActionsAdapter(object : HobbyDetailsActionListener {
+        val adapter = UserActionsAdapter(object : HobbyDetailsActionListener {
             override fun editAction(userAction: Action) {
-                TODO("Not yet implemented")
+                val submitClickListener = {till: Long, from: Long ->
+                    try {
+                        viewModel.editUserExperience(till, from, userAction.id)
+                        Toast.makeText(context, "User Experience has been changed", Toast.LENGTH_SHORT).show()
+                    } catch (e: UserHobbyIsNotLoadedException) {
+                        Toast.makeText(context, "The error occurred while trying to add new experience", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                val previousFrom = userAction.startTime
+                val previousTill = userAction.endTime
+                showExperienceTimeDialog(submitClickListener, previousFrom, previousTill)
             }
         })
         binding.recyclerViewUserActions.adapter = adapter
@@ -88,8 +98,16 @@ class UserHobbyDetailsFragment: Fragment(){
                 Toast.makeText(context, "The error occurred while trying to add new experience", Toast.LENGTH_SHORT).show()
             }
         }
-        val addExperienceDialog = AddExperienceDialog(requireContext(), submitClickListener, parentFragmentManager)
-        addExperienceDialog.show()
+        showExperienceTimeDialog(submitClickListener)
+    }
+
+    private fun showExperienceTimeDialog(submitClickListener: SubmitClickListener, previousFrom: Long? = null, previousTill: Long? = null) {
+        val experienceTimeDialog = ExperienceTimeDialog(requireContext(), submitClickListener, parentFragmentManager)
+        experienceTimeDialog.show()
+        if (previousFrom != null && previousTill != null) {
+            experienceTimeDialog.fulfillFromDateTime(previousFrom)
+            experienceTimeDialog.fulfillTillDateTime(previousTill)
+        }
     }
 
 }

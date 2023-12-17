@@ -11,13 +11,16 @@ import androidx.fragment.app.FragmentManager
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
-import com.yelysei.hobbyharbor.databinding.AddExperienceDialogBinding
+import com.yelysei.hobbyharbor.databinding.ExperienceTimeDialogBinding
 import com.yelysei.hobbyharbor.utils.getFormattedDate
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
 import java.util.Calendar
 
-typealias SubmitClickListener = (from: Long, till: Long) -> Unit
+typealias SubmitClickListener = (fromDateTime: Long, tillDateTime: Long) -> Unit
 
-class AddExperienceDialog(
+class ExperienceTimeDialog(
     private val context: Context,
     private val onSubmitClick: SubmitClickListener,
     private val fragmentManager: FragmentManager
@@ -25,11 +28,55 @@ class AddExperienceDialog(
 )  {
     private var settingValue: SettingValue = SettingValue.FROM
     private var setState = SetState()
-    private var from: Long = 0
-    private var till: Long = 0
 
-    private val binding: AddExperienceDialogBinding by lazy {
-        AddExperienceDialogBinding.inflate(LayoutInflater.from(context))
+    var fromDate: Long = 0
+        set(value) {
+            field = value
+            fromDateTime = value + fromTime
+        }
+
+    var fromTime: Long = 0
+        set(value) {
+            field = value
+            fromDateTime = value + fromDate
+        }
+
+    var tillDate: Long = 0
+        set(value) {
+            field = value
+            tillDateTime = value + tillTime
+        }
+
+    var tillTime: Long = 0
+        set(value) {
+            field = value
+            tillDateTime = value + tillDate
+        }
+
+    var fromDateTime: Long = 0
+        set(value) {
+            field = value
+            setDate(SettingValue.FROM)
+        }
+    var tillDateTime: Long = 0
+        set(value) {
+            field = value
+            setDate(SettingValue.TILL)
+        }
+    fun fulfillFromDateTime(fromDateTime: Long) {
+        val localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(fromDateTime), ZoneId.systemDefault())
+        fromDate = localDateTime.toLocalDate().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+        fromTime = localDateTime.toLocalTime().toSecondOfDay() * 1000L
+    }
+
+    fun fulfillTillDateTime(tillDateTime: Long) {
+        val localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(tillDateTime), ZoneId.systemDefault())
+        tillDate = localDateTime.toLocalDate().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+        tillTime = localDateTime.toLocalTime().toSecondOfDay() * 1000L
+    }
+
+    private val binding: ExperienceTimeDialogBinding by lazy {
+        ExperienceTimeDialogBinding.inflate(LayoutInflater.from(context))
     }
 
     private lateinit var submitButton: Button
@@ -76,15 +123,12 @@ class AddExperienceDialog(
         }
 
         datePickerDialog.addOnPositiveButtonClickListener {
-            val selectedDate = getFormattedDate(it, "dd.MM.yyyy")
             when (settingValue) {
                 SettingValue.FROM -> {
-                    binding.fromValue.text = selectedDate
-                    from = it
+                    fromDate = it
                 }
                 SettingValue.TILL -> {
-                    binding.tillValue.text = selectedDate
-                    till = it
+                    tillDate = it
                 }
             }
             timePickerDialog.show(fragmentManager, "time picker dialog")
@@ -96,31 +140,40 @@ class AddExperienceDialog(
             val selectedTimeInMilliseconds = (selectedHour * 60 + selectedMinute) * 60000
             when (settingValue) {
                 SettingValue.FROM -> {
-                    from += selectedTimeInMilliseconds
-                    val selectedDate = getFormattedDate(from, "dd.MM.yyyy HH:mm")
-                    binding.fromValue.text = selectedDate
-                    setState.isFromSet = true
-                    renderSubmitButton()
+                    fromTime = selectedTimeInMilliseconds.toLong()
                 }
                 SettingValue.TILL -> {
-                    till += selectedTimeInMilliseconds
-                    val selectedDate = getFormattedDate(till, "dd.MM.yyyy HH:mm")
-                    binding.tillValue.text = selectedDate
-                    setState.isTillSet = true
+                    tillTime = selectedTimeInMilliseconds.toLong()
                     renderSubmitButton()
                 }
             }
         }
 
         submitButton.setOnClickListener {
-            if (till > from) {
-                onSubmitClick(from, till)
+            if (tillDateTime > fromDateTime) {
+                onSubmitClick(fromDateTime, tillDateTime)
                 dialog.dismiss()
             } else {
                 Toast.makeText(context, "Till Date Time is before From", Toast.LENGTH_SHORT).show()
             }
         }
 
+    }
+
+    fun setDate(settingValue: SettingValue) {
+        when (settingValue) {
+            SettingValue.FROM -> {
+                val selectedDate = getFormattedDate(fromDateTime, "dd.MM.yyyy HH:mm")
+                binding.fromValue.text = selectedDate
+                setState.isFromSet = true
+            }
+            SettingValue.TILL -> {
+                val selectedDate = getFormattedDate(tillDateTime, "dd.MM.yyyy HH:mm")
+                binding.tillValue.text = selectedDate
+                setState.isTillSet = true
+            }
+        }
+        renderSubmitButton()
     }
 
     fun renderSubmitButton() {

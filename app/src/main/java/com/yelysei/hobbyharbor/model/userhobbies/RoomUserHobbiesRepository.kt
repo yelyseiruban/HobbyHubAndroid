@@ -45,6 +45,10 @@ class RoomUserHobbiesRepository(
         userHobbiesDao.insertUserHobbyAction(ActionDbEntity.fromAction(action, progressId))
     }
 
+    override suspend fun updateUserHobbyExperience(progressId: Int, action: Action) = withContext(ioDispatcher) {
+        userHobbiesDao.updateUserHobbyAction(ActionDbEntity.fromAction(action, progressId))
+    }
+
     override suspend fun getUserHobbies(): Flow<List<UserHobby>> = withContext(ioDispatcher) {
         val userHobbiesFlow = userHobbiesDao.getUserHobbies().map {
             it.map {userHobbiesInTuple ->

@@ -2,7 +2,9 @@ package com.yelysei.hobbyharbor.model.userhobbies.room
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.yelysei.hobbyharbor.model.userhobbies.room.entities.ActionDbEntity
 import com.yelysei.hobbyharbor.model.userhobbies.room.entities.ProgressDbEntity
 import com.yelysei.hobbyharbor.model.userhobbies.room.entities.UserHobbiesInTuple
@@ -46,7 +48,10 @@ interface UserHobbiesDao {
     fun insertUserHobby(userHobbyDbEntity: UserHobbyDbEntity)
     @Insert
     fun insertUserHobbyAction(actionDbEntity: ActionDbEntity)
+    @Update(entity = ActionDbEntity::class, onConflict = OnConflictStrategy.REPLACE)
+    fun updateUserHobbyAction(fromAction: ActionDbEntity)
 
     @Query("SELECT progress_id FROM user_hobbies WHERE user_hobbies.id = :uhId")
     fun findProgressIdByUserHobbyId(uhId: Int): Int
+
 }

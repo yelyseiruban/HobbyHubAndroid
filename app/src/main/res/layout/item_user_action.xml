@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/experienceContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:background="?selectableItemBackground"
+    >
 
     <ImageView
         android:id="@+id/ivArrowRight"
@@ -34,16 +38,5 @@
         app:layout_constraintTop_toBottomOf="@id/tvActionDate"
         app:layout_constraintStart_toStartOf="@id/tvActionDate"
         />
-
-    <ImageButton
-        android:id="@+id/buttonEditAction"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@drawable/ic_edit_small"
-        android:background="?selectableItemBackgroundBorderless"
-        app:layout_constraintTop_toTopOf="@id/tvActionDate"
-        app:layout_constraintBottom_toBottomOf="@id/tvTimeBorders"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:contentDescription="@string/edit_user_action" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

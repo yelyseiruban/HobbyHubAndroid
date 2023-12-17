@@ -35,7 +35,7 @@ data class ActionDbEntity(
     companion object {
         fun fromAction(action: Action, progressId: Int): ActionDbEntity {
             return ActionDbEntity(
-                id = 0,
+                id = action.id,
                 startDate = action.startTime,
                 endDate = action.endTime,
                 progressId = progressId

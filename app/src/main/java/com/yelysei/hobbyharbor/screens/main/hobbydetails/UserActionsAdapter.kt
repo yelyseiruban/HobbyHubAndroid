@@ -60,7 +60,7 @@ class UserActionsAdapter(
     override fun onClick(v: View) {
         val userAction = v.tag as Action
         when(v.id) {
-            R.id.buttonEditAction -> {
+            R.id.experienceContainer -> {
                 hobbyDetailsActionListener.editAction(userAction)
             }
         }
