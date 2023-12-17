@@ -2,6 +2,7 @@ package com.yelysei.hobbyharbor.screens.dialogs
 
 import android.app.Dialog
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
@@ -63,6 +64,70 @@ class ExperienceTimeDialog(
             field = value
             setDate(SettingValue.TILL)
         }
+
+    var datePickerDialog: MaterialDatePicker<Long>? = null
+        set(value) {
+            field = value
+            datePickerDialog?.show(fragmentManager, datePickerDialog.toString()) ?: throw Exception("date picker dialog was not initialized")
+            datePickerDialog?.addOnPositiveButtonClickListener {
+                val timePickerDialogBuilder = MaterialTimePicker.Builder()
+                    .setTimeFormat(TimeFormat.CLOCK_24H)
+                when (settingValue) {
+                    SettingValue.FROM -> {
+                        fromDate = it
+                        if (fromTime != 0L) {
+                            Log.d("debug", fromTime.toString())
+                            timePickerDialogBuilder
+                                .setHour((fromTime / 3600000).toInt())
+                                .setMinute(((fromTime % 3600000) / 60000).toInt())
+                        } else {
+                            val calendar = Calendar.getInstance()
+                            val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
+                            val currentMinute = calendar.get(Calendar.MINUTE)
+                            timePickerDialogBuilder
+                                .setHour(currentHour)
+                                .setMinute(currentMinute)
+                        }
+                    }
+                    SettingValue.TILL -> {
+                        tillDate = it
+                        if (tillTime != 0L) {
+                            timePickerDialogBuilder
+                                .setHour((tillTime / 3600000).toInt())
+                                .setMinute(((tillTime % 3600000) / 60000).toInt())
+                        } else {
+                            val calendar = Calendar.getInstance()
+                            val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
+                            val currentMinute = calendar.get(Calendar.MINUTE)
+                            timePickerDialogBuilder
+                                .setHour(currentHour)
+                                .setMinute(currentMinute)
+                        }
+                    }
+                }
+                timePickerDialog = timePickerDialogBuilder.build()
+            }
+        }
+    var timePickerDialog: MaterialTimePicker? = null
+        set(value) {
+            field = value
+            timePickerDialog?.show(fragmentManager, timePickerDialog.toString()) ?: throw Exception("time picker dialog was not initialized")
+            timePickerDialog?.addOnPositiveButtonClickListener {
+                val selectedHour = timePickerDialog?.hour ?: throw Exception()
+                val selectedMinute = timePickerDialog?.minute ?: throw Exception()
+                val selectedTimeInMilliseconds = (selectedHour * 60 + selectedMinute) * 60000
+                when (settingValue) {
+                    SettingValue.FROM -> {
+                        fromTime = selectedTimeInMilliseconds.toLong()
+                    }
+                    SettingValue.TILL -> {
+                        tillTime = selectedTimeInMilliseconds.toLong()
+                        renderSubmitButton()
+                    }
+                }
+            }
+
+        }
     fun fulfillFromDateTime(fromDateTime: Long) {
         val localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(fromDateTime), ZoneId.systemDefault())
         fromDate = localDateTime.toLocalDate().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
@@ -85,9 +150,6 @@ class ExperienceTimeDialog(
 
 
     fun show() {
-        val calendar = Calendar.getInstance()
-        val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
-        val currentMinute = calendar.get(Calendar.MINUTE)
         val dialog = Dialog(context)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(true)
@@ -95,58 +157,34 @@ class ExperienceTimeDialog(
 
         dialog.show()
 
-        val datePickerDialog =
+        val datePickerDialogBuilder =
             MaterialDatePicker.Builder.datePicker()
                 .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-                .build()
-
-        val timePickerDialog = MaterialTimePicker.Builder()
-            .setTimeFormat(TimeFormat.CLOCK_24H)
-            .setHour(currentHour)
-            .setMinute(currentMinute)
-            .build()
 
         submitButton = binding.submitButton
         tvFrom = binding.tvFrom
         tvTill = binding.tvTill
 
         tvFrom.setOnClickListener {
-            datePickerDialog.show(fragmentManager, "date range picker")
+            if (fromDateTime != 0L) {
+                datePickerDialogBuilder.setSelection(fromDateTime)
+            } else {
+                datePickerDialogBuilder.setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+            }
+            datePickerDialog = datePickerDialogBuilder.build()
             settingValue = SettingValue.FROM
             renderSubmitButton()
         }
 
         tvTill.setOnClickListener {
-            datePickerDialog.show(fragmentManager, "date range picker")
+            if (tillDateTime != 0L) {
+                datePickerDialogBuilder.setSelection(tillDateTime)
+            } else {
+                datePickerDialogBuilder.setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+            }
+            datePickerDialog = datePickerDialogBuilder.build()
             settingValue = SettingValue.TILL
             renderSubmitButton()
-        }
-
-        datePickerDialog.addOnPositiveButtonClickListener {
-            when (settingValue) {
-                SettingValue.FROM -> {
-                    fromDate = it
-                }
-                SettingValue.TILL -> {
-                    tillDate = it
-                }
-            }
-            timePickerDialog.show(fragmentManager, "time picker dialog")
-        }
-
-        timePickerDialog.addOnPositiveButtonClickListener {
-            val selectedHour = timePickerDialog.hour
-            val selectedMinute = timePickerDialog.minute
-            val selectedTimeInMilliseconds = (selectedHour * 60 + selectedMinute) * 60000
-            when (settingValue) {
-                SettingValue.FROM -> {
-                    fromTime = selectedTimeInMilliseconds.toLong()
-                }
-                SettingValue.TILL -> {
-                    tillTime = selectedTimeInMilliseconds.toLong()
-                    renderSubmitButton()
-                }
-            }
         }
 
         submitButton.setOnClickListener {
