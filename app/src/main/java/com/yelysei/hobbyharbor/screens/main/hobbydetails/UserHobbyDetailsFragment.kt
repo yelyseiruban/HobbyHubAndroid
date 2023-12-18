@@ -17,8 +17,9 @@ import com.yelysei.hobbyharbor.model.userhobbies.entities.Action
 import com.yelysei.hobbyharbor.model.userhobbies.entities.getProgressInHours
 import com.yelysei.hobbyharbor.screens.Configuration
 import com.yelysei.hobbyharbor.screens.dialogs.ExperienceTimeDialog
+import com.yelysei.hobbyharbor.screens.dialogs.SetGoalDialog
 import com.yelysei.hobbyharbor.screens.dialogs.SubmitClickListener
-import com.yelysei.hobbyharbor.screens.dialogs.onSubmit
+import com.yelysei.hobbyharbor.screens.dialogs.prepareDialog
 import com.yelysei.hobbyharbor.screens.recyclerViewConfigureView
 import com.yelysei.hobbyharbor.screens.renderSimpleResult
 import com.yelysei.hobbyharbor.utils.viewModelCreator
@@ -56,19 +57,21 @@ class UserHobbyDetailsFragment: Fragment(){
 
         viewModel.userHobby.observe(viewLifecycleOwner) { result ->
             Log.d("debug", "user hobby chagned")
-            renderSimpleResult(binding.root, result) {
-                binding.tvHobbyName.text = it.hobby.hobbyName
-                binding.tvGoalValue.text = it.progress.goal.toString()
-                binding.tvTotalValue.text = it.getProgressInHours().toString()
-                adapter.userActions = it.progress.actions
+            renderSimpleResult(binding.root, result) { userHobby ->
+                binding.tvHobbyName.text = userHobby.hobby.hobbyName
+                binding.tvGoalValue.text = userHobby.progress.goal.toString()
+                binding.tvTotalValue.text = userHobby.getProgressInHours().toString()
+                adapter.userActions = userHobby.progress.actions
+
+                binding.buttonEditGoal.setOnClickListener {
+                    val setGoalDialog: SetGoalDialog = prepareDialog(userHobby.progress.goal)
+                    setGoalDialog.show {
+                        viewModel.updateProgress(it)
+                    }
+                }
             }
         }
 
-        binding.buttonEditGoal.setOnClickListener {
-            onSubmit { goal: Int ->
-                viewModel.updateProgress(goal)
-            }
-        }
 
         recyclerViewConfigureView(
             Configuration(

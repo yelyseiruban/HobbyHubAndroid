@@ -8,12 +8,14 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.yelysei.hobbyharbor.R
 import com.yelysei.hobbyharbor.Repositories.hobbiesRepository
 import com.yelysei.hobbyharbor.Repositories.userHobbiesRepository
 import com.yelysei.hobbyharbor.databinding.FragmentCategorizedHobbiesBinding
 import com.yelysei.hobbyharbor.model.hobbies.entities.Hobby
 import com.yelysei.hobbyharbor.screens.Configuration
-import com.yelysei.hobbyharbor.screens.dialogs.onSubmit
+import com.yelysei.hobbyharbor.screens.dialogs.SetGoalDialog
+import com.yelysei.hobbyharbor.screens.dialogs.prepareDialog
 import com.yelysei.hobbyharbor.screens.onTryAgain
 import com.yelysei.hobbyharbor.screens.recyclerViewConfigureView
 import com.yelysei.hobbyharbor.screens.renderSimpleResult
@@ -66,8 +68,10 @@ class CategorizedHobbiesFragment : Fragment() {
     }
 
     private fun showAddHobbyDialog(hobby: Hobby) {
-        onSubmit { goal ->
-            viewModel.addUserHobby(hobby, goal)
+        val setGoalDialog: SetGoalDialog = prepareDialog()
+        setGoalDialog.show {
+            viewModel.addUserHobby(hobby, it)
+            findNavController().navigate(R.id.userHobbiesFragment)
         }
     }
 }

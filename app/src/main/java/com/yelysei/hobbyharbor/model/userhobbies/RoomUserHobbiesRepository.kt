@@ -2,7 +2,6 @@ package com.yelysei.hobbyharbor.model.userhobbies
 
 import android.database.sqlite.SQLiteConstraintException
 import android.util.Log
-import com.yelysei.hobbyharbor.Repositories.userHobbiesRepository
 import com.yelysei.hobbyharbor.model.NoActionsByProgressIdException
 import com.yelysei.hobbyharbor.model.NoHobbyIdException
 import com.yelysei.hobbyharbor.model.UserHobbyAlreadyAddedException
@@ -36,8 +35,8 @@ class RoomUserHobbiesRepository(
                 val progressId = userHobby.progress.id
 
                 combine(
-                    userHobbiesRepository.getActionsByProgressId(progressId),
-                    userHobbiesRepository.getProgressById(progressId)
+                    getActionsByProgressId(progressId),
+                    getProgressById(progressId)
                 ) { actions, progress ->
                     // Combine the results
                     userHobby.progress = progress
@@ -85,19 +84,18 @@ class RoomUserHobbiesRepository(
         return@withContext userHobbiesFlow
     }
 
-    override suspend fun getProgressById(id: Int): Flow<Progress> = withContext(ioDispatcher) {
+   private suspend fun getProgressById(id: Int): Flow<Progress> = withContext(ioDispatcher) {
         return@withContext userHobbiesDao.findProgressById(id).map {
             it.toProgress()
         }
     }
 
-    override suspend fun getActionsByProgressId(progressId: Int): Flow<List<Action>> {
+   private suspend fun getActionsByProgressId(progressId: Int): Flow<List<Action>> = withContext(ioDispatcher) {
         val actionsDbEntityFlow = userHobbiesDao.findUserActionsByProgressId(progressId)
-        val actions = actionsDbEntityFlow?.map {actionsDbEntity ->
+        return@withContext actionsDbEntityFlow?.map {actionsDbEntity ->
             actionsDbEntity.map {
                 it.toAction()
             }
         } ?: throw NoActionsByProgressIdException()
-        return actions
     }
 }
