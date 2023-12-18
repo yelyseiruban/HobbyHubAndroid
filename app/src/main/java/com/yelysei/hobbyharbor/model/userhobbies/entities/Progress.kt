@@ -3,5 +3,5 @@ package com.yelysei.hobbyharbor.model.userhobbies.entities
 data class Progress (
     val id: Int,
     var actions: List<Action>,
-    val goal: Int
+    var goal: Int
 )

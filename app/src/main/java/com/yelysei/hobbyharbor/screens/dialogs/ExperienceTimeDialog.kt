@@ -29,6 +29,7 @@ typealias SubmitClickListener = (fromDateTime: Long, tillDateTime: Long) -> Unit
  * @throws Exception in unreal situations
  */
 class ExperienceTimeDialog(
+    private val title: String,
     private val context: Context,
     private val onSubmitClick: SubmitClickListener,
     private val fragmentManager: FragmentManager
@@ -201,6 +202,7 @@ class ExperienceTimeDialog(
             MaterialDatePicker.Builder.datePicker()
                 .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
 
+        binding.tvTitle.text = title
         submitButton = binding.submitButton
         tvFrom = binding.tvFrom
         tvTill = binding.tvTill

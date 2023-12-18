@@ -1,24 +1,19 @@
 package com.yelysei.hobbyharbor.screens.main.categorizedhobbies
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.yelysei.hobbyharbor.R
 import com.yelysei.hobbyharbor.Repositories.hobbiesRepository
 import com.yelysei.hobbyharbor.Repositories.userHobbiesRepository
 import com.yelysei.hobbyharbor.databinding.FragmentCategorizedHobbiesBinding
 import com.yelysei.hobbyharbor.model.hobbies.entities.Hobby
 import com.yelysei.hobbyharbor.screens.Configuration
+import com.yelysei.hobbyharbor.screens.dialogs.onSubmit
 import com.yelysei.hobbyharbor.screens.onTryAgain
 import com.yelysei.hobbyharbor.screens.recyclerViewConfigureView
 import com.yelysei.hobbyharbor.screens.renderSimpleResult
@@ -71,22 +66,8 @@ class CategorizedHobbiesFragment : Fragment() {
     }
 
     private fun showAddHobbyDialog(hobby: Hobby) {
-        val dialog = Dialog(requireContext())
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCancelable(true)
-        dialog.setContentView(R.layout.add_hobby_dialog)
-        val goalEditText: EditText = dialog.findViewById(R.id.progressGoal)
-        val submitButton: Button = dialog.findViewById(R.id.submitButton)
-        submitButton.setOnClickListener {
-            try {
-                val goal = goalEditText.text.toString().toInt()
-                viewModel.addUserHobby(hobby, goal)
-                dialog.dismiss()
-                findNavController().navigate(R.id.userHobbiesFragment)
-            } catch (e: NumberFormatException) {
-                Toast.makeText(context, "Specified goal is not correct", Toast.LENGTH_SHORT).show()
-            }
+        onSubmit { goal ->
+            viewModel.addUserHobby(hobby, goal)
         }
-        dialog.show()
     }
 }

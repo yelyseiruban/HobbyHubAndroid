@@ -15,7 +15,7 @@
         />
 
     <EditText
-        android:id="@+id/progressGoal"
+        android:id="@+id/goalEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/goal_hint"

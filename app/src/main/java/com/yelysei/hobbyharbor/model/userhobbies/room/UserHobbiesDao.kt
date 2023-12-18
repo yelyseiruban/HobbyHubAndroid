@@ -36,6 +36,11 @@ interface UserHobbiesDao {
     )
     fun findUserHobbyById(id: Int): Flow<UserHobbiesInTuple>
 
+    @Query(
+        "SELECT * FROM progresses WHERE progresses.id = :id"
+    )
+    fun findProgressById(id: Int): Flow<ProgressDbEntity>
+
     @Insert
     suspend fun addUserHobby(userHobby: UserHobbyDbEntity)
 
@@ -50,6 +55,9 @@ interface UserHobbiesDao {
     fun insertUserHobbyAction(actionDbEntity: ActionDbEntity)
     @Update(entity = ActionDbEntity::class, onConflict = OnConflictStrategy.REPLACE)
     fun updateUserHobbyAction(fromAction: ActionDbEntity)
+
+    @Update(entity = ProgressDbEntity::class, onConflict = OnConflictStrategy.REPLACE)
+    fun updateProgress(progressDbEntity: ProgressDbEntity)
 
     @Query("SELECT progress_id FROM user_hobbies WHERE user_hobbies.id = :uhId")
     fun findProgressIdByUserHobbyId(uhId: Int): Int

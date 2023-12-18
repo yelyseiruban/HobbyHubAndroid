@@ -1,6 +1,5 @@
 package com.yelysei.hobbyharbor.screens.main.hobbydetails
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yelysei.hobbyharbor.model.UserHobbyIsNotLoadedException
@@ -10,11 +9,10 @@ import com.yelysei.hobbyharbor.model.results.takeSuccess
 import com.yelysei.hobbyharbor.model.userhobbies.UserHobbiesRepository
 import com.yelysei.hobbyharbor.model.userhobbies.entities.Action
 import com.yelysei.hobbyharbor.model.userhobbies.entities.UserHobby
+import com.yelysei.hobbyharbor.model.userhobbies.room.entities.ProgressDbEntity
 import com.yelysei.hobbyharbor.screens.main.LiveResult
 import com.yelysei.hobbyharbor.screens.main.MutableLiveResult
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.flatMapConcat
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -26,34 +24,15 @@ class UserHobbyDetailsViewModel(
     private val _userHobby = MutableLiveResult<UserHobby>(PendingResult())
     val userHobby: LiveResult<UserHobby> = _userHobby
 
-    private val _actions = MutableLiveResult<List<Action>>(PendingResult())
-    val actions: LiveResult<List<Action>> = _actions
-
     init {
         viewModelScope.launch {
-            userHobbiesRepository.getUserHobbyById(uhId)
-                .map { userHobby ->
-                    val progressId = userHobby.progress.id
-                    Pair(userHobby, progressId)
-                }
-                .flatMapConcat { (userHobby, progressId) ->
-                    // Combine with the second flow
-                    userHobbiesRepository.getActionsByProgressId(progressId)
-                        .map { actions ->
-                            Pair(userHobby, actions)
-                        }
-                }
-                .collect { (userHobby, actions) ->
-                    Log.d("user hobby details view model", "User Hobby: $userHobby, Actions: $actions")
-                    userHobby.progress.actions = actions
-                    _userHobby.value = SuccessResult(userHobby)
-                    _actions.value = SuccessResult(actions)
-                }
+            userHobbiesRepository.getUserHobbyById(uhId).collect {
+                _userHobby.value = SuccessResult(it)
+            }
         }
-
     }
 
-    fun userExperienceInteraction(interaction: UserExperienceInteraction, from: Long, till: Long, id: Int? = null) {
+    private fun userExperienceInteraction(interaction: UserExperienceInteraction, from: Long, till: Long, id: Int? = null) {
         val userHobby = _userHobby.value.takeSuccess() ?: throw UserHobbyIsNotLoadedException()
         val progressId = userHobby.progress.id
 
@@ -81,6 +60,20 @@ class UserHobbyDetailsViewModel(
 
     fun editUserExperience(from: Long, till: Long, actionId: Int) {
         userExperienceInteraction(UserExperienceInteraction.UPDATE, from, till, actionId)
+    }
+
+    fun updateProgress(goal: Int) {
+        val userHobby = _userHobby.value.takeSuccess() ?: throw UserHobbyIsNotLoadedException()
+        val progressId = userHobby.progress.id
+
+        val progressDbEntity = ProgressDbEntity (
+            id = progressId,
+            goal = goal
+        )
+        viewModelScope.launch {
+            userHobbiesRepository.updateProgress(progressDbEntity)
+
+        }
     }
 }
 

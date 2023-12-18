@@ -6,7 +6,7 @@ import kotlin.math.round
 data class UserHobby(
     val id: Int,
     val hobby: Hobby,
-    val progress: Progress
+    var progress: Progress
 )
 
 fun UserHobby.getProgressInHours() : Float {

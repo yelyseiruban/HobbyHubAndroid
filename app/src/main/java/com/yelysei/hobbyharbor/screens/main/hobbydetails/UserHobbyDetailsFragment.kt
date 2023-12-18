@@ -1,6 +1,7 @@
 package com.yelysei.hobbyharbor.screens.main.hobbydetails
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,13 +13,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.yelysei.hobbyharbor.Repositories
 import com.yelysei.hobbyharbor.databinding.FragmentUserHobbyDetailsBinding
 import com.yelysei.hobbyharbor.model.UserHobbyIsNotLoadedException
-import com.yelysei.hobbyharbor.model.results.SuccessResult
-import com.yelysei.hobbyharbor.model.results.takeSuccess
 import com.yelysei.hobbyharbor.model.userhobbies.entities.Action
 import com.yelysei.hobbyharbor.model.userhobbies.entities.getProgressInHours
 import com.yelysei.hobbyharbor.screens.Configuration
 import com.yelysei.hobbyharbor.screens.dialogs.ExperienceTimeDialog
 import com.yelysei.hobbyharbor.screens.dialogs.SubmitClickListener
+import com.yelysei.hobbyharbor.screens.dialogs.onSubmit
 import com.yelysei.hobbyharbor.screens.recyclerViewConfigureView
 import com.yelysei.hobbyharbor.screens.renderSimpleResult
 import com.yelysei.hobbyharbor.utils.viewModelCreator
@@ -38,6 +38,7 @@ class UserHobbyDetailsFragment: Fragment(){
         binding = FragmentUserHobbyDetailsBinding.inflate(inflater, container, false)
         val adapter = UserActionsAdapter(object : HobbyDetailsActionListener {
             override fun editAction(userAction: Action) {
+                val dialogTitle = "Edit your experience:"
                 val submitClickListener = {till: Long, from: Long ->
                     try {
                         viewModel.editUserExperience(till, from, userAction.id)
@@ -48,23 +49,24 @@ class UserHobbyDetailsFragment: Fragment(){
                 }
                 val previousFrom = userAction.startTime
                 val previousTill = userAction.endTime
-                showExperienceTimeDialog(submitClickListener, previousFrom, previousTill)
+                showExperienceTimeDialog(dialogTitle, submitClickListener, previousFrom, previousTill)
             }
         })
         binding.recyclerViewUserActions.adapter = adapter
 
         viewModel.userHobby.observe(viewLifecycleOwner) { result ->
+            Log.d("debug", "user hobby chagned")
             renderSimpleResult(binding.root, result) {
                 binding.tvHobbyName.text = it.hobby.hobbyName
                 binding.tvGoalValue.text = it.progress.goal.toString()
                 binding.tvTotalValue.text = it.getProgressInHours().toString()
+                adapter.userActions = it.progress.actions
             }
         }
 
-        viewModel.actions.observe(viewLifecycleOwner) { result ->
-            if (result is SuccessResult) {
-                adapter.userActions = result.takeSuccess() ?: listOf()
-
+        binding.buttonEditGoal.setOnClickListener {
+            onSubmit { goal: Int ->
+                viewModel.updateProgress(goal)
             }
         }
 
@@ -90,6 +92,7 @@ class UserHobbyDetailsFragment: Fragment(){
     }
 
     private fun onAddExperienceClick() {
+        val dialogTitle = "Add new experience:"
         val submitClickListener: SubmitClickListener = {from: Long, till: Long ->
             try {
                 viewModel.addUserExperience(from, till)
@@ -98,16 +101,15 @@ class UserHobbyDetailsFragment: Fragment(){
                 Toast.makeText(context, "The error occurred while trying to add new experience", Toast.LENGTH_SHORT).show()
             }
         }
-        showExperienceTimeDialog(submitClickListener)
+        showExperienceTimeDialog(dialogTitle, submitClickListener)
     }
 
-    private fun showExperienceTimeDialog(submitClickListener: SubmitClickListener, previousFrom: Long? = null, previousTill: Long? = null) {
-        val experienceTimeDialog = ExperienceTimeDialog(requireContext(), submitClickListener, parentFragmentManager)
+    private fun showExperienceTimeDialog(title: String, submitClickListener: SubmitClickListener, previousFrom: Long? = null, previousTill: Long? = null) {
+        val experienceTimeDialog = ExperienceTimeDialog(title, requireContext(), submitClickListener, parentFragmentManager)
         experienceTimeDialog.show()
         if (previousFrom != null && previousTill != null) {
             experienceTimeDialog.fulfillFromDateTime(previousFrom)
             experienceTimeDialog.fulfillTillDateTime(previousTill)
         }
     }
-
 }

@@ -55,7 +55,7 @@ class UserHobbiesFragment : Fragment() {
                 layoutManager = LinearLayoutManager(requireContext()),
                 verticalItemSpace = 64,
                 constraintLayout = binding.constraintLayout,
-                maxHeight = 0.65f
+                maxHeight = 0.75f
             )
         )
 
