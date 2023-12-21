@@ -22,4 +22,6 @@ interface UserHobbiesRepository  {
 
     suspend fun updateProgress(progressDbEntity: ProgressDbEntity)
 
+    suspend fun deleteUserHobby(userHobby: UserHobby)
+
 }

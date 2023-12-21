@@ -1,6 +1,7 @@
 package com.yelysei.hobbyharbor.model.userhobbies.room
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -61,5 +62,8 @@ interface UserHobbiesDao {
 
     @Query("SELECT progress_id FROM user_hobbies WHERE user_hobbies.id = :uhId")
     fun findProgressIdByUserHobbyId(uhId: Int): Int
+
+    @Delete(entity = UserHobbyDbEntity::class)
+    fun deleteUserHobby(userHobbyDbEntity: UserHobbyDbEntity)
 
 }

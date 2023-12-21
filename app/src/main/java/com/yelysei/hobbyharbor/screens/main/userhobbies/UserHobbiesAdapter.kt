@@ -3,6 +3,7 @@ package com.yelysei.hobbyharbor.screens.main.userhobbies
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.yelysei.hobbyharbor.R
 import com.yelysei.hobbyharbor.databinding.ItemUserHobbyBinding
@@ -11,11 +12,38 @@ import com.yelysei.hobbyharbor.model.userhobbies.entities.getProgressInHours
 
 interface UserHobbyActionListener {
     fun onUserHobbyDetails(userHobby: UserHobby)
+    fun onRemoveListener(userHobby: UserHobby)
 }
 
 class UserHobbiesAdapter(
+    private val recyclerView: RecyclerView,
     private val actionListener: UserHobbyActionListener
 ) : RecyclerView.Adapter<UserHobbiesAdapter.UserHobbiesViewHolder>(), View.OnClickListener {
+
+    var swipeHandler: ItemTouchHelper.SimpleCallback = object : ItemTouchHelper.SimpleCallback(
+        0,
+        ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+    ) {
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ): Boolean {
+            return true
+        }
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            val swipedPosition = viewHolder.absoluteAdapterPosition
+            val swipedHobby = userHobbies[swipedPosition]
+            // Notify the listener about the removed hobby
+            actionListener.onRemoveListener(swipedHobby)
+        }
+    }
+
+    init {
+        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
+    }
 
     var userHobbies: List<UserHobby> = emptyList()
         set(value) {
@@ -57,6 +85,10 @@ class UserHobbiesAdapter(
             progressGoal.text = uHobby.progress.goal.toString()
             progressBar.progress = progressPercent.toInt()
         }
+    }
+
+    fun resetSwipeState(position: Int) {
+        notifyItemChanged(position)
     }
 
 }

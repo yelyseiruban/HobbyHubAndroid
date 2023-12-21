@@ -26,4 +26,10 @@ class UserHobbiesViewModel(
             }
         }
     }
+
+    fun removeUserHobby(userHobby: UserHobby) {
+        viewModelScope.launch {
+            userHobbiesRepository.deleteUserHobby(userHobby)
+        }
+    }
 }

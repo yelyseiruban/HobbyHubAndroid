@@ -1,5 +1,6 @@
 package com.yelysei.hobbyharbor.screens.main.userhobbies
 
+import android.content.DialogInterface.OnClickListener
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import com.yelysei.hobbyharbor.databinding.FragmentUserHobbiesBinding
 import com.yelysei.hobbyharbor.model.NoUserHobbiesFoundException
 import com.yelysei.hobbyharbor.model.userhobbies.entities.UserHobby
 import com.yelysei.hobbyharbor.screens.Configuration
+import com.yelysei.hobbyharbor.screens.dialogs.ConfirmRemoveUserHobbyDialog
 import com.yelysei.hobbyharbor.screens.recyclerViewConfigureView
 import com.yelysei.hobbyharbor.screens.renderSimpleResult
 import com.yelysei.hobbyharbor.utils.viewModelCreator
@@ -37,11 +39,25 @@ class UserHobbiesFragment : Fragment() {
 
         binding = FragmentUserHobbiesBinding.inflate(layoutInflater, container, false)
 
-        adapter = UserHobbiesAdapter(object : UserHobbyActionListener {
-            override fun onUserHobbyDetails(userHobby: UserHobby) {
-                openHobbyDetails(userHobby.id)
-            }
-        })
+        adapter = UserHobbiesAdapter(recyclerView = binding.recyclerViewUserHobbies,
+            object : UserHobbyActionListener {
+                override fun onUserHobbyDetails(userHobby: UserHobby) {
+                    openHobbyDetails(userHobby.id)
+                }
+
+                override fun onRemoveListener(userHobby: UserHobby) {
+                    val onPositiveButtonClickListener = OnClickListener { dialog, which ->
+                        viewModel.removeUserHobby(userHobby)
+                    }
+                    val onNegativeButtonClickListener = OnClickListener { dialog, which ->
+                        val position = adapter.userHobbies.indexOf(userHobby)
+                        adapter.resetSwipeState(position)
+                    }
+                    val removeUserHobbyDialog = ConfirmRemoveUserHobbyDialog(requireContext(), userHobby.hobby.hobbyName, onPositiveButtonClickListener, onNegativeButtonClickListener)
+                    removeUserHobbyDialog.show()
+                }
+            })
+
         binding.recyclerViewUserHobbies.adapter = adapter
         viewModel.userHobbies.observe(viewLifecycleOwner) { result ->
             renderSimpleResult(binding.root, result) {

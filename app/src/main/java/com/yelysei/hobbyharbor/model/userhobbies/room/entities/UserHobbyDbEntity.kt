@@ -6,6 +6,7 @@ import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.yelysei.hobbyharbor.model.hobbies.room.entities.HobbyDbEntity
+import com.yelysei.hobbyharbor.model.userhobbies.entities.UserHobby
 
 
 /**
@@ -41,5 +42,14 @@ data class UserHobbyDbEntity(
     @ColumnInfo(name = "hobby_id") val hobbyId: Int,
     @ColumnInfo(name = "progress_id") val progressId: Int
 ) {
+    companion object {
+        fun fromUserHobby(userHobby: UserHobby): UserHobbyDbEntity {
+            return UserHobbyDbEntity(
+                id = userHobby.id,
+                hobbyId = userHobby.hobby.id ?: throw Exception("Hobby does not have id"),
+                progressId = userHobby.progress.id
+            )
+        }
+    }
 
 }
