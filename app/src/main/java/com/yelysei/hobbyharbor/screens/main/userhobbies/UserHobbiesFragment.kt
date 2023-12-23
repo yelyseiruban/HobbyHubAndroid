@@ -76,15 +76,15 @@ class UserHobbiesFragment : Fragment() {
         )
 
         binding.buttonAddUserHobby.setOnClickListener {
-            openCategories()
+            openCategorizedHobbies()
         }
 
         return binding.root
     }
 
 
-    private fun openCategories() {
-        findNavController().navigate(UserHobbiesFragmentDirections.actionUserHobbiesFragmentToCategoriesFragment())
+    private fun openCategorizedHobbies() {
+        findNavController().navigate(UserHobbiesFragmentDirections.actionUserHobbiesFragmentToCategorizedHobbiesFragment())
     }
 
     private fun openHobbyDetails(uhId: Int) {

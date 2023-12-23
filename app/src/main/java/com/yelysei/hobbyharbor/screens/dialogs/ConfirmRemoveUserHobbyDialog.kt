@@ -14,8 +14,8 @@ class ConfirmRemoveUserHobbyDialog(
         MaterialAlertDialogBuilder(context)
             .setTitle(context.getString(R.string.remove_user_hobby_title, userHobbyName))
             .setMessage(R.string.remove_user_hobby_message)
-            .setNegativeButton(R.string.negative_button_text, onNegativeClickListener)
-            .setPositiveButton(R.string.positive_button_text, onPositiveClickListener)
+            .setNegativeButton(R.string.no_button_text, onNegativeClickListener)
+            .setPositiveButton(R.string.yes_button_text, onPositiveClickListener)
             .show()
     }
 }

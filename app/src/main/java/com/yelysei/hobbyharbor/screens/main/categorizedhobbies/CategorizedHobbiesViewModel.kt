@@ -14,7 +14,6 @@ import com.yelysei.hobbyharbor.screens.uiactions.UiActions
 import kotlinx.coroutines.launch
 
 class CategorizedHobbiesViewModel(
-    private val categoryName: String,
     private val hobbiesRepository: HobbiesRepository,
     private val userHobbiesRepository: UserHobbiesRepository,
     private val uiActions: UiActions
@@ -41,9 +40,9 @@ class CategorizedHobbiesViewModel(
 
     private fun load() {
         viewModelScope.launch {
-            _categorizedHobbies.value = PendingResult()
-            val hobbiesList = hobbiesRepository.getAvailableHobbiesForCategory(categoryName)
-            _categorizedHobbies.value = SuccessResult(hobbiesList)
+            hobbiesRepository.getCurrentHobbies().collect{
+                _categorizedHobbies.value = SuccessResult(it)
+            }
         }
     }
 

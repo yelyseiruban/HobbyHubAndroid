@@ -46,6 +46,7 @@
     <string name="experience_time">Experience Time:</string>
     <string name="remove_user_hobby_title">Remove %1$s</string>
     <string name="remove_user_hobby_message">Are you sure you want remove hobby from your hobbies? All progresses will be removed as well</string>
-    <string name="negative_button_text">Decline</string>
-    <string name="positive_button_text">Submit</string>
+    <string name="no_button_text">No</string>
+    <string name="yes_button_text">Yes</string>
+    <string name="available_hobbies">Available Hobbies:</string>
 </resources>

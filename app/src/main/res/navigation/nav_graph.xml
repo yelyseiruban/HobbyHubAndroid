@@ -14,16 +14,7 @@
             android:id="@+id/action_userHobbiesFragment_to_userHobbyDetailsFragment"
             app:destination="@id/userHobbyDetailsFragment" />
         <action
-            android:id="@+id/action_userHobbiesFragment_to_categoriesFragment"
-            app:destination="@id/categoriesFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/categoriesFragment"
-        android:name="com.yelysei.hobbyharbor.screens.main.categories.CategoriesFragment"
-        android:label="fragment_categories"
-        tools:layout="@layout/fragment_categories" >
-        <action
-            android:id="@+id/action_categoriesFragment_to_categorizedHobbiesFragment"
+            android:id="@+id/action_userHobbiesFragment_to_categorizedHobbiesFragment"
             app:destination="@id/categorizedHobbiesFragment" />
     </fragment>
     <fragment
@@ -40,9 +31,5 @@
         android:id="@+id/categorizedHobbiesFragment"
         android:name="com.yelysei.hobbyharbor.screens.main.categorizedhobbies.CategorizedHobbiesFragment"
         android:label="fragment_categorized_hobbies"
-        tools:layout="@layout/fragment_categorized_hobbies" >
-        <argument
-            android:name="categoryName"
-            app:argType="string" />
-    </fragment>
+        tools:layout="@layout/fragment_categorized_hobbies" />
 </navigation>

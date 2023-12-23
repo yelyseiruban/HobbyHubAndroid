@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yelysei.hobbyharbor.R
 import com.yelysei.hobbyharbor.Repositories.hobbiesRepository
@@ -23,8 +22,7 @@ import com.yelysei.hobbyharbor.screens.uiactions.UiActionsImpl
 import com.yelysei.hobbyharbor.utils.viewModelCreator
 
 class CategorizedHobbiesFragment : Fragment() {
-    private val args: CategorizedHobbiesFragmentArgs by navArgs()
-    private val viewModel by viewModelCreator { CategorizedHobbiesViewModel(args.categoryName, hobbiesRepository, userHobbiesRepository, UiActionsImpl(context)) }
+    private val viewModel by viewModelCreator { CategorizedHobbiesViewModel(hobbiesRepository, userHobbiesRepository, UiActionsImpl(context)) }
     private lateinit var binding: FragmentCategorizedHobbiesBinding
 
     override fun onCreateView(
@@ -35,15 +33,13 @@ class CategorizedHobbiesFragment : Fragment() {
 
         binding = FragmentCategorizedHobbiesBinding.inflate(inflater, container, false)
 
-        binding.tvCategoryNameTitle.text = args.categoryName
-
         val adapter = HobbiesAdapter {
             showAddHobbyDialog(it)
         }
 
         viewModel.categorizedHobbies.observe(viewLifecycleOwner) { result ->
             renderSimpleResult(binding.root, result, onSuccess = {
-                adapter.hobbies = it
+                adapter.processHobbies(it)
             })
         }
         binding.recyclerViewCategorizedHobbies.adapter = adapter
@@ -52,7 +48,7 @@ class CategorizedHobbiesFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext()),
             verticalItemSpace = 64,
             constraintLayout = binding.constraintLayout,
-            maxHeight = 0.65f
+            maxHeight = 0.75f
         ))
 
 

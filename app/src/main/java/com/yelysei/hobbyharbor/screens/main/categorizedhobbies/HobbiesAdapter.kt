@@ -5,41 +5,83 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.yelysei.hobbyharbor.R
 import com.yelysei.hobbyharbor.databinding.ItemHobbyBinding
 import com.yelysei.hobbyharbor.model.hobbies.entities.Hobby
 
 class HobbiesAdapter(
     private val onHobbyClickListener: (hobby: Hobby) -> Unit
-) : RecyclerView.Adapter<HobbiesAdapter.HobbiesViewHolder>(), View.OnClickListener {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), View.OnClickListener {
 
-    var hobbies: List<Hobby> = emptyList()
+    var hobbies: List<HobbyItem> = emptyList()
         @SuppressLint("NotifyDataSetChanged")
         set(value) {
             field = value
             notifyDataSetChanged()
         }
 
-    class HobbiesViewHolder(
+    fun processHobbies(hobbies: List<Hobby>) {
+        var currentCategory = ""
+        val hobbyItems: List<HobbyItem> = hobbies.map { hobby ->
+            if (currentCategory != hobby.categoryName) {
+                currentCategory = hobby.categoryName
+                HobbyItem(hobby, true)
+            } else {
+                HobbyItem(hobby, false)
+            }
+        }
+        this.hobbies = hobbyItems
+    }
+
+    class HobbyViewHolder(
         val binding: ItemHobbyBinding
     ) : RecyclerView.ViewHolder(binding.root)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HobbiesViewHolder {
+    class CategoryViewHolder(
+        val binding: ItemHobbyBinding
+    ) : RecyclerView.ViewHolder(binding.root)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemHobbyBinding.inflate(inflater, parent, false)
 
         binding.root.setOnClickListener(this)
 
-        return HobbiesViewHolder(binding)
+        return when (viewType) {
+            WITHOUT_CATEGORY -> HobbyViewHolder(binding)
+            WITH_CATEGORY -> CategoryViewHolder(binding)
+            else -> throw IllegalArgumentException("Invalid view type")
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (hobbies[position].isCategoryShown) {
+            WITH_CATEGORY
+        } else {
+            WITHOUT_CATEGORY
+        }
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val hobbyItem = hobbies[position]
+        holder.itemView.tag = hobbyItem
+
+        when(holder) {
+            is HobbyViewHolder -> {
+                holder.binding.categoryLayout.visibility = View.GONE
+                holder.binding.tvHobbyName.text = hobbyItem.hobby.hobbyName
+            }
+            is CategoryViewHolder -> {
+                holder.binding.categoryLayout.visibility = View.VISIBLE
+                holder.binding.categoryName.text = hobbyItem.hobby.categoryName
+                holder.binding.categoryIcon.setImageResource(icons[hobbyItem.hobby.categoryName] ?: R.drawable.ic_default_category)
+                holder.binding.tvHobbyName.text = hobbyItem.hobby.hobbyName
+            }
+        }
     }
 
     override fun getItemCount(): Int = hobbies.size
-
-    override fun onBindViewHolder(holder: HobbiesViewHolder, position: Int) {
-        val hobby = hobbies[position]
-        holder.itemView.tag = hobby
-        holder.binding.tvHobbyName.text = hobby.hobbyName
-    }
 
     override fun onClick(v: View) {
         val hobby = v.tag as Hobby
@@ -47,4 +89,18 @@ class HobbiesAdapter(
             onHobbyClickListener(hobby)
         }
     }
+
+    companion object {
+        private const val WITHOUT_CATEGORY = 1
+        private const val WITH_CATEGORY = 2
+
+        /**
+         * categoryName to icon resource
+         */
+        private val icons: Map<String, Int> = mapOf()
+    }
+    data class HobbyItem(
+        val hobby: Hobby,
+        val isCategoryShown: Boolean
+    )
 }
