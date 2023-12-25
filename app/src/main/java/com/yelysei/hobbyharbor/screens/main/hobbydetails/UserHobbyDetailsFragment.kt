@@ -5,11 +5,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.yelysei.hobbyharbor.R
 import com.yelysei.hobbyharbor.Repositories
 import com.yelysei.hobbyharbor.databinding.FragmentUserHobbyDetailsBinding
 import com.yelysei.hobbyharbor.model.UserHobbyIsNotLoadedException
@@ -58,7 +59,6 @@ class UserHobbyDetailsFragment: Fragment(){
         viewModel.userHobby.observe(viewLifecycleOwner) { result ->
             Log.d("debug", "user hobby chagned")
             renderSimpleResult(binding.root, result) { userHobby ->
-                binding.tvHobbyName.text = userHobby.hobby.hobbyName
                 binding.tvGoalValue.text = userHobby.progress.goal.toString()
                 binding.tvTotalValue.text = userHobby.getProgressInHours().toString()
                 adapter.userActions = userHobby.progress.actions
@@ -87,10 +87,6 @@ class UserHobbyDetailsFragment: Fragment(){
             onAddExperienceClick()
         }
 
-        binding.buttonNavigateUp.setOnClickListener {
-            findNavController().navigateUp()
-        }
-
         return binding.root
     }
 
@@ -114,5 +110,11 @@ class UserHobbyDetailsFragment: Fragment(){
             experienceTimeDialog.fulfillFromDateTime(previousFrom)
             experienceTimeDialog.fulfillTillDateTime(previousTill)
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val hobbyName = arguments?.getString("hobbyName") ?: getString(R.string.app_name)
+        requireActivity().findViewById<TextView>(R.id.toolbarTitle).text = hobbyName
     }
 }

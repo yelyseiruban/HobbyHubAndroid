@@ -50,4 +50,6 @@
     <string name="yes_button_text">Yes</string>
     <string name="available_hobbies">Available Hobbies:</string>
     <string name="searchbar_hint">Hobby Name</string>
+    <string name="navigation_up_button">Navigation Up Button</string>
+    <string name="screen_details">{hobbyName}</string>
 </resources>

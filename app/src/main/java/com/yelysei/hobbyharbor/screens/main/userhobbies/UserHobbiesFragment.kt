@@ -42,7 +42,7 @@ class UserHobbiesFragment : Fragment() {
         adapter = UserHobbiesAdapter(recyclerView = binding.recyclerViewUserHobbies,
             object : UserHobbyActionListener {
                 override fun onUserHobbyDetails(userHobby: UserHobby) {
-                    openHobbyDetails(userHobby.id)
+                    openHobbyDetails(userHobby.id, userHobby.hobby.hobbyName)
                 }
 
                 override fun onRemoveListener(userHobby: UserHobby) {
@@ -87,8 +87,8 @@ class UserHobbiesFragment : Fragment() {
         findNavController().navigate(UserHobbiesFragmentDirections.actionUserHobbiesFragmentToCategorizedHobbiesFragment())
     }
 
-    private fun openHobbyDetails(uhId: Int) {
-        val direction = UserHobbiesFragmentDirections.actionUserHobbiesFragmentToUserHobbyDetailsFragment(uhId)
+    private fun openHobbyDetails(uhId: Int, hobbyName: String) {
+        val direction = UserHobbiesFragmentDirections.actionUserHobbiesFragmentToUserHobbyDetailsFragment(uhId, hobbyName)
         findNavController().navigate(direction)
     }
 }
