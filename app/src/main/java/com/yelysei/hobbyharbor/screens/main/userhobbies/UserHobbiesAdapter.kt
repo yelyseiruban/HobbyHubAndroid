@@ -16,7 +16,7 @@ interface UserHobbyActionListener {
 }
 
 class UserHobbiesAdapter(
-    private val recyclerView: RecyclerView,
+    recyclerView: RecyclerView,
     private val actionListener: UserHobbyActionListener
 ) : RecyclerView.Adapter<UserHobbiesAdapter.UserHobbiesViewHolder>(), View.OnClickListener {
 

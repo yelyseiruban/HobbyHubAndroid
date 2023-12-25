@@ -5,7 +5,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.res.ResourcesCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.yelysei.hobbyharbor.R
@@ -78,12 +78,8 @@ class HobbiesAdapter(
             is CategoryViewHolder -> {
                 holder.binding.categoryContainer.visibility = View.VISIBLE
                 holder.binding.categoryContainer.text = hobbyItem.hobby.categoryName
-                holder.binding.categoryContainer.setCompoundDrawables(
-                    ResourcesCompat.getDrawable(
-                        context.resources,
-                        icons[hobbyItem.hobby.categoryName] ?: R.drawable.ic_default_category,
-                        null
-                    ),
+                holder.binding.categoryContainer.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                    ContextCompat.getDrawable(context, R.drawable.ic_default_category),
                     null,
                     null,
                     null
