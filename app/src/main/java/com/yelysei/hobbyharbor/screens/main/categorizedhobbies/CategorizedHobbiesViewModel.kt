@@ -1,5 +1,6 @@
 package com.yelysei.hobbyharbor.screens.main.categorizedhobbies
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yelysei.hobbyharbor.model.UserHobbyAlreadyAddedException
@@ -19,12 +20,28 @@ class CategorizedHobbiesViewModel(
     private val uiActions: UiActions
 ) : ViewModel() {
 
-    val _categorizedHobbies = MutableLiveResult<List<Hobby>>(PendingResult())
+    private val _categorizedHobbies = MutableLiveResult<List<Hobby>>(PendingResult())
     val categorizedHobbies: LiveResult<List<Hobby>> = _categorizedHobbies
+
+    private val _searchedHobbies = MutableLiveResult<List<Hobby>>(SuccessResult(emptyList()))
+    val searchedHobbies: LiveResult<List<Hobby>> = _searchedHobbies
 
 
     init {
         load()
+    }
+
+    fun searchHobbies(hobbyNameSearchInput: String) {
+        if (hobbyNameSearchInput != "") {
+            Log.d("viewModel", hobbyNameSearchInput)
+            viewModelScope.launch {
+                _searchedHobbies.value = PendingResult()
+                val hobbiesList = hobbiesRepository.getHobbiesByHobbyName(hobbyNameSearchInput)
+
+                Log.d("viewModel", hobbiesList.toString())
+                _searchedHobbies.value = SuccessResult(hobbiesList)
+            }
+        }
     }
 
     fun addUserHobby(hobby: Hobby, goal: Int) {

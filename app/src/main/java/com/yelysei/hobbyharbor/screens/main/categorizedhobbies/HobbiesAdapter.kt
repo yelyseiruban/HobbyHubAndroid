@@ -1,9 +1,11 @@
 package com.yelysei.hobbyharbor.screens.main.categorizedhobbies
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.yelysei.hobbyharbor.R
@@ -11,8 +13,9 @@ import com.yelysei.hobbyharbor.databinding.ItemHobbyBinding
 import com.yelysei.hobbyharbor.model.hobbies.entities.Hobby
 
 class HobbiesAdapter(
+    private val context: Context,
     private val onHobbyClickListener: (hobby: Hobby) -> Unit
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), View.OnClickListener {
+) : RecyclerView.Adapter<ViewHolder>(), View.OnClickListener {
 
     var hobbies: List<HobbyItem> = emptyList()
         @SuppressLint("NotifyDataSetChanged")
@@ -36,13 +39,13 @@ class HobbiesAdapter(
 
     class HobbyViewHolder(
         val binding: ItemHobbyBinding
-    ) : RecyclerView.ViewHolder(binding.root)
+    ) : ViewHolder(binding.root)
 
     class CategoryViewHolder(
         val binding: ItemHobbyBinding
-    ) : RecyclerView.ViewHolder(binding.root)
+    ) : ViewHolder(binding.root)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemHobbyBinding.inflate(inflater, parent, false)
 
@@ -69,13 +72,22 @@ class HobbiesAdapter(
 
         when(holder) {
             is HobbyViewHolder -> {
-                holder.binding.categoryLayout.visibility = View.GONE
+                holder.binding.categoryContainer.visibility = View.GONE
                 holder.binding.tvHobbyName.text = hobbyItem.hobby.hobbyName
             }
             is CategoryViewHolder -> {
-                holder.binding.categoryLayout.visibility = View.VISIBLE
-                holder.binding.categoryName.text = hobbyItem.hobby.categoryName
-                holder.binding.categoryIcon.setImageResource(icons[hobbyItem.hobby.categoryName] ?: R.drawable.ic_default_category)
+                holder.binding.categoryContainer.visibility = View.VISIBLE
+                holder.binding.categoryContainer.text = hobbyItem.hobby.categoryName
+                holder.binding.categoryContainer.setCompoundDrawables(
+                    ResourcesCompat.getDrawable(
+                        context.resources,
+                        icons[hobbyItem.hobby.categoryName] ?: R.drawable.ic_default_category,
+                        null
+                    ),
+                    null,
+                    null,
+                    null
+                )
                 holder.binding.tvHobbyName.text = hobbyItem.hobby.hobbyName
             }
         }
@@ -84,9 +96,9 @@ class HobbiesAdapter(
     override fun getItemCount(): Int = hobbies.size
 
     override fun onClick(v: View) {
-        val hobby = v.tag as Hobby
+        val hobbyItem = v.tag as HobbyItem
         if (v.id == R.id.itemHobby) {
-            onHobbyClickListener(hobby)
+            onHobbyClickListener(hobbyItem.hobby)
         }
     }
 

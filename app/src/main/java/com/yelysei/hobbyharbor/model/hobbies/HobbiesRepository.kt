@@ -12,4 +12,5 @@ interface HobbiesRepository  {
 
     suspend fun addCustomHobby(hobby: Hobby)
 
+    suspend fun getHobbiesByHobbyName(hobbyNameSearchInput: String): List<Hobby>
 }

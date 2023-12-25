@@ -26,6 +26,8 @@ class AddHobbyStartingProgressLowerThanDesiredException : AppException()
 
 class UserHobbyIsNotLoadedException : AppException()
 
+class NoSearchedHobbiesFoundException: AppException()
+
 /*
 Exepctions handled by input:
  - new hobby (empty name, to long name, name with illegal chars )

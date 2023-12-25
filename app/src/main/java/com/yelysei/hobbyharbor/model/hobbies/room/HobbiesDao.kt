@@ -10,7 +10,10 @@ import kotlinx.coroutines.flow.Flow
 interface HobbiesDao {
 
     @Query("SELECT * FROM hobbies WHERE category_name = :categoryName")
-    suspend fun findHobbyByCategoryName(categoryName: String): List<HobbyDbEntity>?
+    suspend fun findHobbiesByCategoryName(categoryName: String): List<HobbyDbEntity>?
+
+    @Query("SELECT * FROM hobbies WHERE hobby_name LIKE '%' || :searchInput || '%' COLLATE NOCASE")
+    suspend fun findHobbiesByHobbyName(searchInput: String): List<HobbyDbEntity>?
 
     @Query("SELECT * FROM hobbies")
     fun getHobbies(): Flow<List<HobbyDbEntity>>

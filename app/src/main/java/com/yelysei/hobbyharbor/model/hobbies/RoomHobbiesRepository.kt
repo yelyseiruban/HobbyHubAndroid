@@ -29,13 +29,19 @@ class RoomHobbiesRepository(
      * implemented
      */
     override suspend fun getAvailableHobbiesForCategory(categoryName: String): List<Hobby> = withContext(defaultDispatcher) {
-        return@withContext hobbiesDao.findHobbyByCategoryName(categoryName)?.map {
+        return@withContext hobbiesDao.findHobbiesByCategoryName(categoryName)?.map {
             it.toHobby()
         } ?: throw NoHobbiesBySpecifiedCategoryName()
     }
 
     override suspend fun addCustomHobby(hobby: Hobby) = withContext(ioDispatcher) {
         hobbiesDao.insertCustomHobby(HobbyDbEntity.fromHobby(hobby))
+    }
+
+    override suspend fun getHobbiesByHobbyName(hobbyNameSearchInput: String): List<Hobby> = withContext(ioDispatcher) {
+        return@withContext hobbiesDao.findHobbiesByHobbyName(hobbyNameSearchInput)?.map {
+            it.toHobby()
+        } ?: emptyList()
     }
 
 }
