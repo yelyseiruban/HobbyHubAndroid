@@ -34,7 +34,6 @@ class MainActivity : AppCompatActivity() {
                 View.VISIBLE
             }
             binding.toolbarTitle.text = destination.label ?: "HobbyHarbor"
-
             if (destination.id == R.id.userHobbyDetailsFragment) {
                 binding.buttonSettings.visibility = View.GONE
                 binding.buttonUserProfile.visibility = View.GONE

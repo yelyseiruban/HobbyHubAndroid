@@ -8,6 +8,8 @@ import com.yelysei.hobbyharbor.R
 import com.yelysei.hobbyharbor.databinding.SetGoalDialogBinding
 import com.yelysei.hobbyharbor.screens.uiactions.UiActions
 import com.yelysei.hobbyharbor.screens.uiactions.UiActionsImpl
+import com.yelysei.hobbyharbor.utils.KeyboardUtils
+
 
 typealias OnSubmitClickListener = (goal: Int) -> Unit
 
@@ -21,6 +23,10 @@ class SetGoalDialog(
     }
     fun show(onSubmitClickListener: OnSubmitClickListener) {
         val editGoal = binding.goal
+        editGoal.requestFocus()
+        editGoal.postDelayed({
+            KeyboardUtils.showKeyboard(context, editGoal)
+        }, 150)
         editGoal.setText(previousGoal?.toString() ?: "")
         MaterialAlertDialogBuilder(context)
             .setTitle(R.string.please_set_up_your_goal_for_the_hobby)

@@ -21,31 +21,52 @@
         app:contentInsetRight="0dp"
         app:contentInsetEnd="0dp">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayoutToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
             <ImageButton
                 android:id="@+id/buttonNavigationUp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_back"
                 android:contentDescription="@string/navigation_up_button"
-                android:visibility="visible"/>
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
             <TextView
                 android:id="@+id/toolbarTitle"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
+                android:ellipsize="end"
+                android:lines="1"
                 android:textSize="30sp"
                 android:textColor="@color/black"
                 android:layout_gravity="start"
                 android:layout_marginStart="8dp"
                 android:text="@string/app_name"
+                app:layout_constraintStart_toEndOf="@id/buttonNavigationUp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/buttonNotification"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <ImageButton
+                android:id="@+id/buttonSettings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_settings"
+                android:background="?selectableItemBackgroundBorderless"
+                android:layout_marginEnd="4dp"
+                android:layout_gravity="end"
+                android:contentDescription="@string/open_user_profile"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/buttonUserProfile"
                 />
-
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
 
             <ImageButton
                 android:id="@+id/buttonUserProfile"
@@ -56,32 +77,25 @@
                 android:layout_gravity="end"
                 android:layout_marginEnd="8dp"
                 android:contentDescription="@string/open_settings"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 />
 
-            <ImageButton
-                android:id="@+id/buttonSettings"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_settings"
-                android:background="?selectableItemBackgroundBorderless"
-                android:layout_marginEnd="4dp"
-                android:layout_gravity="end"
-                android:contentDescription="@string/open_user_profile"/>
-
-
-        <ImageButton
-            android:id="@+id/buttonNotification"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/ic_notification_active"
-            android:background="?android:selectableItemBackgroundBorderless"
-            android:layout_gravity="end"
-            android:layout_marginEnd="4dp"
-            android:contentDescription="@string/turn_on_turn_off_notification_for_hobby"
-            android:visibility="gone"
-            />
-
-
+                <ImageButton
+                    android:id="@+id/buttonNotification"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_notification_active"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="4dp"
+                    android:contentDescription="@string/turn_on_turn_off_notification_for_hobby"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.appcompat.widget.Toolbar>
 
     <!-- FragmentContainerView -->

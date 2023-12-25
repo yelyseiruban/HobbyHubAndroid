@@ -54,4 +54,5 @@
     <string name="searchbar_hint">Hobby Name</string>
     <string name="navigation_up_button">Navigation Up Button</string>
     <string name="screen_details">{hobbyName}</string>
+    <string name="hobbies">Hobbies</string>
 </resources>

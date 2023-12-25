@@ -20,7 +20,6 @@
         android:id="@+id/userHobbyDetailsFragment"
         android:name="com.yelysei.hobbyharbor.screens.main.hobbydetails.UserHobbyDetailsFragment"
         tools:layout="@layout/fragment_user_hobby_details" >
-
         <argument
             android:name="uhId"
             app:argType="integer" />
@@ -32,6 +31,6 @@
     <fragment
         android:id="@+id/categorizedHobbiesFragment"
         android:name="com.yelysei.hobbyharbor.screens.main.categorizedhobbies.CategorizedHobbiesFragment"
-        android:label="Available Hobbies"
+        android:label="@string/hobbies"
         tools:layout="@layout/fragment_categorized_hobbies" />
 </navigation>
