@@ -30,7 +30,7 @@
     <string name="category_clicked">category clicked\n</string>
     <string name="try_again_pressed">Try again pressed\n</string>
     <string name="try_again_pressed_not_yet_implemented">Try again pressed but not yet implemented</string>
-    <string name="please_wait">Please wait...</string>
+    <string name="please_wait">Please wait…</string>
     <string name="back_to_categories">Back to categories</string>
     <string name="traveling">Traveling</string>
     <string name="add_custom_hobby_description">Add Custom Hobby Button (show new screen to specify your hobby)</string>
@@ -41,6 +41,8 @@
     <string name="add_new_experience">Add new experience:</string>
     <string name="from">From:</string>
     <string name="till">Till:</string>
+    <string name="from_picker">From</string>
+    <string name="till_picker">Till</string>
     <string name="from_date">From: %1$s</string>
     <string name="till_date">Till: %1$s</string>
     <string name="experience_time">Experience Time:</string>

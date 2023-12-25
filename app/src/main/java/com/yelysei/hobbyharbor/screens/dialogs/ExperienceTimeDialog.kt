@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentManager
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import com.yelysei.hobbyharbor.R
 import com.yelysei.hobbyharbor.databinding.ExperienceTimeDialogBinding
 import com.yelysei.hobbyharbor.utils.getFormattedDate
 import java.time.Instant
@@ -87,6 +88,11 @@ class ExperienceTimeDialog(
             setDate(SettingValue.TILL)
         }
 
+    private val datePickerDialogBuilder =
+        MaterialDatePicker.Builder.datePicker()
+            .setTitleText("From")
+            .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+
 
     /**
      * [datePickerDialog] and [timePickerDialog] are used to build Material Design Picker Dialogs
@@ -155,6 +161,8 @@ class ExperienceTimeDialog(
                     when (settingValue) {
                         SettingValue.FROM -> {
                             fromTime = selectedTimeInMilliseconds.toLong()
+                            settingValue = SettingValue.TILL
+                            datePickerDialog = datePickerDialogBuilder.setTitleText(R.string.till_picker).build()
                         }
                         SettingValue.TILL -> {
                             tillTime = selectedTimeInMilliseconds.toLong()
@@ -185,9 +193,9 @@ class ExperienceTimeDialog(
         ExperienceTimeDialogBinding.inflate(LayoutInflater.from(context))
     }
 
-    private lateinit var submitButton: Button
-    private lateinit var tvFrom: Button
-    private lateinit var tvTill: Button
+    private var submitButton: Button = binding.submitButton
+    private var tvFrom: Button = binding.tvFrom
+    private var tvTill: Button = binding.tvTill
 
 
     fun show() {
@@ -198,14 +206,12 @@ class ExperienceTimeDialog(
 
         dialog.show()
 
-        val datePickerDialogBuilder =
-            MaterialDatePicker.Builder.datePicker()
-                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+
+        datePickerDialog = datePickerDialogBuilder.build()
+        settingValue = SettingValue.FROM
+        renderSubmitButton()
 
         binding.tvTitle.text = title
-        submitButton = binding.submitButton
-        tvFrom = binding.tvFrom
-        tvTill = binding.tvTill
 
         tvFrom.setOnClickListener {
             if (fromDateTime != 0L) {
@@ -213,6 +219,7 @@ class ExperienceTimeDialog(
             } else {
                 datePickerDialogBuilder.setSelection(MaterialDatePicker.todayInUtcMilliseconds())
             }
+            datePickerDialogBuilder.setTitleText(R.string.from_picker)
             datePickerDialog = datePickerDialogBuilder.build()
             settingValue = SettingValue.FROM
             renderSubmitButton()
@@ -224,6 +231,7 @@ class ExperienceTimeDialog(
             } else {
                 datePickerDialogBuilder.setSelection(MaterialDatePicker.todayInUtcMilliseconds())
             }
+            datePickerDialogBuilder.setTitleText(R.string.till_picker)
             datePickerDialog = datePickerDialogBuilder.build()
             settingValue = SettingValue.TILL
             renderSubmitButton()
