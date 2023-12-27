@@ -13,7 +13,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 object Repositories {
     private lateinit var applicationContext: Context
 
-    private val database: AppDatabase by lazy<AppDatabase> {
+    private val database: AppDatabase by lazy {
         Room.databaseBuilder(applicationContext, AppDatabase::class.java, "database.db")
             .createFromAsset("initial_database.db")
             .build()

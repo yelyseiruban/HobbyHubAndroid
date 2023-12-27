@@ -23,20 +23,6 @@ fun getFormattedDate(milliSeconds: Long, dateFormat: String): String {
     return formatter.format(calendar.getTime())
 }
 
-fun getTimeInMillis(year: Int, month: Int, day: Int, hour: Int, minute: Int): Long {
-    val calendar = Calendar.getInstance()
-    calendar.set(Calendar.YEAR, year)
-    calendar.set(Calendar.MONTH, month - 1) // Calendar months are zero-based
-    calendar.set(Calendar.DAY_OF_MONTH, day)
-    calendar.set(Calendar.HOUR_OF_DAY, hour)
-    calendar.set(Calendar.MINUTE, minute)
-    calendar.set(Calendar.SECOND, 0)
-    calendar.set(Calendar.MILLISECOND, 0)
-
-    return calendar.timeInMillis
-}
-
-
 fun getDate(milliSeconds: Long): String {
     return getFormattedDate(milliSeconds, "dd.MM.yyyy")
 }

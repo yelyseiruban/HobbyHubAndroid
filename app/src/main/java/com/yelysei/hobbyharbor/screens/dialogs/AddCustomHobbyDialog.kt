@@ -90,7 +90,7 @@ class AddCustomHobbyDialog(
     private fun EditText.onIMAActionNextGoTo(editText: EditText) {
         this.setOnEditorActionListener { _, actionId, event ->
             if ((event != null && (event.keyCode == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_NEXT)) {
-                focusMaterialAutoCompleteTextView(editText)
+                focusEditText(editText)
                 return@setOnEditorActionListener true
             }
             return@setOnEditorActionListener false
@@ -120,12 +120,13 @@ class AddCustomHobbyDialog(
                 // Focus on the next AutoCompleteTextView (if available)
                 if (i < autoCompleteTextViews.size - 1) {
                     val autoCompleteTextView = autoCompleteTextViews[i + 1]
-                    focusMaterialAutoCompleteTextView(autoCompleteTextView)
+                    focusEditText(autoCompleteTextView)
                 }
             }
         }
     }
-    private fun focusMaterialAutoCompleteTextView(editText: EditText) {
+
+    private fun focusEditText(editText: EditText) {
         editText.requestFocus()
         if (editText is MaterialAutoCompleteTextView) {
             editText.showDropDown()
