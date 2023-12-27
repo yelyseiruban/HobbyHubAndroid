@@ -46,6 +46,5 @@ class SetGoalDialog(
 }
 
 fun Fragment.prepareDialog(previousGoal: Int? = null, onSubmitClickListener: OnSetGoalSubmitClickListener): SetGoalDialog {
-    val context = requireContext()
-    return SetGoalDialog(context, previousGoal, UiActionsImpl(context), onSubmitClickListener)
+    return SetGoalDialog(requireContext(), previousGoal, UiActionsImpl(requireContext()), onSubmitClickListener)
 }

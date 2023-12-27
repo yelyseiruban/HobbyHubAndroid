@@ -66,4 +66,6 @@ interface UserHobbiesDao {
     @Delete(entity = UserHobbyDbEntity::class)
     fun deleteUserHobby(userHobbyDbEntity: UserHobbyDbEntity)
 
+    @Query("SELECT EXISTS (SELECT * FROM user_hobbies WHERE user_hobbies.hobby_id = :hobbyId)")
+    fun userHobbyExists(hobbyId: Int): Boolean
 }

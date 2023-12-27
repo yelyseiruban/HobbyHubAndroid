@@ -40,7 +40,7 @@ class RoomHobbiesRepository(
         try {
             hobbiesDao.insertCustomHobby(HobbyDbEntity.fromHobby(hobby)).toInt()
         } catch (e: SQLiteConstraintException) {
-            throw HobbyAlreadyExistsException()
+            throw HobbyAlreadyExistsException(hobby.hobbyName)
         }
     }
 
@@ -48,6 +48,10 @@ class RoomHobbiesRepository(
         return@withContext hobbiesDao.findHobbiesByHobbyName(hobbyNameSearchInput)?.map {
             it.toHobby()
         } ?: emptyList()
+    }
+
+    override suspend fun hobbyExists(hobbyName: String): Boolean = withContext(ioDispatcher) {
+        hobbiesDao.hobbyExists(hobbyName)
     }
 
 }

@@ -24,4 +24,6 @@ interface UserHobbiesRepository  {
 
     suspend fun deleteUserHobby(userHobby: UserHobby)
 
+    suspend fun userHobbyExists(hobbyId: Int): Boolean
+
 }

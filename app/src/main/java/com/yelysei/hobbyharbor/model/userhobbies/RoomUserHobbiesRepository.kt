@@ -73,6 +73,10 @@ class RoomUserHobbiesRepository(
         userHobbiesDao.deleteUserHobby(UserHobbyDbEntity.fromUserHobby(userHobby))
     }
 
+    override suspend fun userHobbyExists(hobbyId: Int) = withContext(ioDispatcher) {
+        userHobbiesDao.userHobbyExists(hobbyId)
+    }
+
     override suspend fun getUserHobbies(): Flow<List<UserHobby>> = withContext(ioDispatcher) {
         val userHobbiesFlow = userHobbiesDao.getUserHobbies().map {
             it.map {userHobbiesInTuple ->

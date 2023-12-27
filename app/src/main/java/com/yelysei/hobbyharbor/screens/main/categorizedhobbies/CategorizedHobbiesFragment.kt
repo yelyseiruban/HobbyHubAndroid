@@ -1,6 +1,8 @@
 package com.yelysei.hobbyharbor.screens.main.categorizedhobbies
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +23,7 @@ import com.yelysei.hobbyharbor.screens.dialogs.prepareDialog
 import com.yelysei.hobbyharbor.screens.onTryAgain
 import com.yelysei.hobbyharbor.screens.recyclerViewConfigureView
 import com.yelysei.hobbyharbor.screens.renderSimpleResult
+import com.yelysei.hobbyharbor.screens.uiactions.UiActions
 import com.yelysei.hobbyharbor.screens.uiactions.UiActionsImpl
 import com.yelysei.hobbyharbor.utils.SearchBarOnTextChangeListener
 import com.yelysei.hobbyharbor.utils.viewModelCreator
@@ -28,6 +31,10 @@ import com.yelysei.hobbyharbor.utils.viewModelCreator
 class CategorizedHobbiesFragment : Fragment() {
     private val viewModel by viewModelCreator { CategorizedHobbiesViewModel(hobbiesRepository, userHobbiesRepository, UiActionsImpl(context)) }
     private lateinit var binding: FragmentCategorizedHobbiesBinding
+    private lateinit var addCustomHobbyDialog: AddCustomHobbyDialog
+    private val uiActions: UiActions by lazy {
+        UiActionsImpl(requireContext())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -82,13 +89,26 @@ class CategorizedHobbiesFragment : Fragment() {
 
         binding.buttonAddCustomHobby.setOnClickListener {
             val context = requireContext()
-            val addCustomHobbyDialog = AddCustomHobbyDialog(
+            addCustomHobbyDialog = AddCustomHobbyDialog(
                 context,
                 UiActionsImpl(context),
                 viewModel.categories.value.takeSuccess()
                     ?: throw IllegalStateException("Categories have not been loaded")
-            ) { hobby, goal ->
-                viewModel.addCustomHobby(hobby, goal)
+            ) { hobby ->
+                viewModel.checkIfHobbyExists(hobby.hobbyName)
+                    .observe(viewLifecycleOwner) { hobbyExists ->
+                        if (hobbyExists) {
+                            uiActions.toast(context.getString(R.string.hobby_exists_exception, hobby.hobbyName))
+                        } else {
+                            addCustomHobbyDialog.dialog.dismiss()
+                            Handler(Looper.getMainLooper()).postDelayed({
+                                SetGoalDialog(context, null, uiActions) { goal ->
+                                    viewModel.addCustomHobby(hobby, goal)
+                                    findNavController().navigate(R.id.userHobbiesFragment)
+                                }.show()
+                            }, 200)
+                        }
+                    }
             }
             addCustomHobbyDialog.show()
         }
@@ -97,11 +117,20 @@ class CategorizedHobbiesFragment : Fragment() {
     }
 
     private fun showAddHobbyDialog(hobby: Hobby) {
-        val setGoalDialog: SetGoalDialog = prepareDialog(onSubmitClickListener = {
-            viewModel.addUserHobby(hobby, it)
-            findNavController().navigate(R.id.userHobbiesFragment)
-        })
-        setGoalDialog.show()
+        if (!isAdded || isDetached) {
+            return
+        }
+        viewModel.checkIfUserHobbyExists(hobby.id ?: throw Exception("Hobby does not have Id")).observe(viewLifecycleOwner) { hobbyExists ->
+            if (hobbyExists) {
+                uiActions.toast(requireContext().getString(R.string.hobby_exists_exception, hobby.hobbyName))
+            } else {
+                val setGoalDialog: SetGoalDialog = prepareDialog(onSubmitClickListener = {
+                    viewModel.addUserHobby(hobby, it)
+                    findNavController().navigate(R.id.userHobbiesFragment)
+                })
+                setGoalDialog.show()
+            }
+        }
     }
 
     private fun configureAvailableHobbiesView() {

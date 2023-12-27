@@ -1,8 +1,6 @@
 package com.yelysei.hobbyharbor.screens.dialogs
 
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.inputmethod.EditorInfo
@@ -18,7 +16,7 @@ import com.yelysei.hobbyharbor.databinding.AddCustomHobbyDialogBinding
 import com.yelysei.hobbyharbor.model.hobbies.entities.Hobby
 import com.yelysei.hobbyharbor.screens.uiactions.UiActions
 
-typealias OnAddCustomHobbySubmitClickListener = (hobby: Hobby, goal: Int) -> Unit
+typealias OnAddCustomHobbySubmitClickListener = (hobby: Hobby) -> Unit
 class AddCustomHobbyDialog(
     private val context: Context,
     private val uiActions: UiActions,
@@ -38,6 +36,8 @@ class AddCustomHobbyDialog(
     private val editPlace: MaterialAutoCompleteTextView = binding.placeInput
     private val editPeople: MaterialAutoCompleteTextView = binding.peopleInput
 
+    lateinit var dialog: AlertDialog
+
     override fun show() {
         setUpMaterialAutoCompleteTextViews()
         val dialog = MaterialAlertDialogBuilder(context)
@@ -45,13 +45,14 @@ class AddCustomHobbyDialog(
             .setView(binding.root)
             .setPositiveButton("Submit", null)
             .show()
-        setUpIMEActions(dialog)
+        this.dialog = dialog
+        setUpIMEActions()
         dialog.getButton(AlertDialog.BUTTON_POSITIVE)?.setOnClickListener {
-                submitAddCustomHobby(dialog)
+                submitAddCustomHobby()
             }
         }
 
-    private fun submitAddCustomHobby(addHobbyDialog: AlertDialog) {
+    private fun submitAddCustomHobby() {
         try {
             validateFields()
             val categoryName = editCategoryName.text.toString()
@@ -66,26 +67,20 @@ class AddCustomHobbyDialog(
                 place = place?.lowercase(),
                 people = people?.lowercase()
             )
-            addHobbyDialog.dismiss()
-
-            Handler(Looper.getMainLooper()).postDelayed({
-                SetGoalDialog(context, null, uiActions) { goal ->
-                    onSubmitClickListener(hobby, goal)
-                }.show()
-            }, 200)
+            onSubmitClickListener(hobby)
         } catch (e: ValidationException) {
             uiActions.toast(e.message!!)
         }
     }
 
-    private fun setUpIMEActions(dialog: AlertDialog) {
+    private fun setUpIMEActions() {
         editCategoryName.onIMAActionNextGoTo(editHobbyName)
         editHobbyName.onIMAActionNextGoTo(editCost)
         editCost.onIMAActionNextGoTo(editPlace)
         editPlace.onIMAActionNextGoTo(editPeople)
         editPeople.setOnEditorActionListener { _, actionId, event ->
             if ((event != null && (event.keyCode == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                submitAddCustomHobby(dialog)
+                submitAddCustomHobby()
                 return@setOnEditorActionListener true
             }
             return@setOnEditorActionListener false

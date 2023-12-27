@@ -24,4 +24,7 @@ interface HobbiesDao {
     @Insert(entity = HobbyDbEntity::class)
     suspend fun insertCustomHobby(hobby: HobbyDbEntity): Long
 
+    @Query("SELECT EXISTS(SELECT * FROM hobbies WHERE hobby_name = :hobbyName)")
+    suspend fun hobbyExists(hobbyName: String): Boolean
+
 }

@@ -1,6 +1,8 @@
 package com.yelysei.hobbyharbor.screens.main.categorizedhobbies
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yelysei.hobbyharbor.model.HobbyAlreadyExistsException
@@ -91,6 +93,24 @@ class CategorizedHobbiesViewModel(
                 uiActions.toast("The hobby you are trying to add already exists")
             }
         }
+    }
+
+    fun checkIfHobbyExists(hobbyName: String): LiveData<Boolean> {
+        val result = MutableLiveData<Boolean>()
+
+        viewModelScope.launch {
+            result.postValue(hobbiesRepository.hobbyExists(hobbyName))
+        }
+        return result
+    }
+
+    fun checkIfUserHobbyExists(hobbyId: Int): LiveData<Boolean> {
+        val result = MutableLiveData<Boolean>()
+
+        viewModelScope.launch {
+            result.postValue(userHobbiesRepository.userHobbyExists(hobbyId))
+        }
+        return result
     }
 
 }
