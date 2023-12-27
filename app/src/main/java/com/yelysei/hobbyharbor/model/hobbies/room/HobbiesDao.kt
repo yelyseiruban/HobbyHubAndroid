@@ -22,6 +22,6 @@ interface HobbiesDao {
     fun getCategories(): Flow<List<String>>
 
     @Insert(entity = HobbyDbEntity::class)
-    suspend fun insertCustomHobby(hobby: HobbyDbEntity)
+    suspend fun insertCustomHobby(hobby: HobbyDbEntity): Long
 
 }

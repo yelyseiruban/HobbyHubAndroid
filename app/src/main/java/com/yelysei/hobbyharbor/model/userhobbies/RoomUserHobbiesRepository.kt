@@ -46,8 +46,6 @@ class RoomUserHobbiesRepository(
             }
     }
 
-
-
     override suspend fun addUserHobby(hobby: Hobby, goal: Int) = withContext(ioDispatcher) {
         val progressId = userHobbiesDao.insertProgress(ProgressDbEntity(id = 0, goal)).toInt()
         try {
@@ -55,7 +53,6 @@ class RoomUserHobbiesRepository(
         } catch (e: SQLiteConstraintException) {
             throw UserHobbyAlreadyAddedException()
         }
-
     }
 
     override suspend fun addUserHobbyExperience(progressId: Int,  action: Action) = withContext(ioDispatcher) {
@@ -82,7 +79,7 @@ class RoomUserHobbiesRepository(
                 val userHobby = userHobbiesInTuple.toUserHobby()
                 val actions = getActionsByProgressId(userHobby.progress.id)
                 userHobby.progress.actions = actions.first()
-                return@map userHobby
+                userHobby
             }
         }
         return@withContext userHobbiesFlow

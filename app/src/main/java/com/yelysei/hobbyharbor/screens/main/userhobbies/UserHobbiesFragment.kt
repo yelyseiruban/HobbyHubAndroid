@@ -39,7 +39,7 @@ class UserHobbiesFragment : Fragment() {
 
         binding = FragmentUserHobbiesBinding.inflate(layoutInflater, container, false)
 
-        adapter = UserHobbiesAdapter(recyclerView = binding.recyclerViewUserHobbies,
+        adapter = UserHobbiesAdapter(recyclerView = binding.recyclerViewUserHobbies, requireContext(),
             object : UserHobbyActionListener {
                 override fun onUserHobbyDetails(userHobby: UserHobby) {
                     openHobbyDetails(userHobby.id, userHobby.hobby.hobbyName)

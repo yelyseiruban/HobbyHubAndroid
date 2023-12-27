@@ -1,5 +1,7 @@
 package com.yelysei.hobbyharbor.model.hobbies
 
+import android.database.sqlite.SQLiteConstraintException
+import com.yelysei.hobbyharbor.model.HobbyAlreadyExistsException
 import com.yelysei.hobbyharbor.model.NoHobbiesBySpecifiedCategoryName
 import com.yelysei.hobbyharbor.model.hobbies.entities.Hobby
 import com.yelysei.hobbyharbor.model.hobbies.room.HobbiesDao
@@ -34,8 +36,12 @@ class RoomHobbiesRepository(
         } ?: throw NoHobbiesBySpecifiedCategoryName()
     }
 
-    override suspend fun addCustomHobby(hobby: Hobby) = withContext(ioDispatcher) {
-        hobbiesDao.insertCustomHobby(HobbyDbEntity.fromHobby(hobby))
+    override suspend fun addCustomHobby(hobby: Hobby): Int = withContext(ioDispatcher) {
+        try {
+            hobbiesDao.insertCustomHobby(HobbyDbEntity.fromHobby(hobby)).toInt()
+        } catch (e: SQLiteConstraintException) {
+            throw HobbyAlreadyExistsException()
+        }
     }
 
     override suspend fun getHobbiesByHobbyName(hobbyNameSearchInput: String): List<Hobby> = withContext(ioDispatcher) {

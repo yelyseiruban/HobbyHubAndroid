@@ -18,8 +18,8 @@ import com.yelysei.hobbyharbor.model.hobbies.entities.Hobby
 )
 data class HobbyDbEntity(
     @PrimaryKey(autoGenerate = true) val id: Int,
-    @ColumnInfo(name = "hobby_name") val hobbyName: String,
-    @ColumnInfo(name = "category_name") val categoryName: String,
+    @ColumnInfo(name = "hobby_name", collate = ColumnInfo.NOCASE) val hobbyName: String,
+    @ColumnInfo(name = "category_name", collate = ColumnInfo.NOCASE) val categoryName: String,
     val cost: String?,
     val place: String?,
     val people: String?

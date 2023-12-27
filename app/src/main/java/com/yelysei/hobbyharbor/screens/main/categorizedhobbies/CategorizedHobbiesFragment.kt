@@ -13,7 +13,9 @@ import com.yelysei.hobbyharbor.Repositories.userHobbiesRepository
 import com.yelysei.hobbyharbor.databinding.FragmentCategorizedHobbiesBinding
 import com.yelysei.hobbyharbor.model.hobbies.entities.Hobby
 import com.yelysei.hobbyharbor.model.results.SuccessResult
+import com.yelysei.hobbyharbor.model.results.takeSuccess
 import com.yelysei.hobbyharbor.screens.Configuration
+import com.yelysei.hobbyharbor.screens.dialogs.AddCustomHobbyDialog
 import com.yelysei.hobbyharbor.screens.dialogs.SetGoalDialog
 import com.yelysei.hobbyharbor.screens.dialogs.prepareDialog
 import com.yelysei.hobbyharbor.screens.onTryAgain
@@ -36,7 +38,7 @@ class CategorizedHobbiesFragment : Fragment() {
         binding = FragmentCategorizedHobbiesBinding.inflate(inflater, container, false)
 
         binding.searchView.editText
-            .setOnEditorActionListener { v, actionId, event ->
+            .setOnEditorActionListener { _, _, _ ->
                 return@setOnEditorActionListener false
             }
 
@@ -76,22 +78,30 @@ class CategorizedHobbiesFragment : Fragment() {
             viewModel.tryAgain()
         }
 
-
         configureAvailableHobbiesView()
 
-//        binding.buttonNavigateUp.setOnClickListener {
-//            findNavController().navigateUp()
-//        }
+        binding.buttonAddCustomHobby.setOnClickListener {
+            val context = requireContext()
+            val addCustomHobbyDialog = AddCustomHobbyDialog(
+                context,
+                UiActionsImpl(context),
+                viewModel.categories.value.takeSuccess()
+                    ?: throw IllegalStateException("Categories have not been loaded")
+            ) { hobby, goal ->
+                viewModel.addCustomHobby(hobby, goal)
+            }
+            addCustomHobbyDialog.show()
+        }
 
         return binding.root
     }
 
     private fun showAddHobbyDialog(hobby: Hobby) {
-        val setGoalDialog: SetGoalDialog = prepareDialog()
-        setGoalDialog.show {
+        val setGoalDialog: SetGoalDialog = prepareDialog(onSubmitClickListener = {
             viewModel.addUserHobby(hobby, it)
             findNavController().navigate(R.id.userHobbiesFragment)
-        }
+        })
+        setGoalDialog.show()
     }
 
     private fun configureAvailableHobbiesView() {

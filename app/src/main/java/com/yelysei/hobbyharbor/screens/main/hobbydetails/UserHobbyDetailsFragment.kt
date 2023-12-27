@@ -1,7 +1,6 @@
 package com.yelysei.hobbyharbor.screens.main.hobbydetails
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,11 +17,12 @@ import com.yelysei.hobbyharbor.model.userhobbies.entities.Action
 import com.yelysei.hobbyharbor.model.userhobbies.entities.getProgressInHours
 import com.yelysei.hobbyharbor.screens.Configuration
 import com.yelysei.hobbyharbor.screens.dialogs.ExperienceTimeDialog
+import com.yelysei.hobbyharbor.screens.dialogs.OnExperienceTimeSubmitClickListener
 import com.yelysei.hobbyharbor.screens.dialogs.SetGoalDialog
-import com.yelysei.hobbyharbor.screens.dialogs.SubmitClickListener
 import com.yelysei.hobbyharbor.screens.dialogs.prepareDialog
 import com.yelysei.hobbyharbor.screens.recyclerViewConfigureView
 import com.yelysei.hobbyharbor.screens.renderSimpleResult
+import com.yelysei.hobbyharbor.utils.CustomTypeface
 import com.yelysei.hobbyharbor.utils.viewModelCreator
 
 class UserHobbyDetailsFragment: Fragment(){
@@ -57,17 +57,16 @@ class UserHobbyDetailsFragment: Fragment(){
         binding.recyclerViewUserActions.adapter = adapter
 
         viewModel.userHobby.observe(viewLifecycleOwner) { result ->
-            Log.d("debug", "user hobby chagned")
             renderSimpleResult(binding.root, result) { userHobby ->
                 binding.tvGoalValue.text = userHobby.progress.goal.toString()
                 binding.tvTotalValue.text = userHobby.getProgressInHours().toString()
                 adapter.userActions = userHobby.progress.actions
 
                 binding.buttonEditGoal.setOnClickListener {
-                    val setGoalDialog: SetGoalDialog = prepareDialog(userHobby.progress.goal)
-                    setGoalDialog.show {
+                    val setGoalDialog: SetGoalDialog = prepareDialog(userHobby.progress.goal) {
                         viewModel.updateProgress(it)
                     }
+                    setGoalDialog.show()
                 }
             }
         }
@@ -92,7 +91,7 @@ class UserHobbyDetailsFragment: Fragment(){
 
     private fun onAddExperienceClick() {
         val dialogTitle = "Add new experience:"
-        val submitClickListener: SubmitClickListener = {from: Long, till: Long ->
+        val submitClickListener: OnExperienceTimeSubmitClickListener = { from: Long, till: Long ->
             try {
                 viewModel.addUserExperience(from, till)
                 Toast.makeText(context, "New experience has been added", Toast.LENGTH_SHORT).show()
@@ -103,7 +102,7 @@ class UserHobbyDetailsFragment: Fragment(){
         showExperienceTimeDialog(dialogTitle, submitClickListener)
     }
 
-    private fun showExperienceTimeDialog(title: String, submitClickListener: SubmitClickListener, previousFrom: Long? = null, previousTill: Long? = null) {
+    private fun showExperienceTimeDialog(title: String, submitClickListener: OnExperienceTimeSubmitClickListener, previousFrom: Long? = null, previousTill: Long? = null) {
         val experienceTimeDialog = ExperienceTimeDialog(title, requireContext(), submitClickListener, parentFragmentManager)
         experienceTimeDialog.show()
         if (previousFrom != null && previousTill != null) {
@@ -115,6 +114,6 @@ class UserHobbyDetailsFragment: Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val hobbyName = arguments?.getString("hobbyName") ?: getString(R.string.app_name)
-        requireActivity().findViewById<TextView>(R.id.toolbarTitle).text = hobbyName
+        requireActivity().findViewById<TextView>(R.id.toolbarTitle).text = CustomTypeface.capitalizeEachWord(hobbyName)
     }
 }

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.yelysei.hobbyharbor.R
 import com.yelysei.hobbyharbor.databinding.ItemHobbyBinding
 import com.yelysei.hobbyharbor.model.hobbies.entities.Hobby
+import com.yelysei.hobbyharbor.utils.CustomTypeface
 
 class HobbiesAdapter(
     private val context: Context,
@@ -73,18 +74,18 @@ class HobbiesAdapter(
         when(holder) {
             is HobbyViewHolder -> {
                 holder.binding.categoryContainer.visibility = View.GONE
-                holder.binding.tvHobbyName.text = hobbyItem.hobby.hobbyName
+                holder.binding.tvHobbyName.text = CustomTypeface.capitalizeEachWord(hobbyItem.hobby.hobbyName)
             }
             is CategoryViewHolder -> {
                 holder.binding.categoryContainer.visibility = View.VISIBLE
-                holder.binding.categoryContainer.text = hobbyItem.hobby.categoryName
+                holder.binding.categoryContainer.text = CustomTypeface.capitalizeEachWord(hobbyItem.hobby.categoryName)
                 holder.binding.categoryContainer.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                    ContextCompat.getDrawable(context, R.drawable.ic_default_category),
+                    ContextCompat.getDrawable(context, icons[hobbyItem.hobby.categoryName] ?: R.drawable.ic_default_category),
                     null,
                     null,
                     null
                 )
-                holder.binding.tvHobbyName.text = hobbyItem.hobby.hobbyName
+                holder.binding.tvHobbyName.text = CustomTypeface.capitalizeEachWord(hobbyItem.hobby.hobbyName)
             }
         }
     }

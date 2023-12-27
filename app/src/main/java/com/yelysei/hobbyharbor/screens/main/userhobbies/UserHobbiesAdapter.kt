@@ -1,5 +1,7 @@
 package com.yelysei.hobbyharbor.screens.main.userhobbies
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +11,7 @@ import com.yelysei.hobbyharbor.R
 import com.yelysei.hobbyharbor.databinding.ItemUserHobbyBinding
 import com.yelysei.hobbyharbor.model.userhobbies.entities.UserHobby
 import com.yelysei.hobbyharbor.model.userhobbies.entities.getProgressInHours
+import com.yelysei.hobbyharbor.utils.CustomTypeface
 
 interface UserHobbyActionListener {
     fun onUserHobbyDetails(userHobby: UserHobby)
@@ -17,6 +20,7 @@ interface UserHobbyActionListener {
 
 class UserHobbiesAdapter(
     recyclerView: RecyclerView,
+    private val context: Context,
     private val actionListener: UserHobbyActionListener
 ) : RecyclerView.Adapter<UserHobbiesAdapter.UserHobbiesViewHolder>(), View.OnClickListener {
 
@@ -46,6 +50,7 @@ class UserHobbiesAdapter(
     }
 
     var userHobbies: List<UserHobby> = emptyList()
+        @SuppressLint("NotifyDataSetChanged")
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -80,7 +85,8 @@ class UserHobbiesAdapter(
         val progressPercent = (uHobby.getProgressInHours() / uHobby.progress.goal.toDouble()) * 100
         with(holder.binding) {
             holder.itemView.tag = uHobby
-            hobbyName.text = uHobby.hobby.hobbyName
+            hobbyName.text = CustomTypeface.capitalizeEachWord(uHobby.hobby.hobbyName)
+            categoryName.text = context.getString(R.string.wrappedInBrackerts, CustomTypeface.capitalizeEachWord(uHobby.hobby.categoryName))
             currentProgress.text = uHobby.getProgressInHours().toString()
             progressGoal.text = uHobby.progress.goal.toString()
             progressBar.progress = progressPercent.toInt()

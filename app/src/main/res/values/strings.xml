@@ -55,4 +55,11 @@
     <string name="navigation_up_button">Navigation Up Button</string>
     <string name="screen_details">{hobbyName}</string>
     <string name="hobbies">Hobbies</string>
+    <string name="category_name_hint">Category Name *</string>
+    <string name="hobby_name_hint">Hobby Name *</string>
+    <string name="cost_hint">Cost</string>
+    <string name="place_hint">Place</string>
+    <string name="people_hint">People</string>
+    <string name="field_is_required_error">%1$s field is required</string>
+    <string name="wrappedInBrackerts">[%1$s]</string>
 </resources>

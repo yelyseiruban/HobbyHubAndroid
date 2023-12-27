@@ -19,7 +19,7 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.Calendar
 
-typealias SubmitClickListener = (fromDateTime: Long, tillDateTime: Long) -> Unit
+typealias OnExperienceTimeSubmitClickListener = (fromDateTime: Long, tillDateTime: Long) -> Unit
 
 /**
  * Experience Time Dialog is used to add new user experience or change existing
@@ -32,10 +32,10 @@ typealias SubmitClickListener = (fromDateTime: Long, tillDateTime: Long) -> Unit
 class ExperienceTimeDialog(
     private val title: String,
     private val context: Context,
-    private val onSubmitClick: SubmitClickListener,
+    private val onSubmitClick: OnExperienceTimeSubmitClickListener,
     private val fragmentManager: FragmentManager
 
-)  {
+) : com.yelysei.hobbyharbor.screens.dialogs.Dialog  {
     /**
      * Describes current which value is currently setting [SettingValue.FROM] or [SettingValue.TILL]
      */
@@ -198,7 +198,7 @@ class ExperienceTimeDialog(
     private var tvTill: Button = binding.tvTill
 
 
-    fun show() {
+    override fun show() {
         val dialog = Dialog(context)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(true)

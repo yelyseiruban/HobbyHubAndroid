@@ -3,6 +3,7 @@ package com.yelysei.hobbyharbor.screens.main.categorizedhobbies
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.yelysei.hobbyharbor.model.HobbyAlreadyExistsException
 import com.yelysei.hobbyharbor.model.UserHobbyAlreadyAddedException
 import com.yelysei.hobbyharbor.model.hobbies.HobbiesRepository
 import com.yelysei.hobbyharbor.model.hobbies.entities.Hobby
@@ -12,6 +13,9 @@ import com.yelysei.hobbyharbor.model.userhobbies.UserHobbiesRepository
 import com.yelysei.hobbyharbor.screens.main.LiveResult
 import com.yelysei.hobbyharbor.screens.main.MutableLiveResult
 import com.yelysei.hobbyharbor.screens.uiactions.UiActions
+import com.yelysei.hobbyharbor.utils.CustomTypeface
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 class CategorizedHobbiesViewModel(
@@ -25,6 +29,9 @@ class CategorizedHobbiesViewModel(
 
     private val _searchedHobbies = MutableLiveResult<List<Hobby>>(SuccessResult(emptyList()))
     val searchedHobbies: LiveResult<List<Hobby>> = _searchedHobbies
+
+    private val _categories = MutableLiveResult<List<String>>(PendingResult())
+    val categories: LiveResult<List<String>> = _categories
 
 
     init {
@@ -57,14 +64,33 @@ class CategorizedHobbiesViewModel(
 
     private fun load() {
         viewModelScope.launch {
-            hobbiesRepository.getCurrentHobbies().collect{
-                _categorizedHobbies.value = SuccessResult(it)
-            }
+            combine(
+                hobbiesRepository.getCurrentHobbies(),
+                hobbiesRepository.getCurrentCategories()
+            ) { categorizedHobbies, categories ->
+                _categorizedHobbies.value = SuccessResult(categorizedHobbies)
+                val capitalizedCategories = categories.map {
+                    CustomTypeface.capitalizeEachWord(it).toString()
+                }
+                _categories.value = SuccessResult(capitalizedCategories)
+            }.collect()
         }
     }
 
     fun tryAgain() {
         load()
+    }
+
+    fun addCustomHobby(hobby: Hobby, goal: Int) {
+        viewModelScope.launch {
+            try {
+                val id = hobbiesRepository.addCustomHobby(hobby)
+                hobby.id = id
+                addUserHobby(hobby, goal)
+            } catch (e: HobbyAlreadyExistsException) {
+                uiActions.toast("The hobby you are trying to add already exists")
+            }
+        }
     }
 
 }

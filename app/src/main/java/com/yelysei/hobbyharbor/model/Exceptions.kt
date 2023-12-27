@@ -2,15 +2,9 @@ package com.yelysei.hobbyharbor.model
 
 open class AppException : RuntimeException()
 
-class HobbyDoesNotExistException : AppException()
-
-class UserHobbyDoesNotExistException : AppException()
-
 class NoUserHobbiesFoundException : AppException()
 
 class NoHobbyIdException: AppException()
-
-class InsertUserHobbyException: AppException()
 
 class UserHobbyAlreadyAddedException: AppException()
 
@@ -18,15 +12,13 @@ class NoHobbiesBySpecifiedCategoryName: AppException()
 
 class NoActionsByProgressIdException : AppException()
 
-class HobbyNameAlreadyExistsException : AppException()
+class HobbyAlreadyExistsException : AppException()
 
-class HobbyStartingProgressGreaterThanDesiredException : AppException()
-
-class AddHobbyStartingProgressLowerThanDesiredException : AppException()
 
 class UserHobbyIsNotLoadedException : AppException()
 
-class NoSearchedHobbiesFoundException: AppException()
+class SetGoalIsLessThanAchievedProgress: AppException()
+
 
 /*
 Exepctions handled by input:

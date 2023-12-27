@@ -11,17 +11,18 @@ import com.yelysei.hobbyharbor.screens.uiactions.UiActionsImpl
 import com.yelysei.hobbyharbor.utils.KeyboardUtils
 
 
-typealias OnSubmitClickListener = (goal: Int) -> Unit
+typealias OnSetGoalSubmitClickListener = (goal: Int) -> Unit
 
 class SetGoalDialog(
     private val context: Context,
     private val previousGoal: Int?,
-    private val uiActions: UiActions
-) {
+    private val uiActions: UiActions,
+    private val onSubmitClickListener: OnSetGoalSubmitClickListener
+) : Dialog{
     private val binding: SetGoalDialogBinding by lazy {
         SetGoalDialogBinding.inflate(LayoutInflater.from(context))
     }
-    fun show(onSubmitClickListener: OnSubmitClickListener) {
+    override fun show() {
         val editGoal = binding.goal
         editGoal.requestFocus()
         editGoal.postDelayed({
@@ -44,7 +45,7 @@ class SetGoalDialog(
     }
 }
 
-fun Fragment.prepareDialog(previousGoal: Int? = null): SetGoalDialog {
+fun Fragment.prepareDialog(previousGoal: Int? = null, onSubmitClickListener: OnSetGoalSubmitClickListener): SetGoalDialog {
     val context = requireContext()
-    return SetGoalDialog(context, previousGoal, UiActionsImpl(context))
+    return SetGoalDialog(context, previousGoal, UiActionsImpl(context), onSubmitClickListener)
 }

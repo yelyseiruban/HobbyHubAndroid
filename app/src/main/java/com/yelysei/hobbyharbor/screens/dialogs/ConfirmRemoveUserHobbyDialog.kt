@@ -9,8 +9,8 @@ class ConfirmRemoveUserHobbyDialog(
     private val userHobbyName: String,
     private val onPositiveClickListener: OnClickListener,
     private val onNegativeClickListener: OnClickListener
-) {
-    fun show() {
+) : Dialog{
+    override fun show() {
         MaterialAlertDialogBuilder(context)
             .setTitle(context.getString(R.string.remove_user_hobby_title, userHobbyName))
             .setMessage(R.string.remove_user_hobby_message)

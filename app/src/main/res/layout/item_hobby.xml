@@ -30,6 +30,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:background="@color/gray"
+        android:ellipsize="end"
+        android:lines="1"
         tools:text="Traveling"
         android:textSize="30sp"
         android:gravity="center_vertical"

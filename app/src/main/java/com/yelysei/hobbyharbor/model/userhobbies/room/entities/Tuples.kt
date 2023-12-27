@@ -20,9 +20,9 @@ data class UserHobbiesInTuple(
     @ColumnInfo(name = "progress_id") val progressId: Int,
     @ColumnInfo(name = "hobby_name") val hobbyName: String,
     @ColumnInfo(name = "category_name") val categoryName: String,
-    val cost: String,
-    val place: String,
-    val people: String,
+    val cost: String?,
+    val place: String?,
+    val people: String?,
     val goal: Int
 ) {
         fun toUserHobby(): UserHobby {

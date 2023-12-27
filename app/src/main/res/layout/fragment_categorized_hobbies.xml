@@ -45,7 +45,7 @@
 
 
     <ImageButton
-        android:id="@+id/buttonAddUserHobby"
+        android:id="@+id/buttonAddCustomHobby"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:src="@drawable/ic_add"
