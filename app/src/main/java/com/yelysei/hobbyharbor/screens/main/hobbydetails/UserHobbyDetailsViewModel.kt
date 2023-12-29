@@ -12,10 +12,8 @@ import com.yelysei.hobbyharbor.model.userhobbies.entities.UserHobby
 import com.yelysei.hobbyharbor.model.userhobbies.room.entities.ProgressDbEntity
 import com.yelysei.hobbyharbor.screens.main.LiveResult
 import com.yelysei.hobbyharbor.screens.main.MutableLiveResult
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class UserHobbyDetailsViewModel(
     uhId: Int,
     private val userHobbiesRepository: UserHobbiesRepository,
@@ -32,20 +30,26 @@ class UserHobbyDetailsViewModel(
         }
     }
 
-    private fun userExperienceInteraction(interaction: UserExperienceInteraction, from: Long, till: Long, id: Int? = null) {
+    private fun userExperienceInteraction(
+        interaction: UserExperienceInteraction,
+        from: Long,
+        till: Long,
+        id: Int? = null
+    ) {
         val userHobby = _userHobby.value.takeSuccess() ?: throw UserHobbyIsNotLoadedException()
         val progressId = userHobby.progress.id
 
-        val action = Action (
+        val action = Action(
             id = id ?: 0,
             startTime = from,
             endTime = till
         )
         viewModelScope.launch {
-            when(interaction) {
+            when (interaction) {
                 UserExperienceInteraction.ADD -> {
                     userHobbiesRepository.addUserHobbyExperience(progressId, action)
                 }
+
                 UserExperienceInteraction.UPDATE -> {
                     userHobbiesRepository.updateUserHobbyExperience(progressId, action)
                 }
@@ -66,7 +70,7 @@ class UserHobbyDetailsViewModel(
         val userHobby = _userHobby.value.takeSuccess() ?: throw UserHobbyIsNotLoadedException()
         val progressId = userHobby.progress.id
 
-        val progressDbEntity = ProgressDbEntity (
+        val progressDbEntity = ProgressDbEntity(
             id = progressId,
             goal = goal
         )

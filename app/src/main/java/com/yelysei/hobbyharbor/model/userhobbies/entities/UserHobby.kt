@@ -9,7 +9,7 @@ data class UserHobby(
     var progress: Progress
 )
 
-fun UserHobby.getProgressInHours() : Float {
+fun UserHobby.getProgressInHours(): Float {
     var progressInMilliseconds = 0f
     this.progress.actions.forEach { action ->
         progressInMilliseconds += (action.endTime - action.startTime)

@@ -18,10 +18,11 @@ class SetGoalDialog(
     private val previousGoal: Int?,
     private val uiActions: UiActions,
     private val onSubmitClickListener: OnSetGoalSubmitClickListener
-) : Dialog{
+) : Dialog {
     private val binding: SetGoalDialogBinding by lazy {
         SetGoalDialogBinding.inflate(LayoutInflater.from(context))
     }
+
     override fun show() {
         val editGoal = binding.goal
         editGoal.requestFocus()
@@ -45,6 +46,14 @@ class SetGoalDialog(
     }
 }
 
-fun Fragment.prepareDialog(previousGoal: Int? = null, onSubmitClickListener: OnSetGoalSubmitClickListener): SetGoalDialog {
-    return SetGoalDialog(requireContext(), previousGoal, UiActionsImpl(requireContext()), onSubmitClickListener)
+fun Fragment.prepareDialog(
+    previousGoal: Int? = null,
+    onSubmitClickListener: OnSetGoalSubmitClickListener
+): SetGoalDialog {
+    return SetGoalDialog(
+        requireContext(),
+        previousGoal,
+        UiActionsImpl(requireContext()),
+        onSubmitClickListener
+    )
 }

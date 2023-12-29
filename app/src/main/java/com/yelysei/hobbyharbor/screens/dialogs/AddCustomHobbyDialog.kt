@@ -17,12 +17,13 @@ import com.yelysei.hobbyharbor.model.hobbies.entities.Hobby
 import com.yelysei.hobbyharbor.screens.uiactions.UiActions
 
 typealias OnAddCustomHobbySubmitClickListener = (hobby: Hobby) -> Unit
+
 class AddCustomHobbyDialog(
     private val context: Context,
     private val uiActions: UiActions,
     private val categoryItems: List<String>,
     private val onSubmitClickListener: OnAddCustomHobbySubmitClickListener,
-) : Dialog{
+) : Dialog {
 
     private val binding: AddCustomHobbyDialogBinding by lazy {
         AddCustomHobbyDialogBinding.inflate(LayoutInflater.from(context))
@@ -41,25 +42,37 @@ class AddCustomHobbyDialog(
     override fun show() {
         setUpMaterialAutoCompleteTextViews()
         val dialog = MaterialAlertDialogBuilder(context)
-            .setTitle(R.string.please_set_up_your_goal_for_the_hobby)
+            .setTitle(R.string.add_custom_hobby_title)
             .setView(binding.root)
             .setPositiveButton("Submit", null)
             .show()
         this.dialog = dialog
         setUpIMEActions()
         dialog.getButton(AlertDialog.BUTTON_POSITIVE)?.setOnClickListener {
-                submitAddCustomHobby()
-            }
+            submitAddCustomHobby()
         }
+    }
 
     private fun submitAddCustomHobby() {
         try {
             validateFields()
             val categoryName = editCategoryName.text.toString()
             val hobbyName = editHobbyName.text.toString()
-            val cost = if (editCost.text.toString() == "") { null } else { editCost.text.toString() }
-            val place = if (editPlace.text.toString() == "") { null } else { editPlace.text.toString() }
-            val people = if (editPeople.text.toString() == "") { null } else { editPeople.text.toString() }
+            val cost = if (editCost.text.toString() == "") {
+                null
+            } else {
+                editCost.text.toString()
+            }
+            val place = if (editPlace.text.toString() == "") {
+                null
+            } else {
+                editPlace.text.toString()
+            }
+            val people = if (editPeople.text.toString() == "") {
+                null
+            } else {
+                editPeople.text.toString()
+            }
             val hobby = Hobby(
                 hobbyName = hobbyName.lowercase(),
                 categoryName = categoryName.lowercase(),
@@ -96,6 +109,7 @@ class AddCustomHobbyDialog(
             return@setOnEditorActionListener false
         }
     }
+
     private fun setUpMaterialAutoCompleteTextViews() {
         val costItems = listOf("Cheap", "Affordable", "Expensive")
         val placeItems = listOf("Home", "Outdoor", "Special")
@@ -106,10 +120,15 @@ class AddCustomHobbyDialog(
         setUpMaterialAutoCompleteTextView(editPeople, peopleItems)
         setClickListenersOnItemSelected()
     }
-    private fun setUpMaterialAutoCompleteTextView(materialAutoCompleteTextView: MaterialAutoCompleteTextView, items: List<String>) {
+
+    private fun setUpMaterialAutoCompleteTextView(
+        materialAutoCompleteTextView: MaterialAutoCompleteTextView,
+        items: List<String>
+    ) {
         val adapter = ArrayAdapter(context, R.layout.list_item, items)
         materialAutoCompleteTextView.setAdapter(adapter)
     }
+
     private fun setClickListenersOnItemSelected() {
         val autoCompleteTextViews = listOf(editCost, editPlace, editPeople)
         editCategoryName.setOnItemClickListener { _, _, _, _ ->
@@ -132,11 +151,16 @@ class AddCustomHobbyDialog(
             editText.showDropDown()
         }
     }
+
     /**
      * @return true if there is error (editText is not Null or Blank)
      * @return false if there is no error (editText is filled)
      */
-    private fun displayError (textInputLayout: TextInputLayout, editText: EditText, fieldName: String): Boolean {
+    private fun displayError(
+        textInputLayout: TextInputLayout,
+        editText: EditText,
+        fieldName: String
+    ): Boolean {
         return if (editText.text.isNullOrBlank()) {
             textInputLayout.error = context.getString(R.string.field_is_required_error, fieldName)
             true
@@ -147,12 +171,14 @@ class AddCustomHobbyDialog(
     }
 
     private fun validateFields() {
-        val categoryNameIsEmpty = displayError(categoryNameLayout, editCategoryName, "Category Name")
+        val categoryNameIsEmpty =
+            displayError(categoryNameLayout, editCategoryName, "Category Name")
         val hobbyNameIsEmpty = displayError(hobbyNameLayout, editHobbyName, "Hobby Name")
         if (categoryNameIsEmpty || hobbyNameIsEmpty) {
             throw ValidationException("It is not possible to add new custom hobby when required fields are not filled")
         }
     }
+
     private class ValidationException(message: String) : Exception(message)
 }
 

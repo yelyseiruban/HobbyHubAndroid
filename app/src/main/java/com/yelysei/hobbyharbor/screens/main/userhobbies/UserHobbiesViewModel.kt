@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 
 class UserHobbiesViewModel(
     private val userHobbiesRepository: UserHobbiesRepository
-) : ViewModel(){
+) : ViewModel() {
 
 
     private val _userHobbies = MutableLiveResult<List<UserHobby>>(PendingResult())
@@ -27,9 +27,9 @@ class UserHobbiesViewModel(
         }
     }
 
-    fun removeUserHobby(userHobby: UserHobby) {
+    fun removeUserHobbies(userHobbies: List<UserHobby>) {
         viewModelScope.launch {
-            userHobbiesRepository.deleteUserHobby(userHobby)
+            userHobbiesRepository.deleteUserHobbies(userHobbies)
         }
     }
 }

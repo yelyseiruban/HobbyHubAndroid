@@ -22,6 +22,7 @@ object Repositories {
     val hobbiesRepository: HobbiesRepository by lazy {
         RoomHobbiesRepository(database.getHobbiesDao(), Dispatchers.IO, Dispatchers.Default)
     }
+
     @OptIn(ExperimentalCoroutinesApi::class)
     val userHobbiesRepository: UserHobbiesRepository by lazy {
         RoomUserHobbiesRepository(database.getUserHobbiesDao(), Dispatchers.IO)

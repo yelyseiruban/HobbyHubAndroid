@@ -3,7 +3,7 @@ package com.yelysei.hobbyharbor.model.hobbies
 import com.yelysei.hobbyharbor.model.hobbies.entities.Hobby
 import kotlinx.coroutines.flow.Flow
 
-interface HobbiesRepository  {
+interface HobbiesRepository {
     suspend fun getCurrentHobbies(): Flow<List<Hobby>>
 
     suspend fun getCurrentCategories(): Flow<List<String>>

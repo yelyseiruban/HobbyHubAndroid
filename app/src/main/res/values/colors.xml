@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="gray">#D9D9D9</color>
-    <color name="lightGray">#EAEAEA</color>
-    <color name="darkGray">#B5B5B5</color>
-    <color name="progressColor">#BA000000</color>
-    <color name="primaryColor">#009688</color>
-    <color name="yellow">#FFFF00</color>
-    <color name="red">#FF0000</color>
-    <color name="blue">#0000FF</color>
+    <color name="lightThemeGreenActionBar">#88AB8E</color>
+    <color name="lightThemeGreenUnderActionBar">#64876A</color>
+    <color name="lightThemeUserHobbyBackground">#B5D8BC</color>
+    <color name="lightThemeTouchUserHobbyBackground">#C6DACA</color>
+    <color name="lightThemeSelectedUserHobbyBackground">#88AB8E</color>
+    <color name="lightThemeTouchSelectedUserHobbyBackground">#98AA9B</color>
+    <color name="lightThemeLightOrange">#FBF6EB</color>
+    <color name="lightThemeAccentOrange">#DF7861</color>
+    <color name="lightThemeDialogBackground">#F2DFD3</color>
+    <color name="lightThemeTouchOrange">#F6E3D6</color>
+    <color name="lightThemeDropDownBackground">#F3DAC9</color>
+    <color name="lightThemeUserActionBackground">#FBF6EB</color>
+    <color name="lightThemeTouchUserActionBackground">#E3DED4</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="gray">#A7A6A6</color>
 </resources>

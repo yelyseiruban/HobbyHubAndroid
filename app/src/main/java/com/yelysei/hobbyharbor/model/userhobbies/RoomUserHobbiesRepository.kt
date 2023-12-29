@@ -49,29 +49,43 @@ class RoomUserHobbiesRepository(
     override suspend fun addUserHobby(hobby: Hobby, goal: Int) = withContext(ioDispatcher) {
         val progressId = userHobbiesDao.insertProgress(ProgressDbEntity(id = 0, goal)).toInt()
         try {
-            userHobbiesDao.insertUserHobby(UserHobbyDbEntity(id = 0, hobbyId = hobby.id ?: throw NoHobbyIdException(), progressId = progressId))
+            userHobbiesDao.insertUserHobby(
+                UserHobbyDbEntity(
+                    id = 0,
+                    hobbyId = hobby.id ?: throw NoHobbyIdException(),
+                    progressId = progressId
+                )
+            )
         } catch (e: SQLiteConstraintException) {
             throw UserHobbyAlreadyAddedException()
         }
     }
 
-    override suspend fun addUserHobbyExperience(progressId: Int,  action: Action) = withContext(ioDispatcher) {
-        userHobbiesDao.insertUserHobbyAction(ActionDbEntity.fromAction(action, progressId))
-    }
+    override suspend fun addUserHobbyExperience(progressId: Int, action: Action) =
+        withContext(ioDispatcher) {
+            userHobbiesDao.insertUserHobbyAction(ActionDbEntity.fromAction(action, progressId))
+        }
 
-    override suspend fun updateUserHobbyExperience(progressId: Int, action: Action) = withContext(ioDispatcher) {
-        userHobbiesDao.updateUserHobbyAction(ActionDbEntity.fromAction(action, progressId))
-    }
+    override suspend fun updateUserHobbyExperience(progressId: Int, action: Action) =
+        withContext(ioDispatcher) {
+            userHobbiesDao.updateUserHobbyAction(ActionDbEntity.fromAction(action, progressId))
+        }
 
-    override suspend fun updateProgress(progressDbEntity: ProgressDbEntity): Unit = withContext(ioDispatcher) {
-        Log.d("Repository", "Updating progress: $progressDbEntity")
-        userHobbiesDao.updateProgress(progressDbEntity)
-        Log.d("Repository", "Progress updated successfully.")
-    }
+    override suspend fun updateProgress(progressDbEntity: ProgressDbEntity): Unit =
+        withContext(ioDispatcher) {
+            Log.d("Repository", "Updating progress: $progressDbEntity")
+            userHobbiesDao.updateProgress(progressDbEntity)
+            Log.d("Repository", "Progress updated successfully.")
+        }
 
     override suspend fun deleteUserHobby(userHobby: UserHobby) = withContext(ioDispatcher) {
         userHobbiesDao.deleteUserHobby(UserHobbyDbEntity.fromUserHobby(userHobby))
     }
+
+    override suspend fun deleteUserHobbies(userHobbies: List<UserHobby>) =
+        withContext(ioDispatcher) {
+            userHobbiesDao.deleteUserHobbies(userHobbies.map { UserHobbyDbEntity.fromUserHobby(it) })
+        }
 
     override suspend fun userHobbyExists(hobbyId: Int) = withContext(ioDispatcher) {
         userHobbiesDao.userHobbyExists(hobbyId)
@@ -79,7 +93,7 @@ class RoomUserHobbiesRepository(
 
     override suspend fun getUserHobbies(): Flow<List<UserHobby>> = withContext(ioDispatcher) {
         val userHobbiesFlow = userHobbiesDao.getUserHobbies().map {
-            it.map {userHobbiesInTuple ->
+            it.map { userHobbiesInTuple ->
                 val userHobby = userHobbiesInTuple.toUserHobby()
                 val actions = getActionsByProgressId(userHobby.progress.id)
                 userHobby.progress.actions = actions.first()
@@ -89,18 +103,19 @@ class RoomUserHobbiesRepository(
         return@withContext userHobbiesFlow
     }
 
-   private suspend fun getProgressById(id: Int): Flow<Progress> = withContext(ioDispatcher) {
+    private suspend fun getProgressById(id: Int): Flow<Progress> = withContext(ioDispatcher) {
         return@withContext userHobbiesDao.findProgressById(id).map {
             it.toProgress()
         }
     }
 
-   private suspend fun getActionsByProgressId(progressId: Int): Flow<List<Action>> = withContext(ioDispatcher) {
-        val actionsDbEntityFlow = userHobbiesDao.findUserActionsByProgressId(progressId)
-        return@withContext actionsDbEntityFlow?.map {actionsDbEntity ->
-            actionsDbEntity.map {
-                it.toAction()
-            }
-        } ?: throw NoActionsByProgressIdException()
-    }
+    private suspend fun getActionsByProgressId(progressId: Int): Flow<List<Action>> =
+        withContext(ioDispatcher) {
+            val actionsDbEntityFlow = userHobbiesDao.findUserActionsByProgressId(progressId)
+            return@withContext actionsDbEntityFlow?.map { actionsDbEntity ->
+                actionsDbEntity.map {
+                    it.toAction()
+                }
+            } ?: throw NoActionsByProgressIdException()
+        }
 }

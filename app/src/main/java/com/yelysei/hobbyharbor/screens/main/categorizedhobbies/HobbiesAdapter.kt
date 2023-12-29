@@ -71,21 +71,28 @@ class HobbiesAdapter(
         val hobbyItem = hobbies[position]
         holder.itemView.tag = hobbyItem
 
-        when(holder) {
+        when (holder) {
             is HobbyViewHolder -> {
                 holder.binding.categoryContainer.visibility = View.GONE
-                holder.binding.tvHobbyName.text = CustomTypeface.capitalizeEachWord(hobbyItem.hobby.hobbyName)
+                holder.binding.tvHobbyName.text =
+                    CustomTypeface.capitalizeEachWord(hobbyItem.hobby.hobbyName)
             }
+
             is CategoryViewHolder -> {
                 holder.binding.categoryContainer.visibility = View.VISIBLE
-                holder.binding.categoryContainer.text = CustomTypeface.capitalizeEachWord(hobbyItem.hobby.categoryName)
+                holder.binding.categoryContainer.text =
+                    CustomTypeface.capitalizeEachWord(hobbyItem.hobby.categoryName)
                 holder.binding.categoryContainer.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                    ContextCompat.getDrawable(context, icons[hobbyItem.hobby.categoryName] ?: R.drawable.ic_default_category),
+                    ContextCompat.getDrawable(
+                        context,
+                        icons[hobbyItem.hobby.categoryName] ?: R.drawable.ic_default_category
+                    ),
                     null,
                     null,
                     null
                 )
-                holder.binding.tvHobbyName.text = CustomTypeface.capitalizeEachWord(hobbyItem.hobby.hobbyName)
+                holder.binding.tvHobbyName.text =
+                    CustomTypeface.capitalizeEachWord(hobbyItem.hobby.hobbyName)
             }
         }
     }
@@ -108,6 +115,7 @@ class HobbiesAdapter(
          */
         private val icons: Map<String, Int> = mapOf()
     }
+
     data class HobbyItem(
         val hobby: Hobby,
         val isCategoryShown: Boolean

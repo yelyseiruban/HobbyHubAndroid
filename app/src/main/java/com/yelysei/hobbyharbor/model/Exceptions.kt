@@ -4,11 +4,11 @@ open class AppException : RuntimeException()
 
 class NoUserHobbiesFoundException : AppException()
 
-class NoHobbyIdException: AppException()
+class NoHobbyIdException : AppException()
 
-class UserHobbyAlreadyAddedException: AppException()
+class UserHobbyAlreadyAddedException : AppException()
 
-class NoHobbiesBySpecifiedCategoryName: AppException()
+class NoHobbiesBySpecifiedCategoryName : AppException()
 
 class NoActionsByProgressIdException : AppException()
 
@@ -19,7 +19,7 @@ class HobbyAlreadyExistsException(
 
 class UserHobbyIsNotLoadedException : AppException()
 
-class SetGoalIsLessThanAchievedProgress: AppException()
+class SetGoalIsLessThanAchievedProgress : AppException()
 
 
 /*

@@ -22,18 +22,19 @@ interface UserHobbiesDao {
                 "JOIN hobbies " +
                 "ON user_hobbies.hobby_id = hobbies.id " +
                 "JOIN progresses " +
-                "ON user_hobbies.progress_id = progresses.id")
+                "ON user_hobbies.progress_id = progresses.id"
+    )
     fun getUserHobbies(): Flow<List<UserHobbiesInTuple>>
 
     @Query(
         "SELECT user_hobbies.id, user_hobbies.hobby_id, user_hobbies.progress_id, " +
-        "hobbies.hobby_name, hobbies.category_name, hobbies.cost, hobbies.place, hobbies.people, progresses.goal " +
+                "hobbies.hobby_name, hobbies.category_name, hobbies.cost, hobbies.place, hobbies.people, progresses.goal " +
                 "FROM user_hobbies " +
                 "JOIN hobbies " +
                 "ON user_hobbies.hobby_id = hobbies.id " +
                 "JOIN progresses " +
                 "ON user_hobbies.progress_id = progresses.id " +
-            "WHERE user_hobbies.id = :id"
+                "WHERE user_hobbies.id = :id"
     )
     fun findUserHobbyById(id: Int): Flow<UserHobbiesInTuple>
 
@@ -50,10 +51,13 @@ interface UserHobbiesDao {
 
     @Insert
     suspend fun insertProgress(progressDbEntity: ProgressDbEntity): Long
+
     @Insert
     fun insertUserHobby(userHobbyDbEntity: UserHobbyDbEntity)
+
     @Insert
     fun insertUserHobbyAction(actionDbEntity: ActionDbEntity)
+
     @Update(entity = ActionDbEntity::class, onConflict = OnConflictStrategy.REPLACE)
     fun updateUserHobbyAction(fromAction: ActionDbEntity)
 
@@ -68,4 +72,7 @@ interface UserHobbiesDao {
 
     @Query("SELECT EXISTS (SELECT * FROM user_hobbies WHERE user_hobbies.hobby_id = :hobbyId)")
     fun userHobbyExists(hobbyId: Int): Boolean
+
+    @Delete(entity = UserHobbyDbEntity::class)
+    fun deleteUserHobbies(map: List<UserHobbyDbEntity>)
 }

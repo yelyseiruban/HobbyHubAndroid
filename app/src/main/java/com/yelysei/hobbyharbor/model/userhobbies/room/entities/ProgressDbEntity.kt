@@ -12,7 +12,7 @@ data class ProgressDbEntity(
     val goal: Int
 ) {
     fun toProgress(): Progress {
-        return Progress (
+        return Progress(
             id,
             mutableListOf(),
             goal

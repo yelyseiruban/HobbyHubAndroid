@@ -30,11 +30,12 @@ class RoomHobbiesRepository(
     /**
      * implemented
      */
-    override suspend fun getAvailableHobbiesForCategory(categoryName: String): List<Hobby> = withContext(defaultDispatcher) {
-        return@withContext hobbiesDao.findHobbiesByCategoryName(categoryName)?.map {
-            it.toHobby()
-        } ?: throw NoHobbiesBySpecifiedCategoryName()
-    }
+    override suspend fun getAvailableHobbiesForCategory(categoryName: String): List<Hobby> =
+        withContext(defaultDispatcher) {
+            return@withContext hobbiesDao.findHobbiesByCategoryName(categoryName)?.map {
+                it.toHobby()
+            } ?: throw NoHobbiesBySpecifiedCategoryName()
+        }
 
     override suspend fun addCustomHobby(hobby: Hobby): Int = withContext(ioDispatcher) {
         try {
@@ -44,11 +45,12 @@ class RoomHobbiesRepository(
         }
     }
 
-    override suspend fun getHobbiesByHobbyName(hobbyNameSearchInput: String): List<Hobby> = withContext(ioDispatcher) {
-        return@withContext hobbiesDao.findHobbiesByHobbyName(hobbyNameSearchInput)?.map {
-            it.toHobby()
-        } ?: emptyList()
-    }
+    override suspend fun getHobbiesByHobbyName(hobbyNameSearchInput: String): List<Hobby> =
+        withContext(ioDispatcher) {
+            return@withContext hobbiesDao.findHobbiesByHobbyName(hobbyNameSearchInput)?.map {
+                it.toHobby()
+            } ?: emptyList()
+        }
 
     override suspend fun hobbyExists(hobbyName: String): Boolean = withContext(ioDispatcher) {
         hobbiesDao.hobbyExists(hobbyName)

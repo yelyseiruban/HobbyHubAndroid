@@ -1,5 +1,6 @@
 package com.yelysei.hobbyharbor.screens.main.categorizedhobbies
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -25,11 +26,20 @@ import com.yelysei.hobbyharbor.screens.recyclerViewConfigureView
 import com.yelysei.hobbyharbor.screens.renderSimpleResult
 import com.yelysei.hobbyharbor.screens.uiactions.UiActions
 import com.yelysei.hobbyharbor.screens.uiactions.UiActionsImpl
+import com.yelysei.hobbyharbor.utils.AttributeUtils
 import com.yelysei.hobbyharbor.utils.SearchBarOnTextChangeListener
+import com.yelysei.hobbyharbor.utils.appear
+import com.yelysei.hobbyharbor.utils.setMovableBehavior
 import com.yelysei.hobbyharbor.utils.viewModelCreator
 
 class CategorizedHobbiesFragment : Fragment() {
-    private val viewModel by viewModelCreator { CategorizedHobbiesViewModel(hobbiesRepository, userHobbiesRepository, UiActionsImpl(context)) }
+    private val viewModel by viewModelCreator {
+        CategorizedHobbiesViewModel(
+            hobbiesRepository,
+            userHobbiesRepository,
+            UiActionsImpl(context)
+        )
+    }
     private lateinit var binding: FragmentCategorizedHobbiesBinding
     private lateinit var addCustomHobbyDialog: AddCustomHobbyDialog
     private val uiActions: UiActions by lazy {
@@ -55,9 +65,9 @@ class CategorizedHobbiesFragment : Fragment() {
         searchedHobbiesAdapter.processHobbies(listOf())
 
         viewModel.categorizedHobbies.observe(viewLifecycleOwner) { result ->
-            renderSimpleResult(binding.root, result, onSuccess = {
+            renderSimpleResult(binding.root, result) {
                 availableHobbiesAdapter.processHobbies(it)
-            })
+            }
         }
 
         viewModel.searchedHobbies.observe(viewLifecycleOwner) { result ->
@@ -67,7 +77,8 @@ class CategorizedHobbiesFragment : Fragment() {
         }
 
 
-        binding.searchView.editText.addTextChangedListener(object: SearchBarOnTextChangeListener() {
+        binding.searchView.editText.addTextChangedListener(object :
+            SearchBarOnTextChangeListener() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 viewModel.searchHobbies(s.toString())
                 binding.searchView.editText.requestFocus()
@@ -75,9 +86,11 @@ class CategorizedHobbiesFragment : Fragment() {
         })
 
         binding.recyclerViewAvailableCategorizedHobbies.adapter = availableHobbiesAdapter
-        binding.recyclerViewAvailableCategorizedHobbies.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerViewAvailableCategorizedHobbies.layoutManager =
+            LinearLayoutManager(requireContext())
 
-        binding.recyclerViewSearchedCategorizedHobbies.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerViewSearchedCategorizedHobbies.layoutManager =
+            LinearLayoutManager(requireContext())
         binding.recyclerViewSearchedCategorizedHobbies.adapter = searchedHobbiesAdapter
         binding.searchView.setupWithSearchBar(binding.searchBar)
 
@@ -87,6 +100,12 @@ class CategorizedHobbiesFragment : Fragment() {
 
         configureAvailableHobbiesView()
 
+        binding.buttonAddCustomHobby.setMovableBehavior()
+        val attributeUtils = AttributeUtils(binding.root, R.styleable.FabView)
+        val fabColorStateList =
+            ColorStateList.valueOf(attributeUtils.getColorFromAttribute(R.styleable.FabView_fabColor))
+        attributeUtils.onClear()
+        binding.buttonAddCustomHobby.appear(fabColorStateList)
         binding.buttonAddCustomHobby.setOnClickListener {
             val context = requireContext()
             addCustomHobbyDialog = AddCustomHobbyDialog(
@@ -98,7 +117,12 @@ class CategorizedHobbiesFragment : Fragment() {
                 viewModel.checkIfHobbyExists(hobby.hobbyName)
                     .observe(viewLifecycleOwner) { hobbyExists ->
                         if (hobbyExists) {
-                            uiActions.toast(context.getString(R.string.hobby_exists_exception, hobby.hobbyName))
+                            uiActions.toast(
+                                context.getString(
+                                    R.string.hobby_exists_exception,
+                                    hobby.hobbyName
+                                )
+                            )
                         } else {
                             addCustomHobbyDialog.dialog.dismiss()
                             Handler(Looper.getMainLooper()).postDelayed({
@@ -120,31 +144,36 @@ class CategorizedHobbiesFragment : Fragment() {
         if (!isAdded || isDetached) {
             return
         }
-        viewModel.checkIfUserHobbyExists(hobby.id ?: throw Exception("Hobby does not have Id")).observe(viewLifecycleOwner) { hobbyExists ->
-            if (hobbyExists) {
-                uiActions.toast(requireContext().getString(R.string.hobby_exists_exception, hobby.hobbyName))
-            } else {
-                val setGoalDialog: SetGoalDialog = prepareDialog(onSubmitClickListener = {
-                    viewModel.addUserHobby(hobby, it)
-                    findNavController().navigate(R.id.userHobbiesFragment)
-                })
-                setGoalDialog.show()
+        viewModel.checkIfUserHobbyExists(hobby.id ?: throw Exception("Hobby does not have Id"))
+            .observe(viewLifecycleOwner) { hobbyExists ->
+                if (hobbyExists) {
+                    uiActions.toast(
+                        requireContext().getString(
+                            R.string.hobby_exists_exception,
+                            hobby.hobbyName
+                        )
+                    )
+                } else {
+                    val setGoalDialog: SetGoalDialog = prepareDialog(onSubmitClickListener = {
+                        viewModel.addUserHobby(hobby, it)
+                        findNavController().navigate(R.id.userHobbiesFragment)
+                    })
+                    setGoalDialog.show()
+                }
             }
-        }
     }
 
     private fun configureAvailableHobbiesView() {
-        recyclerViewConfigureView( Configuration(
-            recyclerView = binding.recyclerViewAvailableCategorizedHobbies,
-            layoutManager = LinearLayoutManager(requireContext()),
-            verticalItemSpace = 0,
-            constraintLayout = binding.constraintLayout,
-            maxHeight = 0.75f
+        recyclerViewConfigureView(
+            Configuration(
+                recyclerView = binding.recyclerViewAvailableCategorizedHobbies,
+                layoutManager = LinearLayoutManager(requireContext()),
+                verticalItemSpace = 32,
             )
         )
     }
 
-    private fun setAdapter() : HobbiesAdapter {
+    private fun setAdapter(): HobbiesAdapter {
         return HobbiesAdapter(requireContext()) {
             showAddHobbyDialog(it)
         }

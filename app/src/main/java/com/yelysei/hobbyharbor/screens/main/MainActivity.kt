@@ -28,11 +28,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            binding.buttonNavigationUp.visibility = if (destination.id == R.id.userHobbiesFragment) {
-                View.GONE
-            } else {
-                View.VISIBLE
-            }
+            binding.buttonNavigationUp.visibility =
+                if (destination.id == R.id.userHobbiesFragment) {
+                    View.GONE
+                } else {
+                    View.VISIBLE
+                }
             binding.toolbarTitle.text = destination.label ?: "HobbyHarbor"
             if (destination.id == R.id.userHobbyDetailsFragment) {
                 binding.buttonSettings.visibility = View.GONE
@@ -51,15 +52,17 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
-    override fun onSupportNavigateUp(): Boolean = (navController?.navigateUp() ?: false) || super.onSupportNavigateUp()
+    override fun onSupportNavigateUp(): Boolean =
+        (navController?.navigateUp() ?: false) || super.onSupportNavigateUp()
 
     private fun onNavControllerActivated(navController: NavController) {
-        if(this.navController == navController) return
+        if (this.navController == navController) return
         this.navController = navController
     }
 
     private fun getRootNavController(): NavController {
-        val navHost = supportFragmentManager.findFragmentById(R.id.fragmentContainer) as NavHostFragment
+        val navHost =
+            supportFragmentManager.findFragmentById(R.id.fragmentContainer) as NavHostFragment
         return navHost.navController
     }
 

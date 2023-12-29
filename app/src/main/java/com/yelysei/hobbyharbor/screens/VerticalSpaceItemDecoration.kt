@@ -4,6 +4,7 @@ import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
+
 class VerticalSpaceItemDecoration(
     private val verticalSpaceHeight: Int
 ) : RecyclerView.ItemDecoration() {
@@ -13,6 +14,8 @@ class VerticalSpaceItemDecoration(
         parent: RecyclerView,
         state: RecyclerView.State
     ) {
+
         outRect.bottom = verticalSpaceHeight
+
     }
 }

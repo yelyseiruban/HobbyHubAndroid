@@ -15,8 +15,8 @@ open class BaseActivity : AppCompatActivity() {
         updateConfig(this as ContextThemeWrapper)
     }
 
-    fun updateConfig(wrapper: ContextThemeWrapper) {
-        if(dLocale == Locale("") ) // Do nothing if dLocale is null
+    private fun updateConfig(wrapper: ContextThemeWrapper) {
+        if (dLocale == Locale("")) // Do nothing if dLocale is null
             return
 
         Locale.setDefault(dLocale ?: return)

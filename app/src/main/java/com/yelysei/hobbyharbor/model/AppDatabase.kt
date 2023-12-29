@@ -18,7 +18,7 @@ import com.yelysei.hobbyharbor.model.userhobbies.room.entities.UserHobbyDbEntity
         ProgressDbEntity::class
     ]
 )
-abstract class AppDatabase : RoomDatabase(){
+abstract class AppDatabase : RoomDatabase() {
 
     abstract fun getHobbiesDao(): HobbiesDao
 

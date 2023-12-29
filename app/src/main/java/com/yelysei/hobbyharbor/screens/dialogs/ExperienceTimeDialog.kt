@@ -1,14 +1,13 @@
 package com.yelysei.hobbyharbor.screens.dialogs
 
-import android.app.Dialog
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
-import android.view.Window
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.yelysei.hobbyharbor.R
@@ -35,7 +34,7 @@ class ExperienceTimeDialog(
     private val onSubmitClick: OnExperienceTimeSubmitClickListener,
     private val fragmentManager: FragmentManager
 
-) : com.yelysei.hobbyharbor.screens.dialogs.Dialog  {
+) : Dialog {
     /**
      * Describes current which value is currently setting [SettingValue.FROM] or [SettingValue.TILL]
      */
@@ -105,7 +104,8 @@ class ExperienceTimeDialog(
         set(value) {
             field = value
             try {
-                datePickerDialog?.show(fragmentManager, datePickerDialog.toString()) ?: throw IllegalStateException("Date picker dialog was not initialized")
+                datePickerDialog?.show(fragmentManager, datePickerDialog.toString())
+                    ?: throw IllegalStateException("Date picker dialog was not initialized")
                 datePickerDialog?.addOnPositiveButtonClickListener {
                     val timePickerDialogBuilder = MaterialTimePicker.Builder()
                         .setTimeFormat(TimeFormat.CLOCK_24H)
@@ -124,7 +124,10 @@ class ExperienceTimeDialog(
                                     .setHour(currentHour)
                                     .setMinute(currentMinute)
                             }
+                            timePickerDialogBuilder
+                                .setTitleText(R.string.from_picker)
                         }
+
                         SettingValue.TILL -> {
                             tillDate = it
                             if (tillTime != 0L) {
@@ -139,13 +142,19 @@ class ExperienceTimeDialog(
                                     .setHour(currentHour)
                                     .setMinute(currentMinute)
                             }
+                            timePickerDialogBuilder
+                                .setTitleText(R.string.till_picker)
                         }
                     }
                     timePickerDialog = timePickerDialogBuilder.build()
                     renderSubmitButton()
                 }
             } catch (e: IllegalStateException) {
-                Toast.makeText(context, "Date picker dialog was not initialized, feel free to contact with developer team", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    "Date picker dialog was not initialized, feel free to contact with developer team",
+                    Toast.LENGTH_SHORT
+                ).show()
                 e.printStackTrace()
             }
         }
@@ -153,17 +162,22 @@ class ExperienceTimeDialog(
         set(value) {
             field = value
             try {
-                timePickerDialog?.show(fragmentManager, timePickerDialog.toString()) ?: throw IllegalStateException("Time picker dialog was not initialized")
+                timePickerDialog?.show(fragmentManager, timePickerDialog.toString())
+                    ?: throw IllegalStateException("Time picker dialog was not initialized")
                 timePickerDialog?.addOnPositiveButtonClickListener {
-                    val selectedHour = timePickerDialog?.hour ?: throw IllegalStateException("Hour is null")
-                    val selectedMinute = timePickerDialog?.minute ?: throw IllegalStateException("Minute is null")
+                    val selectedHour =
+                        timePickerDialog?.hour ?: throw IllegalStateException("Hour is null")
+                    val selectedMinute =
+                        timePickerDialog?.minute ?: throw IllegalStateException("Minute is null")
                     val selectedTimeInMilliseconds = (selectedHour * 60 + selectedMinute) * 60000
                     when (settingValue) {
                         SettingValue.FROM -> {
                             fromTime = selectedTimeInMilliseconds.toLong()
                             settingValue = SettingValue.TILL
-                            datePickerDialog = datePickerDialogBuilder.setTitleText(R.string.till_picker).build()
+                            datePickerDialog =
+                                datePickerDialogBuilder.setTitleText(R.string.till_picker).build()
                         }
+
                         SettingValue.TILL -> {
                             tillTime = selectedTimeInMilliseconds.toLong()
                         }
@@ -171,21 +185,29 @@ class ExperienceTimeDialog(
                     renderSubmitButton()
                 }
             } catch (e: IllegalStateException) {
-                Toast.makeText(context, "Hour and minute was not specified correctly", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    "Hour and minute was not specified correctly",
+                    Toast.LENGTH_SHORT
+                ).show()
                 e.printStackTrace()
             }
 
         }
 
     fun fulfillFromDateTime(fromDateTime: Long) {
-        val localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(fromDateTime), ZoneId.systemDefault())
-        fromDate = localDateTime.toLocalDate().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+        val localDateTime =
+            LocalDateTime.ofInstant(Instant.ofEpochMilli(fromDateTime), ZoneId.systemDefault())
+        fromDate = localDateTime.toLocalDate().atStartOfDay(ZoneId.systemDefault()).toInstant()
+            .toEpochMilli()
         fromTime = localDateTime.toLocalTime().toSecondOfDay() * 1000L
     }
 
     fun fulfillTillDateTime(tillDateTime: Long) {
-        val localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(tillDateTime), ZoneId.systemDefault())
-        tillDate = localDateTime.toLocalDate().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+        val localDateTime =
+            LocalDateTime.ofInstant(Instant.ofEpochMilli(tillDateTime), ZoneId.systemDefault())
+        tillDate = localDateTime.toLocalDate().atStartOfDay(ZoneId.systemDefault()).toInstant()
+            .toEpochMilli()
         tillTime = localDateTime.toLocalTime().toSecondOfDay() * 1000L
     }
 
@@ -193,25 +215,31 @@ class ExperienceTimeDialog(
         ExperienceTimeDialogBinding.inflate(LayoutInflater.from(context))
     }
 
-    private var submitButton: Button = binding.submitButton
     private var tvFrom: Button = binding.tvFrom
     private var tvTill: Button = binding.tvTill
+    private lateinit var submitButton: Button
 
 
     override fun show() {
-        val dialog = Dialog(context)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCancelable(true)
-        dialog.setContentView(binding.root)
+        val dialog = MaterialAlertDialogBuilder(context)
+            .setTitle(title)
+            .setView(binding.root)
+            .setPositiveButton("Submit") { dialog, _ ->
+                if (tillDateTime > fromDateTime) {
+                    onSubmitClick(fromDateTime, tillDateTime)
+                    dialog.dismiss()
+                } else {
+                    Toast.makeText(context, "Till Date Time is before From", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+            .show()
 
-        dialog.show()
-
+        submitButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
 
         datePickerDialog = datePickerDialogBuilder.build()
         settingValue = SettingValue.FROM
         renderSubmitButton()
-
-        binding.tvTitle.text = title
 
         tvFrom.setOnClickListener {
             if (fromDateTime != 0L) {
@@ -236,16 +264,6 @@ class ExperienceTimeDialog(
             settingValue = SettingValue.TILL
             renderSubmitButton()
         }
-
-        submitButton.setOnClickListener {
-            if (tillDateTime > fromDateTime) {
-                onSubmitClick(fromDateTime, tillDateTime)
-                dialog.dismiss()
-            } else {
-                Toast.makeText(context, "Till Date Time is before From", Toast.LENGTH_SHORT).show()
-            }
-        }
-
     }
 
     private fun setDate(settingValue: SettingValue) {
@@ -255,6 +273,7 @@ class ExperienceTimeDialog(
                 binding.fromValue.text = selectedDate
                 setState.isFromSet = true
             }
+
             SettingValue.TILL -> {
                 val selectedDate = getFormattedDate(tillDateTime, "dd.MM.yyyy HH:mm")
                 binding.tillValue.text = selectedDate
@@ -265,11 +284,7 @@ class ExperienceTimeDialog(
     }
 
     private fun renderSubmitButton() {
-        if (setState.areValuesSet()) {
-            submitButton.visibility = View.VISIBLE
-        } else {
-            submitButton.visibility = View.GONE
-        }
+        submitButton.isEnabled = setState.areValuesSet()
     }
 }
 

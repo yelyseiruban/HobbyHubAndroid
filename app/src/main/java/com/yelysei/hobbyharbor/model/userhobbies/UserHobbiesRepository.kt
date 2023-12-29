@@ -6,7 +6,7 @@ import com.yelysei.hobbyharbor.model.userhobbies.entities.UserHobby
 import com.yelysei.hobbyharbor.model.userhobbies.room.entities.ProgressDbEntity
 import kotlinx.coroutines.flow.Flow
 
-interface UserHobbiesRepository  {
+interface UserHobbiesRepository {
     suspend fun getUserHobbyById(id: Int): Flow<UserHobby>
 
     suspend fun getUserHobbies(): Flow<List<UserHobby>>
@@ -23,6 +23,8 @@ interface UserHobbiesRepository  {
     suspend fun updateProgress(progressDbEntity: ProgressDbEntity)
 
     suspend fun deleteUserHobby(userHobby: UserHobby)
+
+    suspend fun deleteUserHobbies(userHobbies: List<UserHobby>)
 
     suspend fun userHobbyExists(hobbyId: Int): Boolean
 

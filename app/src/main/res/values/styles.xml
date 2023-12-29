@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="progressBarBackground" format="reference"/>
+    <attr name="progressBarMain" format="reference"/>
+    <attr name="actionBarTextColor" format="reference"/>
+    <attr name="tryAgainBackground" format="reference"/>
+    <attr name="tryAgainText" format="reference"/>
+
+    <attr name="addButtonBackground" format="reference"/>
+
+    <attr name="userHobbyBackground" format="reference"/>
+    <attr name="touchUserHobbyBackground" format="reference"/>
+    <attr name="selectedUserHobbyBackground" format="reference"/>
+    <attr name="touchSelectedUserHobbyBackground" format="reference"/>
+
+    <declare-styleable name="FabView">
+        <attr name="addButtonIcon" format="reference" />
+        <attr name="removeButtonIcon" format="reference" />
+        <attr name="fabColor" format="reference"/>
+        <!-- Add other custom attributes if needed -->
+    </declare-styleable>
+
+    <declare-styleable name="UserHobbyItem">
+        <attr name="defaultBackground" format="reference"/>
+        <attr name="selectedBackground" format="reference"/>
+        <!-- Add other custom attributes if needed -->
+    </declare-styleable>
+
+    <attr name="touchFabButtonColor" format="reference"/>
+
+    <attr name="userActionBackground" format="reference"/>
+    <attr name="touchUserActionBackground" format="reference"/>
+
+    <attr name="dialogBackgroundColor" format="reference"/>
+
+    <attr name="appBarBackgroundColor" format="reference"/>
+
+    <attr name="progressBarColor" format="reference"/>
+</resources>
