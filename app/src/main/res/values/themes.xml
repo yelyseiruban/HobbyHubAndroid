@@ -33,7 +33,7 @@
         <item name="addButtonBackground">@color/lightThemeAccentOrange</item>
         <item name="addButtonIcon">@drawable/ic_add</item>
         <item name="removeButtonIcon">@drawable/ic_remove</item>
-        <item name="fabColor">@color/white</item>
+        <item name="fabColor">@color/black</item>
 
         <item name="defaultBackground">@drawable/hobby_background</item>
         <item name="selectedBackground">@drawable/hobby_selected_background</item>

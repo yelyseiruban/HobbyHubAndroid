@@ -15,6 +15,7 @@ import com.yelysei.hobbyharbor.R
 import com.yelysei.hobbyharbor.databinding.AddCustomHobbyDialogBinding
 import com.yelysei.hobbyharbor.model.hobbies.entities.Hobby
 import com.yelysei.hobbyharbor.screens.uiactions.UiActions
+import com.yelysei.hobbyharbor.utils.KeyboardUtils
 
 typealias OnAddCustomHobbySubmitClickListener = (hobby: Hobby) -> Unit
 
@@ -40,6 +41,7 @@ class AddCustomHobbyDialog(
     lateinit var dialog: AlertDialog
 
     override fun show() {
+        KeyboardUtils.showKeyboard(context, editCategoryName, 500)
         setUpMaterialAutoCompleteTextViews()
         val dialog = MaterialAlertDialogBuilder(context)
             .setTitle(R.string.add_custom_hobby_title)

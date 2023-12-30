@@ -95,13 +95,12 @@ class CategorizedHobbiesViewModel(
         }
     }
 
-    fun checkIfHobbyExists(hobbyName: String): LiveData<Boolean> {
-        val result = MutableLiveData<Boolean>()
-
+    fun checkIfHobbyExists(hobbyName: String): Boolean {
+        var hobbyExists = false
         viewModelScope.launch {
-            result.postValue(hobbiesRepository.hobbyExists(hobbyName))
+            hobbyExists = hobbiesRepository.hobbyExists(hobbyName)
         }
-        return result
+        return hobbyExists
     }
 
     fun checkIfUserHobbyExists(hobbyId: Int): LiveData<Boolean> {

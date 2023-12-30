@@ -5,11 +5,14 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 
 object KeyboardUtils {
-    fun showKeyboard(context: Context, view: View) {
+    fun showKeyboard(context: Context, view: View, delayTime: Long? = null) {
         val inputMethodManager =
             context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
         view.requestFocus() // Ensure the view has focus
-        inputMethodManager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+        view.postDelayed({
+                inputMethodManager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+            }, delayTime ?: 200L
+        )
     }
 }

@@ -26,9 +26,7 @@ class SetGoalDialog(
     override fun show() {
         val editGoal = binding.goal
         editGoal.requestFocus()
-        editGoal.postDelayed({
-            KeyboardUtils.showKeyboard(context, editGoal)
-        }, 150)
+        KeyboardUtils.showKeyboard(context, editGoal, 300)
         editGoal.setText(previousGoal?.toString() ?: "")
         MaterialAlertDialogBuilder(context)
             .setTitle(R.string.please_set_up_your_goal_for_the_hobby)

@@ -2,8 +2,6 @@ package com.yelysei.hobbyharbor.screens.main.categorizedhobbies
 
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,11 +52,6 @@ class CategorizedHobbiesFragment : Fragment() {
 
         binding = FragmentCategorizedHobbiesBinding.inflate(inflater, container, false)
 
-        binding.searchView.editText
-            .setOnEditorActionListener { _, _, _ ->
-                return@setOnEditorActionListener false
-            }
-
         val availableHobbiesAdapter = setAdapter()
         val searchedHobbiesAdapter = setAdapter()
 
@@ -98,7 +91,7 @@ class CategorizedHobbiesFragment : Fragment() {
             viewModel.tryAgain()
         }
 
-        configureAvailableHobbiesView()
+        configureHobbiesRecyclerViews()
 
         binding.buttonAddCustomHobby.setMovableBehavior()
         val attributeUtils = AttributeUtils(binding.root, R.styleable.FabView)
@@ -107,37 +100,40 @@ class CategorizedHobbiesFragment : Fragment() {
         attributeUtils.onClear()
         binding.buttonAddCustomHobby.appear(fabColorStateList)
         binding.buttonAddCustomHobby.setOnClickListener {
-            val context = requireContext()
-            addCustomHobbyDialog = AddCustomHobbyDialog(
-                context,
-                UiActionsImpl(context),
-                viewModel.categories.value.takeSuccess()
-                    ?: throw IllegalStateException("Categories have not been loaded")
-            ) { hobby ->
-                viewModel.checkIfHobbyExists(hobby.hobbyName)
-                    .observe(viewLifecycleOwner) { hobbyExists ->
-                        if (hobbyExists) {
-                            uiActions.toast(
-                                context.getString(
-                                    R.string.hobby_exists_exception,
-                                    hobby.hobbyName
-                                )
-                            )
-                        } else {
-                            addCustomHobbyDialog.dialog.dismiss()
-                            Handler(Looper.getMainLooper()).postDelayed({
-                                SetGoalDialog(context, null, uiActions) { goal ->
-                                    viewModel.addCustomHobby(hobby, goal)
-                                    findNavController().navigate(R.id.userHobbiesFragment)
-                                }.show()
-                            }, 200)
-                        }
-                    }
-            }
-            addCustomHobbyDialog.show()
+            showAddCustomHobbyDialog()
         }
 
         return binding.root
+    }
+
+    private fun showAddCustomHobbyDialog() {
+        if (!isAdded || isDetached) {
+            return
+        }
+        addCustomHobbyDialog = AddCustomHobbyDialog(
+            requireContext(),
+            UiActionsImpl(context),
+            viewModel.categories.value.takeSuccess()
+                ?: throw IllegalStateException("Categories have not been loaded")
+        ) { hobby ->
+            val hobbyExists = viewModel.checkIfHobbyExists(hobby.hobbyName)
+            if (hobbyExists) {
+                uiActions.toast(
+                    requireContext().getString(
+                        R.string.hobby_exists_exception,
+                        hobby.hobbyName
+                    )
+                )
+            } else {
+                addCustomHobbyDialog.dialog.dismiss()
+                val setGoalDialog = prepareDialog { goal ->
+                    viewModel.addCustomHobby(hobby, goal)
+                    findNavController().navigate(R.id.userHobbiesFragment)
+                }
+                setGoalDialog.show()
+            }
+        }
+        addCustomHobbyDialog.show()
     }
 
     private fun showAddHobbyDialog(hobby: Hobby) {
@@ -163,10 +159,17 @@ class CategorizedHobbiesFragment : Fragment() {
             }
     }
 
-    private fun configureAvailableHobbiesView() {
+    private fun configureHobbiesRecyclerViews() {
         recyclerViewConfigureView(
             Configuration(
                 recyclerView = binding.recyclerViewAvailableCategorizedHobbies,
+                layoutManager = LinearLayoutManager(requireContext()),
+                verticalItemSpace = 32,
+            )
+        )
+        recyclerViewConfigureView(
+            Configuration(
+                recyclerView = binding.recyclerViewSearchedCategorizedHobbies,
                 layoutManager = LinearLayoutManager(requireContext()),
                 verticalItemSpace = 32,
             )
