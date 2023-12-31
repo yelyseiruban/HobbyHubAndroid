@@ -53,7 +53,6 @@ class UserHobbiesAdapter(
 
     var isToggleEnabled: Boolean = false
         get() = field
-        private set
 
     private val longPressHandler = Handler(Looper.getMainLooper())
     private val longPressRunnable = Runnable {

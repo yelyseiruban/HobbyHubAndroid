@@ -13,6 +13,8 @@
     <color name="lightThemeDropDownBackground">#F3DAC9</color>
     <color name="lightThemeUserActionBackground">#FBF6EB</color>
     <color name="lightThemeTouchUserActionBackground">#E3DED4</color>
+    <color name="lightThemeFieldGray">#8F847C</color>
+    <color name="lightThemeErrorColor">#B3261E</color>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
     <color name="gray">#A7A6A6</color>

@@ -19,6 +19,7 @@
         >
         <activity
             android:name=".screens.main.MainActivity"
+            android:theme="@style/Theme.HobbyHarbor"
             android:windowSoftInputMode="adjustResize"
             android:exported="true">
             <intent-filter>

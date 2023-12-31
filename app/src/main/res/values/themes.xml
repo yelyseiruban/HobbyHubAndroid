@@ -13,6 +13,8 @@
         <item name="materialSearchViewStyle">@style/MaterialSearchViewStyle</item>
         <item name="appBarBackgroundColor">@color/lightThemeLightOrange</item>
         <item name="textInputOutlinedStyle">@style/TextInputLayoutStyle</item>
+        <item name="android:colorControlActivated">@color/lightThemeAccentOrange</item>
+        <item name="android:textColorHighlight">@color/lightThemeAccentOrange</item>
 
         <item name="progressBarBackground">@color/lightThemeLightOrange</item>
         <item name="progressBarMain">@color/lightThemeAccentOrange</item>
@@ -91,12 +93,17 @@
     <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxStrokeColor">@color/lightThemeAccentOrange</item>
         <item name="hintTextColor">@color/lightThemeAccentOrange</item>
+        <item name="cursorColor">@color/lightThemeFieldGray</item>
+        <item name="cursorErrorColor">@color/lightThemeErrorColor</item>
     </style>
 
     <style name="ExposedDropMenuLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
         <item name="boxStrokeColor">@color/lightThemeAccentOrange</item>
         <item name="boxBackgroundColor">@color/lightThemeDialogBackground</item>
         <item name="hintTextColor">@color/lightThemeAccentOrange</item>
+        <item name="cursorErrorColor">@color/lightThemeAccentOrange</item>
+        <item name="endIconTint">@color/lightThemeFieldGray</item>
+        <item name="cursorColor">@color/lightThemeErrorColor</item>
     </style>
 
     <style name="DropDownMenu" parent="Widget.Material3.AutoCompleteTextView.OutlinedBox">

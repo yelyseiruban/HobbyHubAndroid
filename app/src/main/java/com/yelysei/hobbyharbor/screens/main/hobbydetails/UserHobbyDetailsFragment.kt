@@ -19,7 +19,7 @@ import com.yelysei.hobbyharbor.model.userhobbies.entities.getProgressInHours
 import com.yelysei.hobbyharbor.screens.Configuration
 import com.yelysei.hobbyharbor.screens.dialogs.ExperienceTimeDialog
 import com.yelysei.hobbyharbor.screens.dialogs.OnExperienceTimeSubmitClickListener
-import com.yelysei.hobbyharbor.screens.dialogs.SetGoalDialog
+import com.yelysei.hobbyharbor.screens.dialogs.SetGoalDialog.ProgressState
 import com.yelysei.hobbyharbor.screens.dialogs.prepareDialog
 import com.yelysei.hobbyharbor.screens.recyclerViewConfigureView
 import com.yelysei.hobbyharbor.screens.renderSimpleResult
@@ -85,13 +85,20 @@ class UserHobbyDetailsFragment : Fragment() {
                 adapter.userActions = userHobby.progress.actions
 
                 binding.buttonEditGoal.setOnClickListener {
-                    val setGoalDialog: SetGoalDialog = prepareDialog(userHobby.progress.goal) {
-                        viewModel.updateProgress(it)
-                    }
+                    val setGoalDialog = prepareDialog (
+                        onSubmitClickListener = {
+                            viewModel.updateProgress(it)
+                        },
+                        progressState = ProgressState(
+                            userHobby.progress.goal,
+                            userHobby.getProgressInHours().toInt()
+                        )
+                    )
                     setGoalDialog.show()
+                    }
                 }
             }
-        }
+
 
 
         recyclerViewConfigureView(

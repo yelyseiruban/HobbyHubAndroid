@@ -127,6 +127,7 @@ class UserHobbiesFragment : Fragment() {
                 context?.getString(R.string.deleted_user_hobbies_toast, userHobbies.size),
                 Toast.LENGTH_SHORT
             ).show()
+            adapter.unselectUserHobbies()
         }
         val onNegativeButtonClickListener = OnClickListener { _, _ ->
             adapter.unselectUserHobbies()

@@ -126,10 +126,10 @@ class CategorizedHobbiesFragment : Fragment() {
                 )
             } else {
                 addCustomHobbyDialog.dialog.dismiss()
-                val setGoalDialog = prepareDialog { goal ->
+                val setGoalDialog = prepareDialog ( onSubmitClickListener =  { goal ->
                     viewModel.addCustomHobby(hobby, goal)
                     findNavController().navigate(R.id.userHobbiesFragment)
-                }
+                })
                 setGoalDialog.show()
             }
         }

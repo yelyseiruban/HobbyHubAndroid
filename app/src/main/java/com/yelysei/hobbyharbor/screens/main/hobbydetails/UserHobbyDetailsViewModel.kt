@@ -76,7 +76,6 @@ class UserHobbyDetailsViewModel(
         )
         viewModelScope.launch {
             userHobbiesRepository.updateProgress(progressDbEntity)
-
         }
     }
 }

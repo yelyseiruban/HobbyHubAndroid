@@ -1,17 +1,17 @@
 package com.yelysei.hobbyharbor.utils
 
 import android.content.Context
-import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 
 object KeyboardUtils {
-    fun showKeyboard(context: Context, view: View, delayTime: Long? = null) {
+    fun showKeyboard(context: Context, editText: EditText, delayTime: Long? = null) {
         val inputMethodManager =
             context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
-        view.requestFocus() // Ensure the view has focus
-        view.postDelayed({
-                inputMethodManager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+        editText.requestFocus() // Ensure the view has focus
+        editText.postDelayed({
+                inputMethodManager.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
             }, delayTime ?: 200L
         )
     }

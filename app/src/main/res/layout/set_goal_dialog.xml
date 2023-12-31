@@ -7,10 +7,12 @@
     android:paddingEnd="24dp">
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/goalLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:hint="@string/goal_hint"
+        app:errorEnabled="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
