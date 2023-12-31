@@ -35,7 +35,7 @@
     <string name="traveling">Traveling</string>
     <string name="add_custom_hobby_description">Add Custom Hobby Button (show new screen to specify your hobby)</string>
     <string name="choose_hobby_from_the_list">Choose hobby from the list:</string>
-    <string name="please_set_up_your_goal_for_the_hobby">Please set up your goal in hours for the hobby</string>
+    <string name="set_goal_title">Please set up your goal in hours for the hobby</string>
     <string name="goal_hint">Goal</string>
     <string name="submit">Submit</string>
     <string name="add_new_experience">Add new experience:</string>
@@ -67,6 +67,22 @@
     <string name="add_new_custom_hobby_button_description">Add new custom hobby</string>
     <string name="add_new_user_experience_button_description">Add new user experience</string>
     <string name="remove_user_hobbies_title">Remove user hobbies</string>
-    <string name="deleted_user_hobbies_toast">%1$d Deleted</string>
     <string name="add_custom_hobby_title">Custom hobby information</string>
+
+    <!--Errors and Toasts to user-->
+    <string name="specified_goal_less_than_reach_progress">Specified goal should be greater than reached progress</string>
+    <string name="specified_goal_is_empty">Specified goal is empty</string>
+    <string name="requiered_fields_are_empty">It is not possible to add new custom hobby when required fields are not filled</string>
+    <string name="incorrect_from_till_datetime">Till Date Time should be after From Date Time</string>
+    <string name="date_picker_dialog_was_not_initialized">Date picker dialog was not initialized, feel free to contact with developer team</string>
+    <string name="specified_incorrect_time">Hour and minute was not specified correctly</string>
+    <string name="change_user_experience_confirmation">User Experience has been changed</string>
+    <string name="change_user_experience_error">The error occurred while trying to add new experience</string>
+    <string name="no_hobbies_added_message">You have not added hobbies yet, click on add button</string>
+    <string name="user_hobby_added_confirmation">New hobby has been added</string>
+    <string name="hobby_already_exists">Hobby already exists</string>
+    <string name="experience_added_confirmation">New experience has been added</string>
+    <string name="experience_added_error">The error occurred while trying to add new experience</string>
+    <string name="deleted_user_hobbies_toast">%1$s Deleted</string>
+
 </resources>

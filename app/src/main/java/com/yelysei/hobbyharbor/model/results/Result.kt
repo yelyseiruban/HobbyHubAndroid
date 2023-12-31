@@ -1,5 +1,11 @@
 package com.yelysei.hobbyharbor.model.results
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+
+typealias LiveResult<T> = LiveData<Result<T>>
+typealias MutableLiveResult<T> = MutableLiveData<Result<T>>
+
 typealias Mapper<Input, Output> = (Input) -> Output
 
 sealed class Result<T>

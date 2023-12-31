@@ -18,7 +18,7 @@
         android:name=".App"
         >
         <activity
-            android:name=".screens.main.MainActivity"
+            android:name=".ui.screens.main.MainActivity"
             android:theme="@style/Theme.HobbyHarbor"
             android:windowSoftInputMode="adjustResize"
             android:exported="true">

@@ -97,6 +97,6 @@
         android:layout_below="@id/toolbar"
         app:defaultNavHost="true"
         app:navGraph="@navigation/nav_graph"
-        tools:context=".app.screens.main.MainActivity" />
+        tools:context=".ui.screens.main.MainActivity" />
 
 </RelativeLayout>

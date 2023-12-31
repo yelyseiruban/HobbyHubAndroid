@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/userHobbiesFragment"
-        android:name="com.yelysei.hobbyharbor.screens.main.userhobbies.UserHobbiesFragment"
+        android:name="com.yelysei.hobbyharbor.ui.screens.main.userhobbies.UserHobbiesFragment"
         tools:layout="@layout/fragment_user_hobbies" >
         <action
             android:id="@+id/action_userHobbiesFragment_to_userHobbyDetailsFragment"
@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/userHobbyDetailsFragment"
-        android:name="com.yelysei.hobbyharbor.screens.main.hobbydetails.UserHobbyDetailsFragment"
+        android:name="com.yelysei.hobbyharbor.ui.screens.main.hobbydetails.UserHobbyDetailsFragment"
         tools:layout="@layout/fragment_user_hobby_details" >
         <argument
             android:name="uhId"
@@ -30,7 +30,7 @@
     </fragment>
     <fragment
         android:id="@+id/categorizedHobbiesFragment"
-        android:name="com.yelysei.hobbyharbor.screens.main.categorizedhobbies.CategorizedHobbiesFragment"
+        android:name="com.yelysei.hobbyharbor.ui.screens.main.categorizedhobbies.CategorizedHobbiesFragment"
         android:label="@string/hobbies"
         tools:layout="@layout/fragment_categorized_hobbies" />
 </navigation>
