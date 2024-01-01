@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 
-fun recyclerViewConfigureView(configuration: com.yelysei.hobbyharbor.ui.screens.Configuration) {
+fun recyclerViewConfigureView(configuration: Configuration) {
     //recycler view look configuration
     configuration.recyclerView.layoutManager = configuration.layoutManager
     //recycler view space between items

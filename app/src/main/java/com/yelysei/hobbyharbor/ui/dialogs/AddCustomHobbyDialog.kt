@@ -116,8 +116,8 @@ class AddCustomHobbyDialog(
 
     private fun setUpMaterialAutoCompleteTextViews() {
         val costItems = listOf("Cheap", "Affordable", "Expensive")
-        val placeItems = listOf("Home", "Outdoor", "Special")
-        val peopleItems = listOf("Alone", "Small Group", "Big Group")
+        val placeItems = listOf("Home", "Outdoor", "Special", "Doesn't Matter")
+        val peopleItems = listOf("Alone", "Small Group", "Big Group", "Doesn't Matter")
         setUpMaterialAutoCompleteTextView(editCategoryName, categoryItems)
         setUpMaterialAutoCompleteTextView(editCost, costItems)
         setUpMaterialAutoCompleteTextView(editPlace, placeItems)

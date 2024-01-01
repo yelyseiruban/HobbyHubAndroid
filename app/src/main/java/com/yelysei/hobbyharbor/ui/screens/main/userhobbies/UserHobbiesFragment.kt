@@ -42,7 +42,7 @@ class UserHobbiesFragment : BaseFragment() {
             if (adapter.isToggleEnabled) {
                 adapter.unselectUserHobbies()
             } else {
-                requireActivity().onBackPressedDispatcher.onBackPressed()
+                requireActivity().finish()
             }
         }
     }

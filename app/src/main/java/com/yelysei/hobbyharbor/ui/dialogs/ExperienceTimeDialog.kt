@@ -1,10 +1,17 @@
 package com.yelysei.hobbyharbor.ui.dialogs
 
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentManager
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.CompositeDateValidator
+import com.google.android.material.datepicker.DateValidatorPointBackward
+import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.timepicker.MaterialTimePicker
@@ -82,12 +89,14 @@ class ExperienceTimeDialog(
     private var fromDateTime: Long = 0
         set(value) {
             field = value
-            setDate(SettingValue.FROM)
+            settingValue = SettingValue.FROM
+            setDate()
         }
     private var tillDateTime: Long = 0
         set(value) {
             field = value
-            setDate(SettingValue.TILL)
+            settingValue = SettingValue.TILL
+            setDate()
         }
 
     private val datePickerDialogBuilder =
@@ -173,8 +182,10 @@ class ExperienceTimeDialog(
                         SettingValue.FROM -> {
                             fromTime = selectedTimeInMilliseconds.toLong()
                             settingValue = SettingValue.TILL
-                            datePickerDialog =
-                                datePickerDialogBuilder.setTitleText(R.string.till_picker).build()
+                            if (!setState.isTillSet) {
+                                datePickerDialog =
+                                    datePickerDialogBuilder.setTitleText(R.string.till_picker).build()
+                            }
                         }
 
                         SettingValue.TILL -> {
@@ -196,6 +207,7 @@ class ExperienceTimeDialog(
         fromDate = localDateTime.toLocalDate().atStartOfDay(ZoneId.systemDefault()).toInstant()
             .toEpochMilli()
         fromTime = localDateTime.toLocalTime().toSecondOfDay() * 1000L
+        setState.isFromSet = true
     }
 
     fun fulfillTillDateTime(tillDateTime: Long) {
@@ -204,6 +216,8 @@ class ExperienceTimeDialog(
         tillDate = localDateTime.toLocalDate().atStartOfDay(ZoneId.systemDefault()).toInstant()
             .toEpochMilli()
         tillTime = localDateTime.toLocalTime().toSecondOfDay() * 1000L
+        setState.isTillSet = true
+        Log.d("Debug", setState.toString())
     }
 
     private val binding: ExperienceTimeDialogBinding by lazy {
@@ -219,20 +233,26 @@ class ExperienceTimeDialog(
         val dialog = MaterialAlertDialogBuilder(context)
             .setTitle(title)
             .setView(binding.root)
-            .setPositiveButton("Submit") { dialog, _ ->
-                if (tillDateTime > fromDateTime) {
-                    onSubmitClick(fromDateTime, tillDateTime)
-                    dialog.dismiss()
-                } else {
-                    uiActions.toast(stringResources.getString(R.string.incorrect_from_till_datetime))
-                }
-            }
+            .setPositiveButton("Submit", null)
             .show()
 
         submitButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+        submitButton.setOnClickListener {
+            if (tillDateTime > fromDateTime) {
+                onSubmitClick(fromDateTime, tillDateTime)
+                dialog.dismiss()
+            } else {
+                uiActions.toast(stringResources.getString(R.string.incorrect_from_till_datetime))
+            }
+        }
 
-        datePickerDialog = datePickerDialogBuilder.build()
-        settingValue = SettingValue.FROM
+        // wait for setState change if fulfill dates
+        Handler(Looper.getMainLooper()).postDelayed({
+            if (!setState.areValuesSet()) {
+                datePickerDialog = datePickerDialogBuilder.build()
+                settingValue = SettingValue.FROM
+            }
+        }, 100)
         renderSubmitButton()
 
         tvFrom.setOnClickListener {
@@ -260,7 +280,7 @@ class ExperienceTimeDialog(
         }
     }
 
-    private fun setDate(settingValue: SettingValue) {
+    private fun setDate() {
         when (settingValue) {
             SettingValue.FROM -> {
                 val selectedDate = getFormattedDate(fromDateTime, "dd.MM.yyyy HH:mm")
@@ -274,6 +294,19 @@ class ExperienceTimeDialog(
                 setState.isTillSet = true
             }
         }
+        val constraintsBuilderRange = CalendarConstraints.Builder()
+        var dateValidatorMin: DateValidatorPointForward? = null
+        var dateValidatorMax: DateValidatorPointBackward? = null
+        if (fromDate != 0L){
+            dateValidatorMin = DateValidatorPointForward.from(fromDate)
+        }
+        if (tillDate != 0L){
+            dateValidatorMax = DateValidatorPointBackward.before(tillDate)
+        }
+        val listValidators = arrayListOf(dateValidatorMin, dateValidatorMax)
+        val validators = CompositeDateValidator.allOf(listValidators)
+        constraintsBuilderRange.setValidator(validators)
+        datePickerDialogBuilder.setCalendarConstraints(constraintsBuilderRange.build())
         renderSubmitButton()
     }
 

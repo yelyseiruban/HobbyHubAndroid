@@ -32,7 +32,7 @@ class SetGoalDialog(
 
     override fun show() {
         val editGoal = binding.goal
-        KeyboardUtils.showKeyboard(context, editGoal, 300)
+        KeyboardUtils.showKeyboard(context, editGoal, 500)
         var editValueString = ""
         var reachedProgress = 0
         if (progressState != null) {
