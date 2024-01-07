@@ -2,26 +2,20 @@ package com.yelysei.hobbyharbor.ui.screens.main.experiencedetails
 
 import android.Manifest
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.content.res.ColorStateList
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
-import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.content.ContextCompat
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import androidx.recyclerview.widget.RecyclerView
 import com.yelysei.hobbyharbor.R
 import com.yelysei.hobbyharbor.Repositories
 import com.yelysei.hobbyharbor.databinding.FragmentExperienceDetailsBinding
@@ -32,12 +26,10 @@ import com.yelysei.hobbyharbor.ui.screens.renderExperienceDetailsResult
 import com.yelysei.hobbyharbor.utils.CustomTypeface
 import com.yelysei.hobbyharbor.utils.DateFormat
 import com.yelysei.hobbyharbor.utils.DisplayedDateTime
+import com.yelysei.hobbyharbor.utils.UriUtils.getImageUrlWithAuthority
+import com.yelysei.hobbyharbor.utils.permisions.PermissionsSettingsUtils
 import com.yelysei.hobbyharbor.utils.resources.AttributeUtils
 import com.yelysei.hobbyharbor.utils.viewModelCreator
-import java.io.ByteArrayOutputStream
-import java.io.FileNotFoundException
-import java.io.IOException
-import java.io.InputStream
 
 
 class ExperienceDetailsFragment : BaseFragment() {
@@ -62,21 +54,36 @@ class ExperienceDetailsFragment : BaseFragment() {
         Manifest.permission.READ_MEDIA_IMAGES
     else
         Manifest.permission.READ_EXTERNAL_STORAGE
+
+    private val requestReadImagesPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission(),
+        ::onGotReadImagesResult
+    )
+
+    private val permissionsSettingsUtils by lazy {
+        PermissionsSettingsUtils(requireActivity(), requireContext())
+    }
+
+    private fun onGotReadImagesResult(granted: Boolean) {
+        if (granted) {
+            openGalleryForImages()
+        } else {
+            // example of handling 'Deny & don't ask again' user choice
+            if (!shouldShowRequestPermissionRationale(readImagePermission)) {
+                permissionsSettingsUtils.showSettingsDialog()
+            } else {
+                uiActions.toast(stringResources.getString(R.string.permission_denied))
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentExperienceDetailsBinding.inflate(inflater, container, false)
-        previewImageAdapter = ImageAdapter()
-        shownImageAdapter = ImageAdapter()
-        binding.previewGallery.addItemDecoration(HorizontalSpaceItemDecoration(30))
-        binding.previewGallery.adapter = previewImageAdapter
-        binding.previewGallery.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        binding.shownGallery.addItemDecoration(HorizontalSpaceItemDecoration(30))
-        binding.shownGallery.adapter = shownImageAdapter
-        binding.shownGallery.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-
+        prepareGalleryRecyclerViews()
 
         viewModel.experiencePin.observe(viewLifecycleOwner) { result ->
             renderExperienceDetailsResult(binding.constraintLayout, result) { experiencePin ->
@@ -98,13 +105,13 @@ class ExperienceDetailsFragment : BaseFragment() {
                     binding.noteTextLayout.visibility = View.GONE
                 }
                 if (experiencePin.uriReferences.isNotEmpty()) {
-                    binding.shownGallery.visibility = View.VISIBLE
+                    binding.shownGalleryLayout.visibility = View.VISIBLE
                     val uriReferences = experiencePin.uriReferences.map {
                         Uri.parse(it)
                     }
                     shownImageAdapter.selectImages(uriReferences)
                 } else {
-                    binding.shownGallery.visibility = View.GONE
+                    binding.shownGalleryLayout.visibility = View.GONE
                 }
             }
         }
@@ -118,14 +125,7 @@ class ExperienceDetailsFragment : BaseFragment() {
         }
 
         binding.uploadImagesButton.setOnClickListener {
-            if(ContextCompat.checkSelfPermission(requireActivity(), readImagePermission) == PackageManager.PERMISSION_GRANTED)
-            {
-                //Granted
-                openGalleryForImages()
-            } else {
-                //Not Granted
-                showSettingsDialog()
-            }
+            requestReadImagesPermissionLauncher.launch(readImagePermission)
         }
 
         val attributeUtils = AttributeUtils(binding.root, R.styleable.FabView)
@@ -137,32 +137,17 @@ class ExperienceDetailsFragment : BaseFragment() {
         return binding.root
     }
 
-    private fun getImageUrlWithAuthority(context: Context, uri: Uri): String? {
-        var inputStream: InputStream? = null
-        if (uri.authority != null) {
-            try {
-                inputStream = context.contentResolver.openInputStream(uri)
-                val bmp = BitmapFactory.decodeStream(inputStream)
-                return writeToTempImageAndGetPathUri(context, bmp).toString()
-            } catch (e: FileNotFoundException) {
-                e.printStackTrace()
-            } finally {
-                try {
-                    inputStream?.close()
-                } catch (e: IOException) {
-                    e.printStackTrace()
-                }
-            }
-        }
-        return null
+    private fun prepareGalleryRecyclerViews() {
+        previewImageAdapter = ImageAdapter()
+        shownImageAdapter = ImageAdapter()
+        prepareGalleryRecyclerView(binding.previewGallery, previewImageAdapter)
+        prepareGalleryRecyclerView(binding.shownGallery, shownImageAdapter)
     }
 
-    private fun writeToTempImageAndGetPathUri(inContext: Context, inImage: Bitmap): Uri {
-        val bytes = ByteArrayOutputStream()
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-        val path =
-            MediaStore.Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
-        return Uri.parse(path)
+    private fun prepareGalleryRecyclerView(galleryRecyclerView: RecyclerView, imageAdapter: ImageAdapter) {
+        galleryRecyclerView.addItemDecoration(HorizontalSpaceItemDecoration(30))
+        galleryRecyclerView.adapter = imageAdapter
+        galleryRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
     }
 
     private fun openGalleryForImages() {
@@ -170,16 +155,13 @@ class ExperienceDetailsFragment : BaseFragment() {
         galleryIntent.addCategory(Intent.CATEGORY_OPENABLE)
         galleryIntent.type = "image/*"
         galleryIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-        startActivityForResult(
-            Intent.createChooser(galleryIntent, "Choose images"),
-            YOUR_REQUEST_CODE_FOR_IMAGE_SELECTION
-        )
+        resultLauncher.launch(galleryIntent)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == YOUR_REQUEST_CODE_FOR_IMAGE_SELECTION && resultCode == Activity.RESULT_OK) {
+    private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            // There are no request codes
+            val data: Intent? = result.data
             val selectedImages: MutableList<Uri> = mutableListOf()
 
             if (data?.clipData != null) {
@@ -200,25 +182,6 @@ class ExperienceDetailsFragment : BaseFragment() {
         }
     }
 
-    private fun showSettingsDialog() {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Permission Required")
-            .setMessage("You have denied the storage permission. Please enable it in the app settings.")
-            .setPositiveButton("Go to Settings") { _, _ ->
-                openAppSettings()
-            }
-            .setNegativeButton("Cancel") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .show()
-    }
-
-    private fun openAppSettings() {
-        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-        val uri: Uri = Uri.fromParts("package", requireActivity().packageName, null)
-        intent.data = uri
-        startActivity(intent)
-    }
 
     private fun firstAppearFABAddPin() {
         binding.fabAddPin.appear()
@@ -270,10 +233,4 @@ class ExperienceDetailsFragment : BaseFragment() {
         requireActivity().findViewById<TextView>(R.id.toolbarTitle).text =
             CustomTypeface.capitalizeEachWord(hobbyName)
     }
-
-    companion object {
-        const val YOUR_REQUEST_CODE_FOR_IMAGE_SELECTION = 123
-        const val READ_EXTERNAL_STORAGE_REQUEST_CODE = 321
-    }
-
 }

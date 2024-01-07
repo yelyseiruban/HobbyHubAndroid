@@ -6,7 +6,7 @@
     <attr name="tryAgainBackground" format="reference"/>
     <attr name="tryAgainText" format="reference"/>
 
-    <attr name="addButtonBackground" format="reference"/>
+    <attr name="fabBackground" format="reference"/>
 
     <attr name="userHobbyBackground" format="reference"/>
     <attr name="touchUserHobbyBackground" format="reference"/>

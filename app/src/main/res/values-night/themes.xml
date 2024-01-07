@@ -32,7 +32,7 @@
         <item name="tryAgainBackground">@color/lightThemeAccentOrange</item>
         <item name="tryAgainText">@color/black</item>
 
-        <item name="addButtonBackground">@color/lightThemeAccentOrange</item>
+        <item name="fabBackground">@color/lightThemeAccentOrange</item>
         <item name="addButtonIcon">@drawable/ic_add</item>
         <item name="removeButtonIcon">@drawable/ic_remove</item>
         <item name="fabColor">@color/black</item>

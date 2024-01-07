@@ -105,6 +105,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_marginTop="6dp"
+                    app:backgroundTint="?attr/fabBackground"
                     app:srcCompat="@drawable/ic_upload_image" />
 
 
@@ -161,6 +162,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/shownGalleryLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
@@ -198,7 +200,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:contentDescription="@string/add_new_user_experience_button_description"
-        app:backgroundTint="?attr/addButtonBackground"
+        app:backgroundTint="?attr/fabBackground"
         app:iconTint="?attr/fabColor"
         app:icon="?attr/addButtonIcon"
         app:layout_constraintBottom_toBottomOf="parent"
