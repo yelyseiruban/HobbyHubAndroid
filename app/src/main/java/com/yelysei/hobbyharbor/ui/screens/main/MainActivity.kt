@@ -9,6 +9,7 @@ import com.yelysei.hobbyharbor.R
 import com.yelysei.hobbyharbor.Repositories
 import com.yelysei.hobbyharbor.databinding.ActivityMainBinding
 
+
 class MainActivity : AppCompatActivity() {
 
     private var navController: NavController? = null
@@ -65,5 +66,4 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.fragmentContainer) as NavHostFragment
         return navHost.navController
     }
-
 }

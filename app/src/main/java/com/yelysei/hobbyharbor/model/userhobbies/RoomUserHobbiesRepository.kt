@@ -2,15 +2,17 @@ package com.yelysei.hobbyharbor.model.userhobbies
 
 import android.database.sqlite.SQLiteConstraintException
 import android.util.Log
-import com.yelysei.hobbyharbor.model.NoActionsByProgressIdException
+import com.yelysei.hobbyharbor.model.NoExperiencesByProgressIdException
 import com.yelysei.hobbyharbor.model.NoHobbyIdException
 import com.yelysei.hobbyharbor.model.UserHobbyAlreadyAddedException
 import com.yelysei.hobbyharbor.model.hobbies.entities.Hobby
-import com.yelysei.hobbyharbor.model.userhobbies.entities.Action
+import com.yelysei.hobbyharbor.model.userhobbies.entities.Experience
+import com.yelysei.hobbyharbor.model.userhobbies.entities.ImageReference
 import com.yelysei.hobbyharbor.model.userhobbies.entities.Progress
 import com.yelysei.hobbyharbor.model.userhobbies.entities.UserHobby
 import com.yelysei.hobbyharbor.model.userhobbies.room.UserHobbiesDao
-import com.yelysei.hobbyharbor.model.userhobbies.room.entities.ActionDbEntity
+import com.yelysei.hobbyharbor.model.userhobbies.room.entities.ExperienceDbEntity
+import com.yelysei.hobbyharbor.model.userhobbies.room.entities.ImageReferenceDbEntity
 import com.yelysei.hobbyharbor.model.userhobbies.room.entities.ProgressDbEntity
 import com.yelysei.hobbyharbor.model.userhobbies.room.entities.UserHobbyDbEntity
 import kotlinx.coroutines.CoroutineDispatcher
@@ -35,12 +37,12 @@ class RoomUserHobbiesRepository(
                 val progressId = userHobby.progress.id
 
                 combine(
-                    getActionsByProgressId(progressId),
+                    getExperiencesByProgressId(progressId),
                     getProgressById(progressId)
-                ) { actions, progress ->
+                ) { experiences, progress ->
                     // Combine the results
                     userHobby.progress = progress
-                    userHobby.progress.actions = actions
+                    userHobby.progress.experiences = experiences
                     userHobby
                 }
             }
@@ -61,14 +63,14 @@ class RoomUserHobbiesRepository(
         }
     }
 
-    override suspend fun addUserHobbyExperience(progressId: Int, action: Action) =
+    override suspend fun addUserHobbyExperience(progressId: Int, experience: Experience) =
         withContext(ioDispatcher) {
-            userHobbiesDao.insertUserHobbyAction(ActionDbEntity.fromAction(action, progressId))
+            userHobbiesDao.insertExperience(ExperienceDbEntity.fromExperience(experience, progressId))
         }
 
-    override suspend fun updateUserHobbyExperience(progressId: Int, action: Action) =
+    override suspend fun updateUserHobbyExperience(progressId: Int, experience: Experience) =
         withContext(ioDispatcher) {
-            userHobbiesDao.updateUserHobbyAction(ActionDbEntity.fromAction(action, progressId))
+            userHobbiesDao.updateExperience(ExperienceDbEntity.fromExperience(experience, progressId))
         }
 
     override suspend fun updateProgress(progressDbEntity: ProgressDbEntity): Unit =
@@ -91,12 +93,42 @@ class RoomUserHobbiesRepository(
         userHobbiesDao.userHobbyExists(hobbyId)
     }
 
+    override suspend fun getUserExperienceById(experienceId: Int): Flow<Experience> = withContext(ioDispatcher) {
+        userHobbiesDao.getUserExperienceById(experienceId).map {
+            it.toExperience()
+        }
+    }
+
+    override suspend fun updateNoteTextByExperienceId(noteText: String, experienceId: Int) = withContext(ioDispatcher) {
+        userHobbiesDao.updateNoteTextByExperienceId(noteText, experienceId)
+    }
+
+    override suspend fun insertUriReferences(uriReferences: List<String>, experienceId: Int) = withContext(ioDispatcher) {
+        val imageReferences = uriReferences.map {
+            ImageReferenceDbEntity(
+                id = 0,
+                it,
+                experienceId
+            )
+        }
+        userHobbiesDao.insertUriReferences(imageReferences)
+    }
+
+    override suspend fun getUriReferencesByExperienceId(experienceId: Int): Flow<List<ImageReference>> = withContext(ioDispatcher) {
+        userHobbiesDao.findImageReferencesByExperienceId(experienceId)
+            .map { imageReferenceDbEntities ->
+                imageReferenceDbEntities.map {
+                    it.toImageReference()
+                }
+            }
+    }
+
     override suspend fun getUserHobbies(): Flow<List<UserHobby>> = withContext(ioDispatcher) {
         val userHobbiesFlow = userHobbiesDao.getUserHobbies().map {
             it.map { userHobbiesInTuple ->
                 val userHobby = userHobbiesInTuple.toUserHobby()
-                val actions = getActionsByProgressId(userHobby.progress.id)
-                userHobby.progress.actions = actions.first()
+                val experiences = getExperiencesByProgressId(userHobby.progress.id)
+                userHobby.progress.experiences = experiences.first()
                 userHobby
             }
         }
@@ -109,13 +141,13 @@ class RoomUserHobbiesRepository(
         }
     }
 
-    private suspend fun getActionsByProgressId(progressId: Int): Flow<List<Action>> =
+    private suspend fun getExperiencesByProgressId(progressId: Int): Flow<List<Experience>> =
         withContext(ioDispatcher) {
-            val actionsDbEntityFlow = userHobbiesDao.findUserActionsByProgressId(progressId)
-            return@withContext actionsDbEntityFlow?.map { actionsDbEntity ->
-                actionsDbEntity.map {
-                    it.toAction()
+            val experiencesDbEntityFlow = userHobbiesDao.findExperiencesByProgressId(progressId)
+            return@withContext experiencesDbEntityFlow?.map { experienceDbEntity ->
+                experienceDbEntity.map {
+                    it.toExperience()
                 }
-            } ?: throw NoActionsByProgressIdException()
+            } ?: throw NoExperiencesByProgressIdException()
         }
 }

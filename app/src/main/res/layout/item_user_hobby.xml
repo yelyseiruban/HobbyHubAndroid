@@ -5,7 +5,7 @@
     android:id="@+id/userHobbyContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/hobby_background"
+    android:background="@drawable/rounded_background"
     android:paddingStart="20dp"
     android:paddingTop="10dp"
     android:paddingEnd="20dp"

@@ -4,6 +4,9 @@
 
     <!--permission Internet-->
     <uses-permission android:name="android.permission.INTERNET" />
+    <!--permission for accessing images, which user will pick-->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"

@@ -11,6 +11,7 @@
         <item name="materialTimePickerTheme">@style/MaterialTimePickerTheme</item>
         <item name="materialSearchBarStyle">@style/MaterialSearchBarStyle</item>
         <item name="materialSearchViewStyle">@style/MaterialSearchViewStyle</item>
+        <item name="iconTint">@color/black</item>
         <item name="appBarBackgroundColor">@color/lightThemeLightOrange</item>
         <item name="textInputOutlinedStyle">@style/TextInputLayoutStyle</item>
         <item name="android:colorControlActivated">@color/lightThemeAccentOrange</item>
@@ -32,13 +33,15 @@
         <item name="tryAgainBackground">@color/lightThemeAccentOrange</item>
         <item name="tryAgainText">@color/black</item>
 
+        <item name="hintPinColor">@color/darkGray</item>
+
         <item name="addButtonBackground">@color/lightThemeAccentOrange</item>
         <item name="addButtonIcon">@drawable/ic_add</item>
         <item name="removeButtonIcon">@drawable/ic_remove</item>
         <item name="fabColor">@color/black</item>
 
-        <item name="defaultBackground">@drawable/hobby_background</item>
-        <item name="selectedBackground">@drawable/hobby_selected_background</item>
+        <item name="defaultBackground">@drawable/rounded_background</item>
+        <item name="selectedBackground">@drawable/rounded_selected_background</item>
 
         <item name="userActionBackground">@color/lightThemeUserActionBackground</item>
         <item name="touchUserActionBackground">@color/lightThemeTouchUserActionBackground</item>
@@ -46,6 +49,7 @@
         <item name="dialogBackgroundColor">@color/lightThemeDialogBackground</item>
 
         <item name="progressBarColor">@color/lightThemeAccentOrange</item>
+
     </style>
 
     <style name="Toolbar" parent="Widget.AppCompat.Toolbar">
@@ -111,4 +115,6 @@
     </style>
 
     <style name="Theme.HobbyHarbor" parent="Base.Theme.HobbyHarbor" />
+
+    <color name="darkGray">#4B4B4B</color>
 </resources>

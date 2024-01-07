@@ -10,7 +10,7 @@ class UserHobbyAlreadyAddedException : AppException()
 
 class NoHobbiesBySpecifiedCategoryName : AppException()
 
-class NoActionsByProgressIdException : AppException()
+class NoExperiencesByProgressIdException : AppException()
 
 class HobbyAlreadyExistsException(
     val hobbyName: String

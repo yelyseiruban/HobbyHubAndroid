@@ -6,7 +6,8 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.yelysei.hobbyharbor.model.userhobbies.room.entities.ActionDbEntity
+import com.yelysei.hobbyharbor.model.userhobbies.room.entities.ExperienceDbEntity
+import com.yelysei.hobbyharbor.model.userhobbies.room.entities.ImageReferenceDbEntity
 import com.yelysei.hobbyharbor.model.userhobbies.room.entities.ProgressDbEntity
 import com.yelysei.hobbyharbor.model.userhobbies.room.entities.UserHobbiesInTuple
 import com.yelysei.hobbyharbor.model.userhobbies.room.entities.UserHobbyDbEntity
@@ -46,8 +47,8 @@ interface UserHobbiesDao {
     @Insert
     suspend fun addUserHobby(userHobby: UserHobbyDbEntity)
 
-    @Query("SELECT * FROM actions WHERE actions.progress_id = :progressId")
-    fun findUserActionsByProgressId(progressId: Int): Flow<List<ActionDbEntity>>?
+    @Query("SELECT * FROM experiences WHERE experiences.progress_id = :progressId")
+    fun findExperiencesByProgressId(progressId: Int): Flow<List<ExperienceDbEntity>>?
 
     @Insert
     suspend fun insertProgress(progressDbEntity: ProgressDbEntity): Long
@@ -56,10 +57,10 @@ interface UserHobbiesDao {
     fun insertUserHobby(userHobbyDbEntity: UserHobbyDbEntity)
 
     @Insert
-    fun insertUserHobbyAction(actionDbEntity: ActionDbEntity)
+    fun insertExperience(experienceDbEntity: ExperienceDbEntity)
 
-    @Update(entity = ActionDbEntity::class, onConflict = OnConflictStrategy.REPLACE)
-    fun updateUserHobbyAction(fromAction: ActionDbEntity)
+    @Update(entity = ExperienceDbEntity::class, onConflict = OnConflictStrategy.REPLACE)
+    fun updateExperience(experience: ExperienceDbEntity)
 
     @Update(entity = ProgressDbEntity::class, onConflict = OnConflictStrategy.REPLACE)
     fun updateProgress(progressDbEntity: ProgressDbEntity)
@@ -75,4 +76,16 @@ interface UserHobbiesDao {
 
     @Delete(entity = UserHobbyDbEntity::class)
     fun deleteUserHobbies(map: List<UserHobbyDbEntity>)
+
+    @Query("SELECT * FROM experiences WHERE experiences.id = :experienceId")
+    fun getUserExperienceById(experienceId: Int): Flow<ExperienceDbEntity>
+
+    @Query("UPDATE experiences SET note = :noteText WHERE id = :experienceId")
+    fun updateNoteTextByExperienceId(noteText: String, experienceId: Int)
+
+    @Insert
+    fun insertUriReferences(imageReferences: List<ImageReferenceDbEntity>)
+
+    @Query("SELECT * FROM image_references WHERE image_references.experience_id = :experienceId")
+    fun findImageReferencesByExperienceId(experienceId: Int): Flow<List<ImageReferenceDbEntity>>
 }

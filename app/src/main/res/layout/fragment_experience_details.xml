@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.screens.main.experiencedetails.ExperienceDetailsFragment">
+
+    <TextView
+        android:id="@+id/tvFirstDateField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="date - date" />
+
+    <TextView
+        android:id="@+id/dateHyphen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hyphen"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@id/tvSecondDateField"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvFirstDateField" />
+
+
+    <TextView
+        android:id="@+id/tvSecondDateField"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvFirstDateField"
+        tools:text="time - time" />
+
+    <View
+        android:id="@+id/timeBordersSeparator"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="24dp"
+
+        android:background="@color/gray"
+        app:layout_constraintTop_toBottomOf="@id/tvSecondDateField" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/timeBordersSeparator">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/addPinContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/notesInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="1"
+                    android:hint="@string/note">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/notesInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:inputType="text|textMultiLine" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/previewGallery"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_marginTop="14dp"
+                    android:visibility="gone" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/uploadImagesButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="6dp"
+                    app:srcCompat="@drawable/ic_upload_image" />
+
+
+                <View
+                    android:id="@+id/addPinSeparator"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/gray" />
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/pinContainer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginEnd="24dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/addPinContainer">
+
+                <LinearLayout
+                    android:id="@+id/noteTextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_background"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
+                        android:textSize="14sp"
+                        android:layout_marginStart="20dp"
+                        android:text="@string/note_hint"
+                        android:textColor="?attr/hintPinColor" />
+
+                    <TextView
+                        android:id="@+id/noteText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="20dp"
+                        android:paddingTop="0dp"
+                        android:paddingEnd="20dp"
+                        android:paddingBottom="20dp"
+                        android:textSize="20sp"
+                        tools:text="Smaple Note" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:background="@drawable/rounded_background"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
+                        android:textSize="14sp"
+                        android:layout_marginStart="20dp"
+                        android:textColor="?attr/hintPinColor"
+                        android:text="@string/hint_images" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/shownGallery"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:paddingBottom="20dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </ScrollView>
+
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fabAddPin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/add_new_user_experience_button_description"
+        app:backgroundTint="?attr/addButtonBackground"
+        app:iconTint="?attr/fabColor"
+        app:icon="?attr/addButtonIcon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Material3.FloatingActionButton" />
+
+    <include layout="@layout/part_result" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

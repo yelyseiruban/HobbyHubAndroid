@@ -4,10 +4,10 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.yelysei.hobbyharbor.model.userhobbies.entities.Action
+import com.yelysei.hobbyharbor.model.userhobbies.entities.Experience
 
 @Entity(
-    tableName = "actions",
+    tableName = "experiences",
     foreignKeys = [
         ForeignKey(
             entity = ProgressDbEntity::class,
@@ -18,28 +18,31 @@ import com.yelysei.hobbyharbor.model.userhobbies.entities.Action
         )
     ]
 )
-data class ActionDbEntity(
+data class ExperienceDbEntity(
     @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "start_date") val startDate: Long,
     @ColumnInfo(name = "end_date") val endDate: Long,
-    @ColumnInfo(name = "progress_id") val progressId: Int
+    @ColumnInfo(name = "progress_id") val progressId: Int,
+    @ColumnInfo(name = "note") val note: String?
 ) {
 
-    fun toAction(): Action {
-        return Action(
+    fun toExperience(): Experience {
+        return Experience(
             id = id,
             startTime = startDate,
-            endTime = endDate
+            endTime = endDate,
+            note = note
         )
     }
 
     companion object {
-        fun fromAction(action: Action, progressId: Int): ActionDbEntity {
-            return ActionDbEntity(
-                id = action.id,
-                startDate = action.startTime,
-                endDate = action.endTime,
-                progressId = progressId
+        fun fromExperience(experience: Experience, progressId: Int): ExperienceDbEntity {
+            return ExperienceDbEntity(
+                id = experience.id,
+                startDate = experience.startTime,
+                endDate = experience.endTime,
+                progressId = progressId,
+                note = experience.note
             )
         }
     }

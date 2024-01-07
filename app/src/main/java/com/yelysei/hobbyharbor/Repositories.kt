@@ -16,6 +16,7 @@ object Repositories {
     private val database: AppDatabase by lazy {
         Room.databaseBuilder(applicationContext, AppDatabase::class.java, "database.db")
             .createFromAsset("initial_database.db")
+//            .addMigrations(AppDatabase.MIGRATION_1_2)
             .build()
     }
 

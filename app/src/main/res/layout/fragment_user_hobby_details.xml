@@ -5,7 +5,7 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".screens.main.hobbydetails.UserHobbyDetailsFragment">
+    tools:context=".ui.screens.main.hobbydetails.UserHobbyDetailsFragment">
 
     <TextView
         android:id="@+id/tvTotalTitle"
@@ -96,7 +96,7 @@
         app:layout_constraintTop_toTopOf="@id/ivHistory" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewUserActions"
+        android:id="@+id/recyclerViewUserExperiences"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="10dp"

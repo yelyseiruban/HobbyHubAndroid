@@ -11,8 +11,8 @@
     <string name="add_experience">Add experience</string>
     <string name="image_view_history_of_progress">Image View History of Progress</string>
     <string name="history">History</string>
-    <string name="arrow_right_points_user_action">Arrow Right points user action</string>
-    <string name="edit_user_action">Edit user action</string>
+    <string name="arrow_right_points_user_experience">Arrow Right points user experience</string>
+    <string name="edit_user_experience">Edit user experience</string>
     <string name="add_new_user_hobby_button">Add new user hobby button</string>
     <string name="goal_edit">Goad Edit</string>
     <string name="edit_action">Edit action</string>
@@ -68,6 +68,7 @@
     <string name="add_new_user_experience_button_description">Add new user experience</string>
     <string name="remove_user_hobbies_title">Remove user hobbies</string>
     <string name="add_custom_hobby_title">Custom hobby information</string>
+    <string name="experience_date_borders">%1$s - %2$s</string>
 
     <!--Errors and Toasts to user-->
     <string name="specified_goal_less_than_reach_progress">Specified goal should be greater than reached progress</string>
@@ -84,5 +85,15 @@
     <string name="experience_added_confirmation">New experience has been added</string>
     <string name="experience_added_error">The error occurred while trying to add new experience</string>
     <string name="deleted_user_hobbies_toast">%1$s Deleted</string>
+    <string name="note">Note</string>
+    <string name="upload_images">Upload Images</string>
+    <string name="permissions_denied_forever">Permission denied forever</string>
+    <string name="permission_denied">Permission denied</string>
+    <string name="permission_denied_forever_message">Permission denied forever message</string>
+    <string name="open">Open</string>
+    <string name="item_image_description">Selected Image in Gallery</string>
+    <string name="note_hint">Note:</string>
+    <string name="hint_images">Images:</string>
+    <string name="hyphen">-</string>
 
 </resources>

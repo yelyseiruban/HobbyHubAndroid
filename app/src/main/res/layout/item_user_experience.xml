@@ -5,21 +5,21 @@
     android:id="@+id/experienceContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/user_action_background"
+    android:background="@drawable/user_experience_background"
     android:padding="10dp">
 
     <ImageView
         android:id="@+id/ivArrowRight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/arrow_right_points_user_action"
+        android:contentDescription="@string/arrow_right_points_user_experience"
         android:src="@drawable/ic_arrow_right"
-        app:layout_constraintBottom_toBottomOf="@id/tvActionDate"
+        app:layout_constraintBottom_toBottomOf="@id/tvFirstDateField"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tvActionDate" />
+        app:layout_constraintTop_toTopOf="@id/tvFirstDateField" />
 
     <TextView
-        android:id="@+id/tvActionDate"
+        android:id="@+id/tvFirstDateField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="25sp"
@@ -28,12 +28,24 @@
         tools:text="10.08.2023 - 10.08.2023" />
 
     <TextView
-        android:id="@+id/tvTimeBorders"
+        android:id="@+id/tvHyphen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="25sp"
-        app:layout_constraintStart_toStartOf="@id/tvActionDate"
-        app:layout_constraintTop_toBottomOf="@id/tvActionDate"
+        app:layout_constraintStart_toStartOf="@id/tvFirstDateField"
+        app:layout_constraintEnd_toEndOf="@id/tvFirstDateField"
+        app:layout_constraintTop_toBottomOf="@id/tvFirstDateField"
+        app:layout_constraintBottom_toTopOf="@id/tvSecondDateField"
+        android:text="@string/hyphen"/>
+
+    <TextView
+        android:id="@+id/tvSecondDateField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="@id/tvFirstDateField"
+        app:layout_constraintTop_toBottomOf="@id/tvFirstDateField"
         tools:text="07:00 - 09:00" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,18 +13,37 @@ import com.yelysei.hobbyharbor.model.results.SuccessResult
 
 fun <T> renderSimpleResult(root: ViewGroup, result: Result<T>, onSuccess: (T) -> Unit) {
     val binding = PartResultBinding.bind(root)
-    com.yelysei.hobbyharbor.ui.screens.renderResult(
+    renderResult(
         root = root,
         result = result,
         onPending = {
             binding.progressBar.visibility = View.VISIBLE
         },
         onError = {
-            binding.progressBar.visibility = View.VISIBLE
+            binding.errorContainer.visibility = View.VISIBLE
         },
         onSuccess = { successData ->
             root.children
                 .filter { it.id != R.id.progressBar && it.id != R.id.errorContainer }
+                .forEach { it.visibility = View.VISIBLE }
+            onSuccess(successData)
+        })
+}
+
+fun <T> renderExperienceDetailsResult(root: ViewGroup, result: Result<T>, onSuccess: (T) -> Unit) {
+    val binding = PartResultBinding.bind(root)
+    renderResult(
+        root = root,
+        result = result,
+        onPending = {
+            binding.progressBar.visibility = View.VISIBLE
+        },
+        onError = {
+            binding.errorContainer.visibility = View.VISIBLE
+        },
+        onSuccess = { successData ->
+            root.children
+                .filter { it.id != R.id.progressBar && it.id != R.id.errorContainer && it.id != R.id.addPinContainer }
                 .forEach { it.visibility = View.VISIBLE }
             onSuccess(successData)
         })

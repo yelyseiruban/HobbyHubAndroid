@@ -6,13 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yelysei.hobbyharbor.R
 import com.yelysei.hobbyharbor.Repositories
 import com.yelysei.hobbyharbor.databinding.FragmentUserHobbyDetailsBinding
 import com.yelysei.hobbyharbor.model.UserHobbyIsNotLoadedException
-import com.yelysei.hobbyharbor.model.userhobbies.entities.Action
+import com.yelysei.hobbyharbor.model.userhobbies.entities.Experience
 import com.yelysei.hobbyharbor.model.userhobbies.entities.getProgressInHours
 import com.yelysei.hobbyharbor.ui.dialogs.ExperienceTimeDialog
 import com.yelysei.hobbyharbor.ui.dialogs.OnExperienceTimeSubmitClickListener
@@ -43,28 +44,14 @@ class UserHobbyDetailsFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentUserHobbyDetailsBinding.inflate(inflater, container, false)
-        val adapter = UserActionsAdapter(object : HobbyDetailsActionListener {
-            override fun editAction(userAction: Action) {
-                val dialogTitle = "Edit your experience:"
-                val submitClickListener = { till: Long, from: Long ->
-                    try {
-                        viewModel.editUserExperience(till, from, userAction.id)
-                        uiActions.toast(stringResources.getString(R.string.change_user_experience_confirmation))
-                    } catch (e: UserHobbyIsNotLoadedException) {
-                        uiActions.toast(stringResources.getString(R.string.change_user_experience_error))
-                    }
-                }
-                val previousFrom = userAction.startTime
-                val previousTill = userAction.endTime
-                showExperienceTimeDialog(
-                    dialogTitle,
-                    submitClickListener,
-                    previousFrom,
-                    previousTill
-                )
+        val adapter = UserExperiencesAdapter(object : HobbyDetailsActionListener {
+            override fun openExperience(experienceId: Int) {
+                findNavController().navigate(UserHobbyDetailsFragmentDirections.actionUserHobbyDetailsFragmentToExperienceDetailsFragment(experienceId, args.hobbyName))
+//                onEditExperienceClick(userAction)
+
             }
         })
-        binding.recyclerViewUserActions.adapter = adapter
+        binding.recyclerViewUserExperiences.adapter = adapter
 
         viewModel.userHobby.observe(viewLifecycleOwner) { result ->
             com.yelysei.hobbyharbor.ui.screens.renderSimpleResult(
@@ -73,7 +60,7 @@ class UserHobbyDetailsFragment : BaseFragment() {
             ) { userHobby ->
                 binding.tvGoalValue.text = userHobby.progress.goal.toString()
                 binding.tvTotalValue.text = userHobby.getProgressInHours().toString()
-                adapter.userActions = userHobby.progress.actions
+                adapter.userExperiences = userHobby.progress.experiences
 
                 binding.buttonEditGoal.setOnClickListener {
                     val setGoalDialog = prepareDialog(
@@ -94,7 +81,7 @@ class UserHobbyDetailsFragment : BaseFragment() {
 
         com.yelysei.hobbyharbor.ui.screens.recyclerViewConfigureView(
             com.yelysei.hobbyharbor.ui.screens.Configuration(
-                recyclerView = binding.recyclerViewUserActions,
+                recyclerView = binding.recyclerViewUserExperiences,
                 layoutManager = LinearLayoutManager(requireContext()),
                 verticalItemSpace = 64,
             )
@@ -123,10 +110,10 @@ class UserHobbyDetailsFragment : BaseFragment() {
                 uiActions.toast(stringResources.getString(R.string.experience_added_error))
             }
         }
-        showExperienceTimeDialog(dialogTitle, submitClickListener)
+        showExperienceDialogs(dialogTitle, submitClickListener)
     }
 
-    private fun showExperienceTimeDialog(
+    private fun showExperienceDialogs(
         title: String,
         submitClickListener: OnExperienceTimeSubmitClickListener,
         previousFrom: Long? = null,
@@ -145,6 +132,26 @@ class UserHobbyDetailsFragment : BaseFragment() {
             experienceTimeDialog.fulfillFromDateTime(previousFrom)
             experienceTimeDialog.fulfillTillDateTime(previousTill)
         }
+    }
+
+    fun onEditExperienceClick(userExperience: Experience) {
+        val dialogTitle = "Edit your experience:"
+        val submitClickListener = { till: Long, from: Long ->
+            try {
+                viewModel.editUserExperience(till, from, userExperience.id)
+                uiActions.toast(stringResources.getString(R.string.change_user_experience_confirmation))
+            } catch (e: UserHobbyIsNotLoadedException) {
+                uiActions.toast(stringResources.getString(R.string.change_user_experience_error))
+            }
+        }
+        val previousFrom = userExperience.startTime
+        val previousTill = userExperience.endTime
+        showExperienceDialogs(
+            dialogTitle,
+            submitClickListener,
+            previousFrom,
+            previousTill
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

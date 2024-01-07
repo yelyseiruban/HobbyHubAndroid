@@ -9,7 +9,7 @@ import com.yelysei.hobbyharbor.model.results.PendingResult
 import com.yelysei.hobbyharbor.model.results.SuccessResult
 import com.yelysei.hobbyharbor.model.results.takeSuccess
 import com.yelysei.hobbyharbor.model.userhobbies.UserHobbiesRepository
-import com.yelysei.hobbyharbor.model.userhobbies.entities.Action
+import com.yelysei.hobbyharbor.model.userhobbies.entities.Experience
 import com.yelysei.hobbyharbor.model.userhobbies.entities.UserHobby
 import com.yelysei.hobbyharbor.model.userhobbies.room.entities.ProgressDbEntity
 import kotlinx.coroutines.launch
@@ -39,7 +39,7 @@ class UserHobbyDetailsViewModel(
         val userHobby = _userHobby.value.takeSuccess() ?: throw UserHobbyIsNotLoadedException()
         val progressId = userHobby.progress.id
 
-        val action = Action(
+        val experience = Experience(
             id = id ?: 0,
             startTime = from,
             endTime = till
@@ -47,11 +47,11 @@ class UserHobbyDetailsViewModel(
         viewModelScope.launch {
             when (interaction) {
                 UserExperienceInteraction.ADD -> {
-                    userHobbiesRepository.addUserHobbyExperience(progressId, action)
+                    userHobbiesRepository.addUserHobbyExperience(progressId, experience)
                 }
 
                 UserExperienceInteraction.UPDATE -> {
-                    userHobbiesRepository.updateUserHobbyExperience(progressId, action)
+                    userHobbiesRepository.updateUserHobbyExperience(progressId, experience)
                 }
             }
         }

@@ -36,4 +36,6 @@
     <attr name="appBarBackgroundColor" format="reference"/>
 
     <attr name="progressBarColor" format="reference"/>
+
+    <attr name="hintPinColor" format="reference"/>
 </resources>

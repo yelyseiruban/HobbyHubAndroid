@@ -1,14 +1,8 @@
 package com.yelysei.hobbyharbor.ui.fab
 
-import android.content.Context
-import android.content.res.ColorStateList
-import android.content.res.TypedArray
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.RippleDrawable
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import com.yelysei.hobbyharbor.R
 
 object DraggableFabTouch : View.OnTouchListener {
 
@@ -21,23 +15,6 @@ object DraggableFabTouch : View.OnTouchListener {
     private var dX: Float = 0f
     private var dY: Float = 0f
 
-    private fun getColorFromAttributes(context: Context, attribute: Int): Int {
-        val typedArray: TypedArray = context.obtainStyledAttributes(intArrayOf(attribute))
-        val color = typedArray.getColor(0, 0)
-        typedArray.recycle()
-        return color
-    }
-
-    private fun getRippleDrawable(rippleColor: Int): Drawable {
-        val colorStateList = ColorStateList.valueOf(rippleColor)
-        val rippleDrawable = RippleDrawable(colorStateList, null, null)
-
-        // Ensure that the ripple color is set programmatically
-        rippleDrawable.setColor(colorStateList)
-
-        return rippleDrawable
-    }
-
     override fun onTouch(view: View, motionEvent: MotionEvent): Boolean {
         val layoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
         when (motionEvent.action) {
@@ -46,11 +23,6 @@ object DraggableFabTouch : View.OnTouchListener {
                 downRawY = motionEvent.rawY
                 dX = view.x - downRawX
                 dY = view.y - downRawY
-
-                // Create a RippleDrawable with the desired ripple color
-                val rippleColor = getColorFromAttributes(view.context, R.attr.touchFabButtonColor)
-                val rippleDrawable = getRippleDrawable(rippleColor)
-                view.background = rippleDrawable
 
                 view.animate().scaleX(TOUCH_SCALE_FACTOR).scaleY(TOUCH_SCALE_FACTOR)
                     .setDuration(100).start()
