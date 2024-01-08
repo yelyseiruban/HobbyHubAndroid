@@ -23,7 +23,6 @@ class AttributeUtils(
 
     fun getDrawableFromAttribute(index: Int): Drawable? {
         return typedArray.getDrawable(index)
-
     }
 
     fun getColorFromAttribute(index: Int): Int {

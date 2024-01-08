@@ -17,7 +17,6 @@ import com.yelysei.hobbyharbor.model.results.takeSuccess
 import com.yelysei.hobbyharbor.ui.dialogs.AddCustomHobbyDialog
 import com.yelysei.hobbyharbor.ui.dialogs.SetGoalDialog
 import com.yelysei.hobbyharbor.ui.dialogs.prepareDialog
-import com.yelysei.hobbyharbor.ui.fab.appear
 import com.yelysei.hobbyharbor.ui.fab.setMovableBehavior
 import com.yelysei.hobbyharbor.ui.screens.main.BaseFragment
 import com.yelysei.hobbyharbor.utils.SearchBarOnTextChangeListener
@@ -90,7 +89,7 @@ class CategorizedHobbiesFragment : BaseFragment() {
         val fabColorStateList =
             ColorStateList.valueOf(attributeUtils.getColorFromAttribute(R.styleable.FabView_fabColor))
         attributeUtils.onClear()
-        binding.buttonAddCustomHobby.appear(fabColorStateList)
+        binding.buttonAddCustomHobby.supportImageTintList = fabColorStateList
         binding.buttonAddCustomHobby.setOnClickListener {
             showAddCustomHobbyDialog()
         }
@@ -111,10 +110,15 @@ class CategorizedHobbiesFragment : BaseFragment() {
         ) { hobby ->
             val hobbyExists = viewModel.checkIfHobbyExists(hobby.hobbyName)
             if (hobbyExists) {
-                uiActions.toast(stringResources.getString(R.string.hobby_exists_exception, hobby.hobbyName))
+                uiActions.toast(
+                    stringResources.getString(
+                        R.string.hobby_exists_exception,
+                        hobby.hobbyName
+                    )
+                )
             } else {
                 addCustomHobbyDialog.dialog.dismiss()
-                val setGoalDialog = prepareDialog ( onSubmitClickListener =  { goal ->
+                val setGoalDialog = prepareDialog(onSubmitClickListener = { goal ->
                     viewModel.addCustomHobby(hobby, goal)
                     findNavController().navigate(R.id.userHobbiesFragment)
                 })
@@ -131,7 +135,12 @@ class CategorizedHobbiesFragment : BaseFragment() {
         viewModel.checkIfUserHobbyExists(hobby.id ?: throw Exception("Hobby does not have Id"))
             .observe(viewLifecycleOwner) { hobbyExists ->
                 if (hobbyExists) {
-                    uiActions.toast(stringResources.getString(R.string.hobby_exists_exception, hobby.hobbyName))
+                    uiActions.toast(
+                        stringResources.getString(
+                            R.string.hobby_exists_exception,
+                            hobby.hobbyName
+                        )
+                    )
                 } else {
                     val setGoalDialog: SetGoalDialog = prepareDialog(onSubmitClickListener = {
                         viewModel.addUserHobby(hobby, it)

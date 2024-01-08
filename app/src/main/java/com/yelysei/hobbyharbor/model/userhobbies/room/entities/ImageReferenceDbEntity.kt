@@ -32,7 +32,10 @@ class ImageReferenceDbEntity(
     }
 
     companion object {
-        fun fromImageReference(imageReference: ImageReference, experienceId: Int): ImageReferenceDbEntity {
+        fun fromImageReference(
+            imageReference: ImageReference,
+            experienceId: Int = 0
+        ): ImageReferenceDbEntity {
             return ImageReferenceDbEntity(
                 id = imageReference.id,
                 uriReference = imageReference.uriReference,

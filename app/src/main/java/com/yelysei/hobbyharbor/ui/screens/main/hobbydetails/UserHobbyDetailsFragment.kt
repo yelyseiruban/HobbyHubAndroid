@@ -19,7 +19,6 @@ import com.yelysei.hobbyharbor.ui.dialogs.ExperienceTimeDialog
 import com.yelysei.hobbyharbor.ui.dialogs.OnExperienceTimeSubmitClickListener
 import com.yelysei.hobbyharbor.ui.dialogs.SetGoalDialog.ProgressState
 import com.yelysei.hobbyharbor.ui.dialogs.prepareDialog
-import com.yelysei.hobbyharbor.ui.fab.appear
 import com.yelysei.hobbyharbor.ui.fab.setMovableBehavior
 import com.yelysei.hobbyharbor.ui.screens.main.BaseFragment
 import com.yelysei.hobbyharbor.utils.CustomTypeface
@@ -46,7 +45,12 @@ class UserHobbyDetailsFragment : BaseFragment() {
         binding = FragmentUserHobbyDetailsBinding.inflate(inflater, container, false)
         val adapter = UserExperiencesAdapter(object : HobbyDetailsActionListener {
             override fun openExperience(experienceId: Int) {
-                findNavController().navigate(UserHobbyDetailsFragmentDirections.actionUserHobbyDetailsFragmentToExperienceDetailsFragment(experienceId, args.hobbyName))
+                findNavController().navigate(
+                    UserHobbyDetailsFragmentDirections.actionUserHobbyDetailsFragmentToExperienceDetailsFragment(
+                        experienceId,
+                        args.hobbyName
+                    )
+                )
 //                onEditExperienceClick(userAction)
 
             }
@@ -75,7 +79,7 @@ class UserHobbyDetailsFragment : BaseFragment() {
                     setGoalDialog.show()
                 }
             }
-            }
+        }
 
 
 
@@ -92,7 +96,7 @@ class UserHobbyDetailsFragment : BaseFragment() {
         val fabColorStateList =
             ColorStateList.valueOf(attributeUtils.getColorFromAttribute(R.styleable.FabView_fabColor))
         attributeUtils.onClear()
-        binding.buttonAddExperience.appear(fabColorStateList)
+        binding.buttonAddExperience.supportImageTintList = fabColorStateList
         binding.buttonAddExperience.setOnClickListener {
             onAddExperienceClick()
         }

@@ -75,7 +75,7 @@ interface UserHobbiesDao {
     fun userHobbyExists(hobbyId: Int): Boolean
 
     @Delete(entity = UserHobbyDbEntity::class)
-    fun deleteUserHobbies(map: List<UserHobbyDbEntity>)
+    fun deleteUserHobbies(userHobbies: List<UserHobbyDbEntity>)
 
     @Query("SELECT * FROM experiences WHERE experiences.id = :experienceId")
     fun getUserExperienceById(experienceId: Int): Flow<ExperienceDbEntity>
@@ -88,4 +88,7 @@ interface UserHobbiesDao {
 
     @Query("SELECT * FROM image_references WHERE image_references.experience_id = :experienceId")
     fun findImageReferencesByExperienceId(experienceId: Int): Flow<List<ImageReferenceDbEntity>>
+
+    @Delete(entity = ImageReferenceDbEntity::class)
+    fun deleteImageReferences(imageReferences: List<ImageReferenceDbEntity>)
 }

@@ -1,8 +1,10 @@
 package com.yelysei.hobbyharbor.ui.fab
 
+import android.annotation.SuppressLint
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 object DraggableFabTouch : View.OnTouchListener {
 
@@ -72,5 +74,12 @@ object DraggableFabTouch : View.OnTouchListener {
 
             else -> return view.onTouchEvent(motionEvent)
         }
+    }
+}
+
+@SuppressLint("ClickableViewAccessibility")
+fun FloatingActionButton.setMovableBehavior() {
+    this.setOnTouchListener { v, event ->
+        DraggableFabTouch.onTouch(v, event)
     }
 }

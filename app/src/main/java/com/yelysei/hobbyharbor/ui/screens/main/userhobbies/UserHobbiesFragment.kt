@@ -1,11 +1,11 @@
 package com.yelysei.hobbyharbor.ui.screens.main.userhobbies
 
-import UserHobbiesAdapter
-import UserHobbyActionListener
 import android.content.DialogInterface.OnClickListener
 import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,13 +18,10 @@ import com.yelysei.hobbyharbor.databinding.FragmentUserHobbiesBinding
 import com.yelysei.hobbyharbor.model.NoUserHobbiesFoundException
 import com.yelysei.hobbyharbor.model.userhobbies.entities.UserHobby
 import com.yelysei.hobbyharbor.ui.dialogs.ConfirmRemoveUserHobbiesDialog
-import com.yelysei.hobbyharbor.ui.fab.appear
-import com.yelysei.hobbyharbor.ui.fab.reAppear
 import com.yelysei.hobbyharbor.ui.fab.setMovableBehavior
 import com.yelysei.hobbyharbor.ui.screens.main.BaseFragment
 import com.yelysei.hobbyharbor.utils.resources.AttributeUtils
 import com.yelysei.hobbyharbor.utils.viewModelCreator
-
 
 class UserHobbiesFragment : BaseFragment() {
 
@@ -35,6 +32,8 @@ class UserHobbiesFragment : BaseFragment() {
     private lateinit var attributeUtils: AttributeUtils
     private lateinit var addButtonIconDrawable: Drawable
     private lateinit var removeButtonIconDrawable: Drawable
+    private lateinit var currentFabIconDrawable: Drawable
+
     private lateinit var fabColorStateList: ColorStateList
 
     private val callback = object : OnBackPressedCallback(true) {
@@ -70,16 +69,25 @@ class UserHobbiesFragment : BaseFragment() {
                 }
 
                 override fun onToggleListener(userHobbies: List<UserHobby>) {
-                    binding.fab.reAppear(removeButtonIconDrawable)
-                    fabActionRemoveSelectedUserHobbies(userHobbies)
+                    currentFabIconDrawable = removeButtonIconDrawable
+                    fabReAppear()
+                    binding.fab.setOnClickListener {
+                        removeSelectedUserHobbies(userHobbies)
+                    }
                 }
 
                 override fun onChangeSelectedHobbiesListener(userHobbies: List<UserHobby>) {
-                    fabActionRemoveSelectedUserHobbies(userHobbies)
+                    binding.fab.setOnClickListener {
+                        removeSelectedUserHobbies(userHobbies)
+                    }
                 }
 
                 override fun onUnToggleListener() {
-                    reAppearFABActionAddUserHobby()
+                    currentFabIconDrawable = addButtonIconDrawable
+                    fabReAppear()
+                    binding.fab.setOnClickListener {
+                        openCategorizedHobbies()
+                    }
                 }
             })
 
@@ -103,45 +111,52 @@ class UserHobbiesFragment : BaseFragment() {
             attributeUtils.getDrawableFromAttribute(R.styleable.FabView_removeButtonIcon)!!
         addButtonIconDrawable =
             attributeUtils.getDrawableFromAttribute(R.styleable.FabView_addButtonIcon)!!
+        currentFabIconDrawable = addButtonIconDrawable
         fabColorStateList =
             ColorStateList.valueOf(attributeUtils.getColorFromAttribute(R.styleable.FabView_fabColor))
         attributeUtils.onClear()
-        firstAppearFABActionAddUserHobby()
+        binding.fab.supportImageTintList = fabColorStateList
+
+        binding.fab.setOnClickListener {
+            openCategorizedHobbies()
+        }
 
         return binding.root
     }
 
-    private fun fabActionRemoveSelectedUserHobbies(userHobbies: List<UserHobby>) {
+    override fun onResume() {
+        super.onResume()
+        fabReAppear()
+    }
+
+    private fun fabReAppear() {
+        binding.fab.hide()
+        Handler(Looper.getMainLooper()).postDelayed({
+            binding.fab.setImageDrawable(currentFabIconDrawable)
+            binding.fab.show()
+        }, 300)
+    }
+
+    private fun removeSelectedUserHobbies(userHobbies: List<UserHobby>) {
         val onPositiveButtonClickListener = OnClickListener { _, _ ->
             viewModel.removeUserHobbies(userHobbies)
-            uiActions.toast(stringResources.getString(R.string.deleted_user_hobbies_toast, userHobbies.size.toString()))
+            uiActions.toast(
+                stringResources.getString(
+                    R.string.deleted_user_hobbies_toast,
+                    userHobbies.size.toString()
+                )
+            )
             adapter.unselectUserHobbies()
         }
         val onNegativeButtonClickListener = OnClickListener { _, _ ->
             adapter.unselectUserHobbies()
         }
-        binding.fab.setOnClickListener {
-            val removeUserHobbyDialog = ConfirmRemoveUserHobbiesDialog(
-                requireContext(),
-                onPositiveButtonClickListener,
-                onNegativeButtonClickListener
-            )
-            removeUserHobbyDialog.show()
-        }
-    }
-
-    private fun reAppearFABActionAddUserHobby() {
-        binding.fab.reAppear(addButtonIconDrawable)
-        binding.fab.setOnClickListener {
-            openCategorizedHobbies()
-        }
-    }
-
-    private fun firstAppearFABActionAddUserHobby() {
-        binding.fab.appear(fabColorStateList)
-        binding.fab.setOnClickListener {
-            openCategorizedHobbies()
-        }
+        val removeUserHobbyDialog = ConfirmRemoveUserHobbiesDialog(
+            requireContext(),
+            onPositiveButtonClickListener,
+            onNegativeButtonClickListener
+        )
+        removeUserHobbyDialog.show()
     }
 
     private fun openCategorizedHobbies() {

@@ -1,3 +1,5 @@
+package com.yelysei.hobbyharbor.ui.screens.main.userhobbies
+
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Handler
@@ -142,15 +144,16 @@ class UserHobbiesAdapter(
             if (isToggleEnabled) {
                 if (uHobbyItem.isSelected) {
                     this.root.background =
-                        attributeUtils.getDrawableFromAttribute(R.styleable.UserHobbyItem_selectedBackground)
+                        attributeUtils.getDrawableFromAttribute(R.styleable.UserHobbyItem_userHobbySelectedBackground)
                 } else {
                     this.root.background =
-                        attributeUtils.getDrawableFromAttribute(R.styleable.UserHobbyItem_defaultBackground)
+                        attributeUtils.getDrawableFromAttribute(R.styleable.UserHobbyItem_userHobbyDefaultBackground)
                 }
             } else {
                 this.root.background =
-                    attributeUtils.getDrawableFromAttribute(R.styleable.UserHobbyItem_defaultBackground)
+                    attributeUtils.getDrawableFromAttribute(R.styleable.UserHobbyItem_userHobbyDefaultBackground)
             }
+            attributeUtils.onClear()
         }
     }
 

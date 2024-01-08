@@ -65,12 +65,22 @@ class RoomUserHobbiesRepository(
 
     override suspend fun addUserHobbyExperience(progressId: Int, experience: Experience) =
         withContext(ioDispatcher) {
-            userHobbiesDao.insertExperience(ExperienceDbEntity.fromExperience(experience, progressId))
+            userHobbiesDao.insertExperience(
+                ExperienceDbEntity.fromExperience(
+                    experience,
+                    progressId
+                )
+            )
         }
 
     override suspend fun updateUserHobbyExperience(progressId: Int, experience: Experience) =
         withContext(ioDispatcher) {
-            userHobbiesDao.updateExperience(ExperienceDbEntity.fromExperience(experience, progressId))
+            userHobbiesDao.updateExperience(
+                ExperienceDbEntity.fromExperience(
+                    experience,
+                    progressId
+                )
+            )
         }
 
     override suspend fun updateProgress(progressDbEntity: ProgressDbEntity): Unit =
@@ -93,35 +103,48 @@ class RoomUserHobbiesRepository(
         userHobbiesDao.userHobbyExists(hobbyId)
     }
 
-    override suspend fun getUserExperienceById(experienceId: Int): Flow<Experience> = withContext(ioDispatcher) {
-        userHobbiesDao.getUserExperienceById(experienceId).map {
-            it.toExperience()
-        }
-    }
-
-    override suspend fun updateNoteTextByExperienceId(noteText: String, experienceId: Int) = withContext(ioDispatcher) {
-        userHobbiesDao.updateNoteTextByExperienceId(noteText, experienceId)
-    }
-
-    override suspend fun insertUriReferences(uriReferences: List<String>, experienceId: Int) = withContext(ioDispatcher) {
-        val imageReferences = uriReferences.map {
-            ImageReferenceDbEntity(
-                id = 0,
-                it,
-                experienceId
-            )
-        }
-        userHobbiesDao.insertUriReferences(imageReferences)
-    }
-
-    override suspend fun getUriReferencesByExperienceId(experienceId: Int): Flow<List<ImageReference>> = withContext(ioDispatcher) {
-        userHobbiesDao.findImageReferencesByExperienceId(experienceId)
-            .map { imageReferenceDbEntities ->
-                imageReferenceDbEntities.map {
-                    it.toImageReference()
-                }
+    override suspend fun getUserExperienceById(experienceId: Int): Flow<Experience> =
+        withContext(ioDispatcher) {
+            userHobbiesDao.getUserExperienceById(experienceId).map {
+                it.toExperience()
             }
-    }
+        }
+
+    override suspend fun updateNoteTextByExperienceId(noteText: String, experienceId: Int) =
+        withContext(ioDispatcher) {
+            userHobbiesDao.updateNoteTextByExperienceId(noteText, experienceId)
+        }
+
+    override suspend fun insertUriReferences(uriReferences: List<String>, experienceId: Int) =
+        withContext(ioDispatcher) {
+            val imageReferences = uriReferences.map {
+                ImageReferenceDbEntity(
+                    id = 0,
+                    it,
+                    experienceId
+                )
+            }
+            userHobbiesDao.insertUriReferences(imageReferences)
+        }
+
+    override suspend fun getUriReferencesByExperienceId(experienceId: Int): Flow<List<ImageReference>> =
+        withContext(ioDispatcher) {
+            userHobbiesDao.findImageReferencesByExperienceId(experienceId)
+                .map { imageReferenceDbEntities ->
+                    imageReferenceDbEntities.map {
+                        it.toImageReference()
+                    }
+                }
+        }
+
+    override suspend fun deleteImageReferences(imageReferences: List<ImageReference>) =
+        withContext(ioDispatcher) {
+            userHobbiesDao.deleteImageReferences(imageReferences.map {
+                ImageReferenceDbEntity.fromImageReference(
+                    it
+                )
+            })
+        }
 
     override suspend fun getUserHobbies(): Flow<List<UserHobby>> = withContext(ioDispatcher) {
         val userHobbiesFlow = userHobbiesDao.getUserHobbies().map {

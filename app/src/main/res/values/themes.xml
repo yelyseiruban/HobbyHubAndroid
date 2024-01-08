@@ -37,11 +37,16 @@
 
         <item name="fabBackground">@color/lightThemeAccentOrange</item>
         <item name="addButtonIcon">@drawable/ic_add</item>
+        <item name="modifyButtonIcon">@drawable/ic_edit</item>
         <item name="removeButtonIcon">@drawable/ic_remove</item>
         <item name="fabColor">@color/black</item>
 
-        <item name="defaultBackground">@drawable/rounded_background</item>
-        <item name="selectedBackground">@drawable/rounded_selected_background</item>
+        <item name="userHobbyDefaultBackground">@drawable/rounded_background</item>
+        <item name="userHobbySelectedBackground">@drawable/rounded_selected_background</item>
+
+
+        <item name="pinDefaultBackground">@drawable/rounded_background</item>
+        <item name="pinSelectedBackground">@drawable/rounded_selected_background</item>
 
         <item name="userActionBackground">@color/lightThemeUserActionBackground</item>
         <item name="touchUserActionBackground">@color/lightThemeTouchUserActionBackground</item>
@@ -72,7 +77,8 @@
     <style name="MaterialAlertDialogTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="colorSurface">@color/lightThemeLightOrange</item>
         <item name="colorPrimary">@color/lightThemeAccentOrange</item>
-        <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.App.Title.Text</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.App.Title.Text
+        </item>
     </style>
 
     <style name="MaterialAlertDialog.App.Title.Text" parent="MaterialAlertDialog.MaterialComponents.Title.Text">

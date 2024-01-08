@@ -28,6 +28,7 @@ interface UserHobbiesRepository {
     suspend fun deleteUserHobbies(userHobbies: List<UserHobby>)
 
     suspend fun userHobbyExists(hobbyId: Int): Boolean
+
     suspend fun getUserExperienceById(experienceId: Int): Flow<Experience>
 
     suspend fun updateNoteTextByExperienceId(noteText: String, experienceId: Int)
@@ -35,5 +36,7 @@ interface UserHobbiesRepository {
     suspend fun insertUriReferences(uriReferences: List<String>, experienceId: Int)
 
     suspend fun getUriReferencesByExperienceId(experienceId: Int): Flow<List<ImageReference>>
+
+    suspend fun deleteImageReferences(imageReferences: List<ImageReference>)
 
 }

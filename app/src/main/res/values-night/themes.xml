@@ -37,9 +37,6 @@
         <item name="removeButtonIcon">@drawable/ic_remove</item>
         <item name="fabColor">@color/black</item>
 
-        <item name="defaultBackground">@drawable/rounded_background</item>
-        <item name="selectedBackground">@drawable/rounded_selected_background</item>
-
         <item name="userActionBackground">@color/lightThemeUserActionBackground</item>
         <item name="touchUserActionBackground">@color/lightThemeTouchUserActionBackground</item>
 
@@ -77,7 +74,8 @@
     <style name="MaterialAlertDialogTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="colorSurface">@color/lightThemeLightOrange</item>
         <item name="colorPrimary">@color/lightThemeAccentOrange</item>
-        <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.App.Title.Text</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.App.Title.Text
+        </item>
     </style>
 
     <style name="MaterialAlertDialog.App.Title.Text" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
@@ -116,7 +114,6 @@
     <style name="DropDownMenu" parent="Widget.Material3.AutoCompleteTextView.OutlinedBox">
         <item name="dropDownBackgroundTint">@color/lightThemeDropDownBackground</item>
     </style>
-
 
 
     <style name="ActionModeStyle" parent="@style/Widget.AppCompat.ActionMode">
