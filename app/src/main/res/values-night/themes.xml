@@ -54,10 +54,6 @@
         <item name="actionOverflowMenuStyle">@style/ActionOverflowMenuStyle</item>
     </style>
 
-    <style name="Toolbar" parent="Widget.AppCompat.Toolbar">
-        <item name="android:background">@color/lightThemeGreenActionBar</item>
-    </style>
-
     <style name="MaterialCalendarTheme" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
         <item name="colorPrimary">@color/lightThemeAccentOrange</item>
         <item name="colorSurface">@color/lightThemeLightOrange</item>

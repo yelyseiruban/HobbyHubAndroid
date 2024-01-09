@@ -19,7 +19,7 @@
     <fragment
         android:id="@+id/userHobbyDetailsFragment"
         android:name="com.yelysei.hobbyharbor.ui.screens.main.hobbydetails.UserHobbyDetailsFragment"
-        android:label="Hobby"
+        android:label=""
         tools:layout="@layout/fragment_user_hobby_details" >
         <argument
             android:name="uhId"
@@ -40,7 +40,7 @@
     <fragment
         android:id="@+id/experienceDetailsFragment"
         android:name="com.yelysei.hobbyharbor.ui.screens.main.experiencedetails.ExperienceDetailsFragment"
-        android:label="Hobby"
+        android:label=""
         tools:layout="@layout/fragment_experience_details" >
         <argument
             android:name="experienceId"

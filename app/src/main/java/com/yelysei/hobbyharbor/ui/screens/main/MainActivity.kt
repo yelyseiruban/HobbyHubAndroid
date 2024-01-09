@@ -1,7 +1,6 @@
 package com.yelysei.hobbyharbor.ui.screens.main
 
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -23,29 +22,6 @@ class MainActivity : AppCompatActivity() {
         //prepare root nav controller
         val navController = getRootNavController()
         onNavControllerActivated(navController)
-
-        binding.buttonNavigationUp.setOnClickListener {
-            onSupportNavigateUp()
-        }
-
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            binding.buttonNavigationUp.visibility =
-                if (destination.id == R.id.userHobbiesFragment) {
-                    View.GONE
-                } else {
-                    View.VISIBLE
-                }
-            binding.toolbarTitle.text = destination.label ?: "HobbyHarbor"
-            if (destination.id == R.id.userHobbyDetailsFragment) {
-                binding.buttonSettings.visibility = View.GONE
-                binding.buttonUserProfile.visibility = View.GONE
-                binding.buttonNotification.visibility = View.VISIBLE
-            } else {
-                binding.buttonSettings.visibility = View.VISIBLE
-                binding.buttonUserProfile.visibility = View.VISIBLE
-                binding.buttonNotification.visibility = View.GONE
-            }
-        }
     }
 
     override fun onDestroy() {

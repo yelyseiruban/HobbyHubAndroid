@@ -14,7 +14,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
@@ -107,6 +106,8 @@ class ExperienceDetailsFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentExperienceDetailsBinding.inflate(inflater, container, false)
+        val hobbyName = args.hobbyName
+        binding.toolbarTitle.text = CustomTypeface.capitalizeEachWord(hobbyName)
         prepareGalleryRecyclerViews()
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
@@ -158,9 +159,12 @@ class ExperienceDetailsFragment : BaseFragment() {
 
         binding.uploadImagesButton.supportImageTintList = fabColorStateList
 
+        binding.buttonNavigationUp.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
         return binding.root
     }
-
     private fun displayFAB() {
         binding.fabAddPin.iconTint = fabColorStateList
         binding.fabAddPin.setTextColor(fabColorStateList)
@@ -366,14 +370,6 @@ class ExperienceDetailsFragment : BaseFragment() {
             binding.fabAddPin.setIconResource(currentMainButtonIconResource)
             binding.fabAddPin.extend()
         }, 300)
-    }
-
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val hobbyName = arguments?.getString("hobbyName") ?: getString(R.string.app_name)
-        requireActivity().findViewById<TextView>(R.id.toolbarTitle).text =
-            CustomTypeface.capitalizeEachWord(hobbyName)
     }
 }
 

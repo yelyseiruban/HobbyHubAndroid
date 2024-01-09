@@ -33,6 +33,12 @@
         <!-- Add other custom attributes if needed -->
     </declare-styleable>
 
+    <declare-styleable name="StatusBar">
+        <attr name="defaultStatusBarBackground" format="reference" />
+        <attr name="searchViewLikeStatusBarBackground" format="reference" />
+        <!-- Add other custom attributes if needed -->
+    </declare-styleable>
+
     <attr name="touchFabButtonColor" format="reference" />
 
     <attr name="userActionBackground" format="reference" />
@@ -49,4 +55,9 @@
     <attr name="groupBoxBorderColor" format="reference" />
     <attr name="previewGroupBoxBorderColor" format="reference" />
     <attr name="groupBoxLabelColor" format="reference" />
+
+    <attr name="searchViewBackgroundColor" format="reference" />
+
+    <!--Icon color-->
+    <attr name="iconColor" format="reference" />
 </resources>

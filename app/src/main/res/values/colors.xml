@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="lightThemeGreenActionBar">#88AB8E</color>
-    <color name="lightThemeGreenUnderActionBar">#64876A</color>
+    <color name="lightThemeGreenUnderActionBar">#88AB8E</color>
     <color name="lightThemeUserHobbyBackground">#B5D8BC</color>
     <color name="lightThemeTouchUserHobbyBackground">#C6DACA</color>
     <color name="lightThemeSelectedUserHobbyBackground">#88AB8E</color>

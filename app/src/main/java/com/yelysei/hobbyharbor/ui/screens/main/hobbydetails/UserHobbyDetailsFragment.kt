@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -43,6 +42,8 @@ class UserHobbyDetailsFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentUserHobbyDetailsBinding.inflate(inflater, container, false)
+        val hobbyName = args.hobbyName
+        binding.toolbarTitle.text = CustomTypeface.capitalizeEachWord(hobbyName)
         val adapter = UserExperiencesAdapter(object : HobbyDetailsActionListener {
             override fun openExperience(experienceId: Int) {
                 findNavController().navigate(
@@ -108,6 +109,10 @@ class UserHobbyDetailsFragment : BaseFragment() {
             onAddExperienceClick()
         }
 
+        binding.buttonNavigationUp.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
         return binding.root
     }
 
@@ -144,10 +149,4 @@ class UserHobbyDetailsFragment : BaseFragment() {
         )
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val hobbyName = arguments?.getString("hobbyName") ?: getString(R.string.app_name)
-        requireActivity().findViewById<TextView>(R.id.toolbarTitle).text =
-            CustomTypeface.capitalizeEachWord(hobbyName)
-    }
 }
