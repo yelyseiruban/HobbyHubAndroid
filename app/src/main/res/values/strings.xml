@@ -46,8 +46,6 @@
     <string name="from_date">From: %1$s</string>
     <string name="till_date">Till: %1$s</string>
     <string name="experience_time">Experience Time:</string>
-    <string name="remove_user_hobby_title">Remove %1$s</string>
-    <string name="remove_user_hobby_message">Are you sure you want remove hobby from your hobbies? All progresses will be removed as well</string>
     <string name="no_button_text">No</string>
     <string name="yes_button_text">Yes</string>
     <string name="available_hobbies">Available Hobbies:</string>
@@ -84,7 +82,6 @@
     <string name="hobby_already_exists">Hobby already exists</string>
     <string name="experience_added_confirmation">New experience has been added</string>
     <string name="experience_added_error">The error occurred while trying to add new experience</string>
-    <string name="deleted_user_hobbies_toast">%1$s Deleted</string>
     <string name="note">Note</string>
     <string name="upload_images">Upload Images</string>
     <string name="permissions_denied_forever">Permission denied forever</string>
@@ -96,5 +93,10 @@
     <string name="hint_images">Images:</string>
     <string name="hyphen">-</string>
     <string name="reached_goal_message">You reached the goal, set up new one:)</string>
+    <string name="remove_user_hobby_title">Remove %1$s</string>
+    <string name="remove_user_hobby_message">Are you sure you want remove these hobbies? All progresses will be removed as well</string>
+    <string name="remove_images_title">Remove Images</string>
+    <string name="remove_images_message">Are you sure you want remove these images?</string>
+    <string name="deleted_items_toast">%1$s Deleted</string>
 
 </resources>

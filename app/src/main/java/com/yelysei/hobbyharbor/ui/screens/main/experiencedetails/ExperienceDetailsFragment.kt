@@ -25,7 +25,7 @@ import com.yelysei.hobbyharbor.R
 import com.yelysei.hobbyharbor.Repositories
 import com.yelysei.hobbyharbor.databinding.FragmentExperienceDetailsBinding
 import com.yelysei.hobbyharbor.model.userhobbies.entities.ImageReference
-import com.yelysei.hobbyharbor.ui.dialogs.ConfirmRemoveUserHobbiesDialog
+import com.yelysei.hobbyharbor.ui.dialogs.ConfirmRemoveItemsDialog
 import com.yelysei.hobbyharbor.ui.screens.HorizontalSpaceItemDecoration
 import com.yelysei.hobbyharbor.ui.screens.main.BaseFragment
 import com.yelysei.hobbyharbor.ui.screens.renderExperienceDetailsResult
@@ -340,7 +340,7 @@ class ExperienceDetailsFragment : BaseFragment() {
             viewModel.removeImageUris(imageReferences)
             uiActions.toast(
                 stringResources.getString(
-                    R.string.deleted_user_hobbies_toast,
+                    R.string.deleted_items_toast,
                     imageReferences.size.toString()
                 )
             )
@@ -349,8 +349,10 @@ class ExperienceDetailsFragment : BaseFragment() {
         val onNegativeButtonClickListener = OnClickListener { _, _ ->
             shownImageAdapter.unselectImageUris()
         }
-        val removeImagesDialog = ConfirmRemoveUserHobbiesDialog(
+        val removeImagesDialog = ConfirmRemoveItemsDialog(
             requireContext(),
+            stringResources.getString(R.string.remove_images_title),
+            stringResources.getString(R.string.remove_images_message),
             onPositiveButtonClickListener,
             onNegativeButtonClickListener
         )

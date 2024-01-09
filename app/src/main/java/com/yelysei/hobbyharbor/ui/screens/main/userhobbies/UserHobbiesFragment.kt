@@ -17,7 +17,7 @@ import com.yelysei.hobbyharbor.Repositories
 import com.yelysei.hobbyharbor.databinding.FragmentUserHobbiesBinding
 import com.yelysei.hobbyharbor.model.NoUserHobbiesFoundException
 import com.yelysei.hobbyharbor.model.userhobbies.entities.UserHobby
-import com.yelysei.hobbyharbor.ui.dialogs.ConfirmRemoveUserHobbiesDialog
+import com.yelysei.hobbyharbor.ui.dialogs.ConfirmRemoveItemsDialog
 import com.yelysei.hobbyharbor.ui.fab.setMovableBehavior
 import com.yelysei.hobbyharbor.ui.screens.main.BaseFragment
 import com.yelysei.hobbyharbor.utils.resources.AttributeUtils
@@ -142,7 +142,7 @@ class UserHobbiesFragment : BaseFragment() {
             viewModel.removeUserHobbies(userHobbies)
             uiActions.toast(
                 stringResources.getString(
-                    R.string.deleted_user_hobbies_toast,
+                    R.string.deleted_items_toast,
                     userHobbies.size.toString()
                 )
             )
@@ -151,8 +151,10 @@ class UserHobbiesFragment : BaseFragment() {
         val onNegativeButtonClickListener = OnClickListener { _, _ ->
             adapter.unselectUserHobbies()
         }
-        val removeUserHobbyDialog = ConfirmRemoveUserHobbiesDialog(
+        val removeUserHobbyDialog = ConfirmRemoveItemsDialog(
             requireContext(),
+            stringResources.getString(R.string.remove_user_hobbies_title),
+            stringResources.getString(R.string.remove_user_hobby_message),
             onPositiveButtonClickListener,
             onNegativeButtonClickListener
         )
