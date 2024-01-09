@@ -39,6 +39,10 @@
         <!-- Add other custom attributes if needed -->
     </declare-styleable>
 
+    <declare-styleable name="SearchBar">
+        <attr name="navigationIconColor" format="reference" />
+    </declare-styleable>
+
     <attr name="touchFabButtonColor" format="reference" />
 
     <attr name="userActionBackground" format="reference" />
@@ -57,6 +61,15 @@
     <attr name="groupBoxLabelColor" format="reference" />
 
     <attr name="searchViewBackgroundColor" format="reference" />
+
+    <!--Text Input Layout Strokes-->
+    <attr name="boxStrokeColorFocused" format="reference" />
+    <attr name="boxStrokeColorHovered" format="reference" />
+    <attr name="boxStrokeColorDefault" format="reference" />
+
+    <attr name="experienceTimeDialogTextColor" format="reference" />
+
+    <attr name="separatorColor" format="reference" />
 
     <!--Icon color-->
     <attr name="iconColor" format="reference" />

@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/from"
-        android:textColor="@color/black"
+        android:textColor="?attr/experienceTimeDialogTextColor"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -33,7 +33,7 @@
         android:layout_marginTop="20dp"
         android:gravity="start"
         android:text="@string/till"
-        android:textColor="@color/black"
+        android:textColor="?attr/experienceTimeDialogTextColor"
         android:textSize="20sp"
         app:layout_constraintEnd_toStartOf="@id/tillValue"
         app:layout_constraintStart_toStartOf="parent"

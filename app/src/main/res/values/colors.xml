@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <color name="lightThemeGreenUnderActionBar">#88AB8E</color>
     <color name="lightThemeUserHobbyBackground">#B5D8BC</color>
     <color name="lightThemeTouchUserHobbyBackground">#C6DACA</color>
@@ -15,6 +15,26 @@
     <color name="lightThemeFieldGray">#8F847C</color>
     <color name="lightThemeErrorColor">#B3261E</color>
     <color name="lightThemeLabelText">#7D7977</color>
+    <color name="lightThemeNavigationIconColor">#1D1B20</color>
+
+    <color name="darkThemeWindowBackgroundColor">#121212</color>
+    <color name="darkThemeShapeBackground">#1E1E1E</color>
+    <color name="darkThemeTouchShapeBackground">#2A2A2A</color>
+    <color name="darkThemeSelectedShapeBackground">#363636</color>
+    <color name="darkThemeTouchSelectedShapeBackground">#424242</color>
+    <color name="darkThemeMainTextColor">#F9F9F9</color>
+    <color name="darkThemeIcon">#F9F9F9</color>
+
+    <color name="darkThemeStrokeFocused">#363636</color>
+    <color name="darkThemeStrokeHovered">#363636</color>
+
+    <color name="darkThemeTimePickerSurfaceColor">#30211C</color>
+    <color name="darkThemeFabBackground">#4B3732</color>
+    <color name="darkThemeFabIcon">#E2CEC8</color>
+
+    <color name="darkThemeProgressBarMain">#4B3732</color>
+    <color name="darkThemeProgressBarBackground">#121212</color>
+
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
     <color name="gray">#928F88</color>

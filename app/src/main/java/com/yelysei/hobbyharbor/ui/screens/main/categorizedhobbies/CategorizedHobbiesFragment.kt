@@ -59,6 +59,8 @@ class CategorizedHobbiesFragment : BaseFragment() {
 
         binding = FragmentCategorizedHobbiesBinding.inflate(inflater, container, false)
 
+        setSearchColors()
+
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 
         val availableHobbiesAdapter = setAdapter()
@@ -127,6 +129,13 @@ class CategorizedHobbiesFragment : BaseFragment() {
         }
 
         return binding.root
+    }
+
+    private fun setSearchColors() {
+        val attributeUtils = AttributeUtils(binding.root, R.styleable.SearchBar)
+        val iconColor = attributeUtils.getColorFromAttribute(R.styleable.SearchBar_navigationIconColor)
+        attributeUtils.onClear()
+        binding.searchBar.navigationIcon?.setTint(iconColor)
     }
 
     private fun hideSearchView() {

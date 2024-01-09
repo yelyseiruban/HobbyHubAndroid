@@ -97,7 +97,7 @@
         android:layout_marginEnd="20dp"
         android:layout_marginTop="10dp"
 
-        android:background="@color/gray"
+        android:background="?attr/separatorColor"
         app:layout_constraintTop_toBottomOf="@id/tvSecondDateField" />
 
     <ScrollView
@@ -138,7 +138,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
-                        android:inputType="text|textMultiLine" />
+                        android:inputType="textCapSentences|textMultiLine" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <ir.programmerplus.groupbox.GroupBoxLayout
@@ -146,6 +146,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layoutDirection="ltr"
+                    android:layout_marginTop="10dp"
                     android:padding="20dp"
                     app:borderColor="?attr/previewGroupBoxBorderColor"
                     app:borderCornerRadius="4dp"
@@ -184,7 +185,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="10dp"
-                    android:background="@color/gray" />
+                    android:background="?attr/separatorColor" />
 
 
             </LinearLayout>
@@ -225,6 +226,7 @@
                     android:id="@+id/shownGalleryLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:layoutDirection="ltr"
                     android:padding="20dp"
                     app:borderColor="?attr/groupBoxBorderColor"

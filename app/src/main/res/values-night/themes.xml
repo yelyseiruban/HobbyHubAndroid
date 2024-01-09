@@ -1,62 +1,89 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.HobbyHarbor" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <item name="android:statusBarColor">@color/lightThemeGreenUnderActionBar</item>
-        <item name="android:windowBackground">@color/lightThemeLightOrange</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorSecondary">@color/darkThemeMainTextColor</item>
+        <item name="android:statusBarColor">@color/darkThemeWindowBackgroundColor</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowBackground">@color/darkThemeWindowBackgroundColor</item>
+        <item name="android:textColor">@color/darkThemeMainTextColor</item>
 
         <item name="materialCalendarTheme">@style/MaterialCalendarTheme</item>
         <item name="materialAlertDialogTheme">@style/MaterialAlertDialogTheme</item>
         <item name="materialTimePickerTheme">@style/MaterialTimePickerTheme</item>
         <item name="materialSearchBarStyle">@style/MaterialSearchBarStyle</item>
         <item name="materialSearchViewStyle">@style/MaterialSearchViewStyle</item>
-        <item name="appBarBackgroundColor">@color/lightThemeLightOrange</item>
+        <item name="editTextStyle">@style/EditTextStyle</item>
+        <item name="iconTint">@color/black</item>
+        <item name="appBarBackgroundColor">@color/darkThemeWindowBackgroundColor</item>
         <item name="textInputOutlinedStyle">@style/TextInputLayoutStyle</item>
         <item name="android:colorControlActivated">@color/lightThemeAccentOrange</item>
-        <item name="android:textColorHighlight">@color/lightThemeAccentOrange</item>=
+        <item name="android:textColorHighlight">@color/lightThemeAccentOrange</item>
 
-        <item name="progressBarBackground">@color/lightThemeLightOrange</item>
-        <item name="progressBarMain">@color/lightThemeAccentOrange</item>
+        <item name="progressBarBackground">@color/darkThemeProgressBarBackground</item>
+        <item name="progressBarMain">@color/darkThemeProgressBarMain</item>
 
 
-        <item name="userHobbyBackground">@color/lightThemeUserHobbyBackground</item>
-        <item name="touchUserHobbyBackground">@color/lightThemeTouchUserHobbyBackground</item>
-        <item name="selectedUserHobbyBackground">@color/lightThemeSelectedUserHobbyBackground</item>
-        <item name="touchSelectedUserHobbyBackground">
-            @color/lightThemeTouchSelectedUserHobbyBackground
-        </item>
+        <item name="userHobbyBackground">@color/darkThemeShapeBackground</item>
+        <item name="touchUserHobbyBackground">@color/darkThemeTouchShapeBackground</item>
+        <item name="selectedUserHobbyBackground">@color/darkThemeSelectedShapeBackground</item>
+        <item name="touchSelectedUserHobbyBackground">@color/darkThemeTouchSelectedShapeBackground</item>
 
-        <item name="actionBarTextColor">@color/white</item>
+        <item name="actionBarTextColor">@color/darkThemeMainTextColor</item>
 
         <item name="tryAgainBackground">@color/lightThemeAccentOrange</item>
-        <item name="tryAgainText">@color/black</item>
+        <item name="tryAgainText">@color/darkThemeMainTextColor</item>
 
-        <item name="fabBackground">@color/lightThemeAccentOrange</item>
+        <item name="hintPinColor">@color/darkGray</item>
+
+        <item name="fabBackground">@color/darkThemeFabBackground</item>
         <item name="addButtonIcon">@drawable/ic_add</item>
+        <item name="modifyButtonIcon">@drawable/ic_edit</item>
         <item name="removeButtonIcon">@drawable/ic_remove</item>
-        <item name="fabColor">@color/black</item>
+        <item name="fabColor">@color/darkThemeFabIcon</item>
 
-        <item name="userActionBackground">@color/lightThemeUserActionBackground</item>
-        <item name="touchUserActionBackground">@color/lightThemeTouchUserActionBackground</item>
+        <item name="userHobbyDefaultBackground">@drawable/rounded_background</item>
+        <item name="userHobbySelectedBackground">@drawable/rounded_selected_background</item>
+
+
+        <item name="pinDefaultBackground">@drawable/rounded_background</item>
+        <item name="pinSelectedBackground">@drawable/rounded_selected_background</item>
+
+        <item name="userActionBackground">@color/darkThemeShapeBackground</item>
+        <item name="touchUserActionBackground">@color/darkThemeTouchShapeBackground</item>
 
         <item name="dialogBackgroundColor">@color/lightThemeDialogBackground</item>
 
         <item name="progressBarColor">@color/lightThemeAccentOrange</item>
 
+        <item name="groupBoxBorderColor">@color/darkThemeTouchShapeBackground</item>
+        <item name="previewGroupBoxBorderColor">@color/darkThemeTouchShapeBackground</item>
+        <item name="groupBoxLabelColor">@color/lightThemeLabelText</item>
 
-        <item name="hintPinColor">@color/darkGray</item>
+        <item name="borderStrokeWidth">10dp</item>
 
+        <item name="defaultStatusBarBackground">@color/darkThemeWindowBackgroundColor</item>
+        <item name="searchViewLikeStatusBarBackground">@color/darkThemeTouchShapeBackground</item>
 
-        <!-- Customize the ActionMode style -->
-        <item name="actionModeBackground">@color/black</item>
-        <!-- Customize the PopupWindow style -->
-        <item name="actionOverflowMenuStyle">@style/ActionOverflowMenuStyle</item>
+        <item name="colorOutline">@color/darkThemeMainTextColor</item>
+        <item name="colorOnSurface">@color/darkThemeMainTextColor</item>
+        <item name="navigationIconColor">@color/darkThemeMainTextColor</item>
+
+        <item name="boxStrokeColorFocused">@color/darkThemeStrokeFocused</item>
+        <item name="boxStrokeColorHovered">@color/darkThemeStrokeHovered</item>
+        <item name="boxStrokeColorDefault">@color/darkThemeTouchShapeBackground</item>
+
+        <item name="separatorColor">@color/darkThemeTouchShapeBackground</item>
+
+        <!--Icons-->
+        <item name="iconColor">@color/darkThemeIcon</item>
+
+        <item name="experienceTimeDialogTextColor">@color/darkThemeMainTextColor</item>
     </style>
 
     <style name="MaterialCalendarTheme" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
         <item name="colorPrimary">@color/lightThemeAccentOrange</item>
-        <item name="colorSurface">@color/lightThemeLightOrange</item>
+        <item name="colorSurface">@color/darkThemeWindowBackgroundColor</item>
         <item name="colorOnPrimary">@color/black</item>
         <item name="backgroundTint">@color/lightThemeAccentOrange</item>
 
@@ -68,59 +95,80 @@
     </style>
 
     <style name="MaterialAlertDialogTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
-        <item name="colorSurface">@color/lightThemeLightOrange</item>
+        <item name="android:background">@color/black</item>
         <item name="colorPrimary">@color/lightThemeAccentOrange</item>
         <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.App.Title.Text
         </item>
     </style>
 
     <style name="MaterialAlertDialog.App.Title.Text" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/darkThemeMainTextColor</item>
         <item name="android:textSize">20sp</item>
     </style>
 
     <style name="MaterialTimePickerTheme" parent="ThemeOverlay.MaterialComponents.TimePicker">
-        <item name="android:textColorPrimary">@color/lightThemeAccentOrange</item>
-        <item name="colorSurface">@color/lightThemeDialogBackground</item>
+        <item name="android:textColorPrimary">@color/darkThemeMainTextColor</item>
+        <item name="colorSurface">@color/darkThemeTimePickerSurfaceColor</item>
         <item name="colorPrimary">@color/lightThemeAccentOrange</item>
     </style>
 
     <style name="MaterialSearchBarStyle" parent="Widget.Material3.SearchBar">
-        <item name="backgroundTint">@color/lightThemeDialogBackground</item>
+        <item name="backgroundTint">@color/darkThemeTouchShapeBackground</item>
+        <item name="android:textAppearance">@style/TextAppearance.SearchBar</item>
+        <item name="android:textColor">@color/darkThemeMainTextColor</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Search</item>
+    </style>
+
+    <style name="TextAppearance.SearchBar" parent="@style/TextAppearance.Material3.SearchBar">
+        <item name="android:textColor">@color/darkThemeMainTextColor</item>
+        <item name="android:textColorHint">@color/darkThemeMainTextColor</item>
     </style>
 
     <style name="MaterialSearchViewStyle" parent="Widget.Material3.SearchView">
-        <item name="backgroundTint">@color/lightThemeDialogBackground</item>
+        <item name="backgroundTint">@color/darkThemeTouchShapeBackground</item>
+        <item name="android:textAppearance">@style/TextAppearance.SearchView</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Search</item>
+    </style>
+
+    <style name="TextAppearance.SearchView" parent="Base.TextAppearance.Material3.Search">
+        <item name="android:textColor">@color/darkThemeMainTextColor</item>
+        <item name="android:textColorHint">@color/darkThemeMainTextColor</item>
+    </style>
+
+    <style name="ThemeOverlay.Search" parent="">
+        <item name="actionMenuTextColor">@color/darkThemeMainTextColor</item>
+        <item name="colorControlNormal">@color/darkThemeMainTextColor</item>
+        <item name="actionOverflowButtonStyle">@style/Widget.Material3.Search.ActionButton.Overflow</item>
+        <item name="toolbarNavigationButtonStyle">@style/Widget.Material3.Search.Toolbar.Button.Navigation</item>
     </style>
 
     <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="boxStrokeColor">@color/lightThemeAccentOrange</item>
-        <item name="hintTextColor">@color/lightThemeAccentOrange</item>
-        <item name="cursorColor">@color/lightThemeFieldGray</item>
+        <item name="boxStrokeColor">@color/box_stroke_color</item>
+        <item name="hintTextColor">@color/darkThemeMainTextColor</item>
+        <item name="cursorColor">@color/darkThemeMainTextColor</item>
+        <item name="cursorErrorColor">@color/lightThemeErrorColor</item>
+    </style>
+
+    <style name="EditTextStyle" parent="Widget.Material3.TextInputEditText.OutlinedBox">
+        <item name="android:background">@color/darkThemeTouchShapeBackground</item>
     </style>
 
     <style name="ExposedDropMenuLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
-        <item name="boxStrokeColor">@color/lightThemeAccentOrange</item>
-        <item name="boxBackgroundColor">@color/lightThemeDialogBackground</item>
-        <item name="hintTextColor">@color/lightThemeAccentOrange</item>
-        <item name="endIconTint">@color/lightThemeFieldGray</item>
-        <item name="cursorColor">@color/lightThemeFieldGray</item>
+        <item name="android:textColor">@color/darkThemeMainTextColor</item>
+        <item name="boxStrokeColor">@color/box_stroke_color</item>
+        <item name="boxBackgroundColor">@android:color/transparent</item>
+        <item name="hintTextColor">@color/darkThemeMainTextColor</item>
+        <item name="endIconTint">@color/darkThemeMainTextColor</item>
+        <item name="cursorErrorColor">@color/lightThemeErrorColor</item>
+        <item name="cursorColor">@color/darkThemeMainTextColor</item>
     </style>
 
     <style name="DropDownMenu" parent="Widget.Material3.AutoCompleteTextView.OutlinedBox">
-        <item name="dropDownBackgroundTint">@color/lightThemeDropDownBackground</item>
-    </style>
-
-
-    <style name="ActionModeStyle" parent="@style/Widget.AppCompat.ActionMode">
-        <!-- Change this color to the desired background color -->
-        <item name="android:background">#FF4081</item>
-    </style>
-
-    <style name="ActionOverflowMenuStyle" parent="@style/Widget.AppCompat.PopupMenu.Overflow">
-        <!-- Change this color to the desired background color -->
-        <item name="android:popupBackground">#FF4081</item>
+        <item name="dropDownBackgroundTint">@color/darkThemeSelectedShapeBackground</item>
     </style>
 
     <style name="Theme.HobbyHarbor" parent="Base.Theme.HobbyHarbor" />
+
+    <color name="darkGray">#4B4B4B</color>
+
 </resources>
