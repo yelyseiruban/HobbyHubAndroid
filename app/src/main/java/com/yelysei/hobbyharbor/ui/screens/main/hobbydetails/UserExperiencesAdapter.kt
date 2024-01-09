@@ -13,6 +13,8 @@ import com.yelysei.hobbyharbor.utils.DisplayedDateTime
 
 interface HobbyDetailsActionListener {
     fun openExperience(experienceId: Int)
+
+    fun editExperience(experience: Experience)
 }
 
 class UserExperiencesAdapter(
@@ -35,6 +37,7 @@ class UserExperiencesAdapter(
         val binding = ItemUserExperienceBinding.inflate(inflater, parent, false)
 
         binding.root.setOnClickListener(this)
+        binding.buttonEditExperience.setOnClickListener(this)
 
         return ProgressHistoryViewHolder(binding)
     }
@@ -45,6 +48,7 @@ class UserExperiencesAdapter(
         val userExperience = userExperiences[position]
         with(holder.binding) {
             holder.itemView.tag = userExperience
+            buttonEditExperience.tag = userExperience
             val startTime = userExperience.startTime
             val endTime = userExperience.endTime
             if (DisplayedDateTime.getDateFormat(startTime, endTime) == DateFormat.SINGLE_DATE) {
@@ -64,6 +68,9 @@ class UserExperiencesAdapter(
         when (v.id) {
             R.id.experienceContainer -> {
                 hobbyDetailsActionListener.openExperience(userExperience.id)
+            }
+            R.id.buttonEditExperience -> {
+                hobbyDetailsActionListener.editExperience(userExperience)
             }
         }
     }

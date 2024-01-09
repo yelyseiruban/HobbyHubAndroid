@@ -31,21 +31,40 @@
         android:id="@+id/tvHyphen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/hyphen"
         android:textSize="25sp"
-        app:layout_constraintStart_toStartOf="@id/tvFirstDateField"
-        app:layout_constraintEnd_toEndOf="@id/tvFirstDateField"
-        app:layout_constraintTop_toBottomOf="@id/tvFirstDateField"
         app:layout_constraintBottom_toTopOf="@id/tvSecondDateField"
-        android:text="@string/hyphen"/>
+        app:layout_constraintEnd_toEndOf="@id/tvFirstDateField"
+        app:layout_constraintStart_toStartOf="@id/tvFirstDateField"
+        app:layout_constraintTop_toBottomOf="@id/tvFirstDateField" />
 
     <TextView
         android:id="@+id/tvSecondDateField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="25sp"
         android:layout_marginTop="10dp"
+        android:textSize="25sp"
         app:layout_constraintStart_toStartOf="@id/tvFirstDateField"
         app:layout_constraintTop_toBottomOf="@id/tvFirstDateField"
         tools:text="07:00 - 09:00" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="end"
+        app:constraint_referenced_ids="tvFirstDateField, tvSecondDateField" />
+
+    <ImageButton
+        android:id="@+id/buttonEditExperience"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:background="?selectableItemBackgroundBorderless"
+        android:contentDescription="@string/edit_user_experience"
+        android:src="@drawable/ic_edit"
+        app:layout_constraintBottom_toBottomOf="@id/tvSecondDateField"
+        app:layout_constraintStart_toEndOf="@id/barrier"
+        app:layout_constraintTop_toTopOf="@id/tvFirstDateField" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

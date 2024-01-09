@@ -13,6 +13,7 @@ import com.yelysei.hobbyharbor.R
 import com.yelysei.hobbyharbor.Repositories
 import com.yelysei.hobbyharbor.databinding.FragmentUserHobbyDetailsBinding
 import com.yelysei.hobbyharbor.model.UserHobbyIsNotLoadedException
+import com.yelysei.hobbyharbor.model.userhobbies.entities.Experience
 import com.yelysei.hobbyharbor.model.userhobbies.entities.getProgressInHours
 import com.yelysei.hobbyharbor.ui.dialogs.OnExperienceTimeSubmitClickListener
 import com.yelysei.hobbyharbor.ui.dialogs.SetGoalDialog.ProgressState
@@ -47,10 +48,13 @@ class UserHobbyDetailsFragment : BaseFragment() {
                 findNavController().navigate(
                     UserHobbyDetailsFragmentDirections.actionUserHobbyDetailsFragmentToExperienceDetailsFragment(
                         experienceId,
-                        args.hobbyName,
-                        args.uhId
+                        args.hobbyName
                     )
                 )
+            }
+
+            override fun editExperience(experience: Experience) {
+                onEditExperienceClick(experience)
             }
         })
         binding.recyclerViewUserExperiences.adapter = adapter
@@ -113,6 +117,26 @@ class UserHobbyDetailsFragment : BaseFragment() {
             }
         }
         showExperienceDialogs(dialogTitle, submitClickListener)
+    }
+
+    private fun onEditExperienceClick(experience: Experience) {
+        val dialogTitle = "Edit your experience:"
+        val submitClickListener = { till: Long, from: Long ->
+            try {
+                viewModel.editUserExperience(till, from, experience.id)
+                uiActions.toast(stringResources.getString(R.string.change_user_experience_confirmation))
+            } catch (e: UserHobbyIsNotLoadedException) {
+                uiActions.toast(stringResources.getString(R.string.change_user_experience_error))
+            }
+        }
+        val previousFrom = experience.startTime
+        val previousTill = experience.endTime
+        showExperienceDialogs(
+            dialogTitle,
+            submitClickListener,
+            previousFrom,
+            previousTill
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

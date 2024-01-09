@@ -125,6 +125,7 @@ class ExperienceTimeDialog(
                     when (settingValue) {
                         SettingValue.FROM -> {
                             fromDate = it
+                            constraintMinDate()
                             if (fromTime != 0L) {
                                 timePickerDialogBuilder
                                     .setHour((fromTime / 3600000).toInt())
@@ -139,6 +140,7 @@ class ExperienceTimeDialog(
                             }
                             timePickerDialogBuilder
                                 .setTitleText(R.string.from_picker)
+                            datePickerDialogBuilder.setSelection(fromDateTime)
                         }
 
                         SettingValue.TILL -> {
@@ -184,6 +186,7 @@ class ExperienceTimeDialog(
                             fromTime = selectedTimeInMilliseconds.toLong()
                             settingValue = SettingValue.TILL
                             if (!setState.isTillSet) {
+                                constraintMinDate()
                                 datePickerDialog =
                                     datePickerDialogBuilder.setTitleText(R.string.till_picker).build()
                             }
@@ -250,6 +253,7 @@ class ExperienceTimeDialog(
         // wait for setState change if fulfill dates
         Handler(Looper.getMainLooper()).postDelayed({
             if (!setState.areValuesSet()) {
+                constraintMaxDate()
                 datePickerDialog = datePickerDialogBuilder.build()
                 settingValue = SettingValue.FROM
             }
@@ -257,6 +261,7 @@ class ExperienceTimeDialog(
         renderSubmitButton()
 
         tvFrom.setOnClickListener {
+            constraintMaxDate()
             if (fromDateTime != 0L) {
                 datePickerDialogBuilder.setSelection(fromDateTime)
             } else {
@@ -269,6 +274,7 @@ class ExperienceTimeDialog(
         }
 
         tvTill.setOnClickListener {
+            constraintMinDate()
             if (tillDateTime != 0L) {
                 datePickerDialogBuilder.setSelection(tillDateTime)
             } else {
@@ -295,22 +301,34 @@ class ExperienceTimeDialog(
                 setState.isTillSet = true
             }
         }
+        renderSubmitButton()
+    }
+
+    private fun constraintMaxDate() {
         val constraintsBuilderRange = CalendarConstraints.Builder()
-        var dateValidatorMin: DateValidatorPointForward? = null
+        val dateValidatorMin: DateValidatorPointForward? = null
         var dateValidatorMax: DateValidatorPointBackward? = null
-        if (fromDate != 0L){
-            dateValidatorMin = DateValidatorPointForward.from(fromDate)
-        }
-        if (tillDate != 0L){
-            dateValidatorMax = DateValidatorPointBackward.before(tillDate)
+        if (tillDateTime != 0L){
+            dateValidatorMax = DateValidatorPointBackward.before(tillDateTime)
         }
         val listValidators = arrayListOf(dateValidatorMin, dateValidatorMax)
         val validators = CompositeDateValidator.allOf(listValidators)
         constraintsBuilderRange.setValidator(validators)
         datePickerDialogBuilder.setCalendarConstraints(constraintsBuilderRange.build())
-        renderSubmitButton()
     }
 
+    private fun constraintMinDate() {
+        val constraintsBuilderRange = CalendarConstraints.Builder()
+        var dateValidatorMin: DateValidatorPointForward? = null
+        val dateValidatorMax: DateValidatorPointBackward? = null
+        if (fromDate != 0L){
+            dateValidatorMin = DateValidatorPointForward.from(fromDate)
+        }
+        val listValidators = arrayListOf(dateValidatorMin, dateValidatorMax)
+        val validators = CompositeDateValidator.allOf(listValidators)
+        constraintsBuilderRange.setValidator(validators)
+        datePickerDialogBuilder.setCalendarConstraints(constraintsBuilderRange.build())
+    }
     private fun renderSubmitButton() {
         submitButton.isEnabled = setState.areValuesSet()
     }

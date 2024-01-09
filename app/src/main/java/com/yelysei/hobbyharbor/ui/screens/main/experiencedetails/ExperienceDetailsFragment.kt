@@ -24,14 +24,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.yelysei.hobbyharbor.R
 import com.yelysei.hobbyharbor.Repositories
 import com.yelysei.hobbyharbor.databinding.FragmentExperienceDetailsBinding
-import com.yelysei.hobbyharbor.model.UserHobbyIsNotLoadedException
-import com.yelysei.hobbyharbor.model.results.takeSuccess
 import com.yelysei.hobbyharbor.model.userhobbies.entities.ImageReference
 import com.yelysei.hobbyharbor.ui.dialogs.ConfirmRemoveUserHobbiesDialog
-import com.yelysei.hobbyharbor.ui.dialogs.showExperienceDialogs
 import com.yelysei.hobbyharbor.ui.screens.HorizontalSpaceItemDecoration
 import com.yelysei.hobbyharbor.ui.screens.main.BaseFragment
-import com.yelysei.hobbyharbor.ui.screens.main.hobbydetails.UserHobbyDetailsViewModel
 import com.yelysei.hobbyharbor.ui.screens.renderExperienceDetailsResult
 import com.yelysei.hobbyharbor.utils.CustomTypeface
 import com.yelysei.hobbyharbor.utils.DateFormat
@@ -49,13 +45,6 @@ class ExperienceDetailsFragment : BaseFragment() {
     private val viewModel by viewModelCreator {
         ExperienceDetailsViewModel(
             args.experienceId,
-            Repositories.userHobbiesRepository
-        )
-    }
-
-    private val hobbyDetailsViewModel by viewModelCreator {
-        UserHobbyDetailsViewModel(
-            args.uhId,
             Repositories.userHobbiesRepository
         )
     }
@@ -158,10 +147,6 @@ class ExperienceDetailsFragment : BaseFragment() {
 
         binding.uploadImagesButton.setOnClickListener {
             requestReadImagesPermissionLauncher.launch(readImagePermission)
-        }
-
-        binding.buttonEditExperience.setOnClickListener {
-            onEditExperienceClick()
         }
 
         val attributeUtils = AttributeUtils(binding.root, R.styleable.FabView)
@@ -372,14 +357,6 @@ class ExperienceDetailsFragment : BaseFragment() {
         removeImagesDialog.show()
     }
 
-    private fun reAppearMainFAB() {
-        binding.fabAddPin.hide()
-        Handler(Looper.getMainLooper()).postDelayed({
-            binding.fabAddPin.setIconResource(currentMainButtonIconResource)
-            binding.fabAddPin.show()
-        }, 300)
-    }
-
     private fun updateFabTextAndIcon(fabText: String) {
         binding.fabAddPin.text = fabText
         binding.fabAddPin.shrink()
@@ -395,28 +372,6 @@ class ExperienceDetailsFragment : BaseFragment() {
         val hobbyName = arguments?.getString("hobbyName") ?: getString(R.string.app_name)
         requireActivity().findViewById<TextView>(R.id.toolbarTitle).text =
             CustomTypeface.capitalizeEachWord(hobbyName)
-    }
-
-    private fun onEditExperienceClick() {
-        val dialogTitle = "Edit your experience:"
-        val submitClickListener = { till: Long, from: Long ->
-            try {
-                hobbyDetailsViewModel.editUserExperience(till, from, args.experienceId)
-                uiActions.toast(stringResources.getString(R.string.change_user_experience_confirmation))
-            } catch (e: UserHobbyIsNotLoadedException) {
-                uiActions.toast(stringResources.getString(R.string.change_user_experience_error))
-            }
-        }
-        val userExperience = viewModel.experiencePin.value.takeSuccess()?.experience
-            ?: throw IllegalStateException("Experience is not loaded")
-        val previousFrom = userExperience.startTime
-        val previousTill = userExperience.endTime
-        showExperienceDialogs(
-            dialogTitle,
-            submitClickListener,
-            previousFrom,
-            previousTill
-        )
     }
 }
 
