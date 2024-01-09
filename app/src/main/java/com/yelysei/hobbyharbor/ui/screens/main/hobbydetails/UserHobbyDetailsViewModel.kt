@@ -62,8 +62,8 @@ class UserHobbyDetailsViewModel(
         userExperienceInteraction(UserExperienceInteraction.ADD, from, till)
     }
 
-    fun editUserExperience(from: Long, till: Long, actionId: Int) {
-        userExperienceInteraction(UserExperienceInteraction.UPDATE, from, till, actionId)
+    fun editUserExperience(from: Long, till: Long, experienceId: Int) {
+        userExperienceInteraction(UserExperienceInteraction.UPDATE, from, till, experienceId)
     }
 
     fun updateProgress(goal: Int) {

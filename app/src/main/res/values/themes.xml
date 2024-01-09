@@ -55,6 +55,12 @@
 
         <item name="progressBarColor">@color/lightThemeAccentOrange</item>
 
+        <item name="groupBoxBorderColor">@color/lightThemeGreenUnderActionBar</item>
+        <item name="previewGroupBoxBorderColor">@color/gray</item>
+        <item name="groupBoxLabelColor">@color/lightThemeLabelText</item>
+
+        <item name="borderStrokeWidth">10dp</item>
+
     </style>
 
     <style name="Toolbar" parent="Widget.AppCompat.Toolbar">

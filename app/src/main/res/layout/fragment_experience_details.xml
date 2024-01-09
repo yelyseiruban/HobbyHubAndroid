@@ -41,13 +41,25 @@
         app:layout_constraintTop_toBottomOf="@id/tvFirstDateField"
         tools:text="time - time" />
 
+    <ImageButton
+        android:id="@+id/buttonEditExperience"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:background="?selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_edit"
+        android:contentDescription="@string/edit_user_experience"
+        app:layout_constraintBottom_toBottomOf="@id/tvSecondDateField"
+        app:layout_constraintStart_toEndOf="@id/tvFirstDateField"
+        app:layout_constraintTop_toTopOf="@id/tvFirstDateField" />
+
     <View
         android:id="@+id/timeBordersSeparator"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_marginStart="24dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="10dp"
 
         android:background="@color/gray"
         app:layout_constraintTop_toBottomOf="@id/tvSecondDateField" />
@@ -55,6 +67,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -68,8 +81,8 @@
                 android:id="@+id/addPinContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginEnd="24dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -92,12 +105,32 @@
                         android:inputType="text|textMultiLine" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/previewGallery"
+                <ir.programmerplus.groupbox.GroupBoxLayout
+                    android:id="@+id/previewGalleryLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:layout_marginTop="14dp"
-                    android:visibility="gone" />
+                    android:layout_height="wrap_content"
+                    android:layoutDirection="ltr"
+                    android:padding="20dp"
+                    app:borderColor="?attr/previewGroupBoxBorderColor"
+                    app:borderCornerRadius="4dp"
+                    app:borderStrokeWidth="1dp"
+                    app:labelText="Images"
+                    app:labelTextColor="?attr/groupBoxLabelColor"
+                    app:labelTextSize="15dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/previewGallery"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="14dp" />
+                    </LinearLayout>
+                </ir.programmerplus.groupbox.GroupBoxLayout>
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/uploadImagesButton"
@@ -113,7 +146,7 @@
                 <View
                     android:id="@+id/addPinSeparator"
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
+                    android:layout_height="1dp"
                     android:layout_marginTop="10dp"
                     android:background="@color/gray" />
 
@@ -125,69 +158,60 @@
                 android:id="@+id/pinContainer"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="14dp"
-                android:layout_marginEnd="24dp"
+                android:layout_marginEnd="10dp"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/addPinContainer">
 
-                <LinearLayout
+                <ir.programmerplus.groupbox.GroupBoxLayout
                     android:id="@+id/noteTextLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/rounded_background"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:paddingTop="4dp"
-                        android:paddingBottom="4dp"
-                        android:text="@string/note_hint"
-                        android:textColor="?attr/hintPinColor"
-                        android:textSize="14sp" />
+                    android:layoutDirection="ltr"
+                    android:padding="20dp"
+                    app:borderColor="?attr/groupBoxBorderColor"
+                    app:borderCornerRadius="4dp"
+                    app:borderStrokeWidth="1dp"
+                    app:labelText="Note"
+                    app:labelTextColor="?attr/groupBoxLabelColor"
+                    app:labelTextSize="15dp">
 
                     <TextView
                         android:id="@+id/noteText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingStart="20dp"
-                        android:paddingTop="0dp"
-                        android:paddingEnd="20dp"
-                        android:paddingBottom="20dp"
                         android:textSize="20sp"
                         tools:text="Smaple Note" />
-                </LinearLayout>
+                </ir.programmerplus.groupbox.GroupBoxLayout>
 
-                <LinearLayout
+                <ir.programmerplus.groupbox.GroupBoxLayout
                     android:id="@+id/shownGalleryLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
-                    android:background="@drawable/rounded_background"
-                    android:orientation="vertical">
+                    android:layoutDirection="ltr"
+                    android:padding="20dp"
+                    app:borderColor="?attr/groupBoxBorderColor"
+                    app:borderCornerRadius="4dp"
+                    app:borderStrokeWidth="1dp"
+                    app:labelText="Images"
+                    app:labelTextColor="?attr/groupBoxLabelColor"
+                    app:labelTextSize="15dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:paddingTop="4dp"
-                        android:paddingBottom="4dp"
-                        android:text="@string/hint_images"
-                        android:textColor="?attr/hintPinColor"
-                        android:textSize="14sp" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/shownGallery"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingStart="20dp"
-                        android:paddingEnd="20dp"
-                        android:paddingBottom="20dp" />
-                </LinearLayout>
+                        android:orientation="vertical">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/shownGallery"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal" />
+                    </LinearLayout>
+                </ir.programmerplus.groupbox.GroupBoxLayout>
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 

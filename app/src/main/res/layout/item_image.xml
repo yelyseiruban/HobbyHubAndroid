@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/imageContainer"
-    android:layout_width="300dp"
-    android:layout_height="300dp"
+    android:layout_width="250dp"
+    android:layout_height="250dp"
     android:background="@drawable/rounded_background"
     android:contentDescription="@string/item_image_description"
     android:scaleType="fitCenter" />

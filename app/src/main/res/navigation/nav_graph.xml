@@ -48,5 +48,8 @@
         <argument
             android:name="hobbyName"
             app:argType="string" />
+        <argument
+            android:name="uhId"
+            app:argType="integer" />
     </fragment>
 </navigation>

@@ -6,11 +6,11 @@ import com.yelysei.hobbyharbor.ui.screens.uiactions.UiActionsImpl
 import com.yelysei.hobbyharbor.utils.resources.StringResources
 
 open class BaseFragment : Fragment() {
-    protected val uiActions: UiActions by lazy {
+    open val uiActions: UiActions by lazy {
         UiActionsImpl(requireContext())
     }
 
-    protected val stringResources: StringResources by lazy {
+    open val stringResources: StringResources by lazy {
         StringResources(requireContext())
     }
 }

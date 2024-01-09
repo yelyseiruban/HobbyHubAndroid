@@ -45,4 +45,8 @@
     <attr name="progressBarColor" format="reference" />
 
     <attr name="hintPinColor" format="reference" />
+
+    <attr name="groupBoxBorderColor" format="reference" />
+    <attr name="previewGroupBoxBorderColor" format="reference" />
+    <attr name="groupBoxLabelColor" format="reference" />
 </resources>

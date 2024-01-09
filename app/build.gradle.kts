@@ -61,6 +61,7 @@ dependencies {
     //Material Design
     implementation ("com.google.android.material:material:1.11.0")
 
+    implementation ("com.github.homayoonahmadi:GroupBoxLayout:1.2.0")
 
     implementation("androidx.room:room-runtime:2.6.1")
     ksp("androidx.room:room-compiler:2.6.1")

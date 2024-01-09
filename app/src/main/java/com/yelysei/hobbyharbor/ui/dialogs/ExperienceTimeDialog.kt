@@ -18,6 +18,7 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.yelysei.hobbyharbor.R
 import com.yelysei.hobbyharbor.databinding.ExperienceTimeDialogBinding
+import com.yelysei.hobbyharbor.ui.screens.main.BaseFragment
 import com.yelysei.hobbyharbor.ui.screens.uiactions.UiActions
 import com.yelysei.hobbyharbor.utils.getFormattedDate
 import com.yelysei.hobbyharbor.utils.resources.StringResources
@@ -329,4 +330,23 @@ data class SetState(
         return (isFromSet && isTillSet)
     }
 }
-
+fun BaseFragment.showExperienceDialogs(
+    title: String,
+    submitClickListener: OnExperienceTimeSubmitClickListener,
+    previousFrom: Long? = null,
+    previousTill: Long? = null
+) {
+    val experienceTimeDialog = ExperienceTimeDialog(
+        title,
+        requireContext(),
+        uiActions,
+        stringResources,
+        submitClickListener,
+        parentFragmentManager
+    )
+    experienceTimeDialog.show()
+    if (previousFrom != null && previousTill != null) {
+        experienceTimeDialog.fulfillFromDateTime(previousFrom)
+        experienceTimeDialog.fulfillTillDateTime(previousTill)
+    }
+}
