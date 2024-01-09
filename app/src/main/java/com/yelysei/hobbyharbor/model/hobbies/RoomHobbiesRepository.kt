@@ -17,13 +17,21 @@ class RoomHobbiesRepository(
     private val defaultDispatcher: CoroutineDispatcher
 ) : HobbiesRepository {
 
-    override suspend fun getCurrentHobbies(): Flow<List<Hobby>> {
+    override val currentHobbiesFlow: Flow<List<Hobby>>
+    override val currentCategoriesFlow: Flow<List<String>>
+
+    init {
+        currentHobbiesFlow = getCurrentHobbies()
+        currentCategoriesFlow = getCurrentCategories()
+    }
+
+    override fun getCurrentHobbies(): Flow<List<Hobby>> {
         return hobbiesDao.getHobbies().map {
             it.map { hobbyDbEntity -> hobbyDbEntity.toHobby() }
         }
     }
 
-    override suspend fun getCurrentCategories(): Flow<List<String>> {
+    override fun getCurrentCategories(): Flow<List<String>> {
         return hobbiesDao.getCategories()
     }
 

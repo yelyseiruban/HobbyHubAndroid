@@ -70,8 +70,8 @@ class CategorizedHobbiesViewModel(
     private fun load() {
         viewModelScope.launch {
             combine(
-                hobbiesRepository.getCurrentHobbies(),
-                hobbiesRepository.getCurrentCategories()
+                hobbiesRepository.currentHobbiesFlow,
+                hobbiesRepository.currentCategoriesFlow
             ) { categorizedHobbies, categories ->
                 _categorizedHobbies.value = SuccessResult(categorizedHobbies)
                 val capitalizedCategories = categories.map {

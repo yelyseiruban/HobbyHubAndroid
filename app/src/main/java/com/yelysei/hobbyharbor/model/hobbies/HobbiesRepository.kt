@@ -4,9 +4,13 @@ import com.yelysei.hobbyharbor.model.hobbies.entities.Hobby
 import kotlinx.coroutines.flow.Flow
 
 interface HobbiesRepository {
-    suspend fun getCurrentHobbies(): Flow<List<Hobby>>
 
-    suspend fun getCurrentCategories(): Flow<List<String>>
+    val currentHobbiesFlow: Flow<List<Hobby>>
+    val currentCategoriesFlow: Flow<List<String>>
+
+    fun getCurrentHobbies(): Flow<List<Hobby>>
+
+    fun getCurrentCategories(): Flow<List<String>>
 
     suspend fun getAvailableHobbiesForCategory(categoryName: String): List<Hobby>
 
