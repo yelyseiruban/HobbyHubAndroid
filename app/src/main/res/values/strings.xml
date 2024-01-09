@@ -95,5 +95,6 @@
     <string name="note_hint">Note:</string>
     <string name="hint_images">Images:</string>
     <string name="hyphen">-</string>
+    <string name="reached_goal_message">You reached the goal, set up new one:)</string>
 
 </resources>

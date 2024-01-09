@@ -64,6 +64,11 @@ class UserHobbyDetailsFragment : BaseFragment() {
                 binding.root,
                 result
             ) { userHobby ->
+
+                if (userHobby.getProgressInHours() >= userHobby.progress.goal) {
+                    uiActions.toast(stringResources.getString(R.string.reached_goal_message))
+                }
+
                 binding.tvGoalValue.text = userHobby.progress.goal.toString()
                 binding.tvTotalValue.text = userHobby.getProgressInHours().toString()
                 adapter.userExperiences = userHobby.progress.experiences
