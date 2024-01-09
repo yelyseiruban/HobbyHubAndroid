@@ -50,7 +50,7 @@ class HobbiesAdapter(
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemHobbyBinding.inflate(inflater, parent, false)
 
-        binding.root.setOnClickListener(this)
+        binding.tvHobbyName.setOnClickListener(this)
 
         return when (viewType) {
             WITHOUT_CATEGORY -> HobbyViewHolder(binding)
@@ -73,12 +73,14 @@ class HobbiesAdapter(
 
         when (holder) {
             is HobbyViewHolder -> {
+                holder.binding.tvHobbyName.tag = hobbyItem
                 holder.binding.categoryContainer.visibility = View.GONE
                 holder.binding.tvHobbyName.text =
                     CustomTypeface.capitalizeEachWord(hobbyItem.hobby.hobbyName)
             }
 
             is CategoryViewHolder -> {
+                holder.binding.tvHobbyName.tag = hobbyItem
                 holder.binding.categoryContainer.visibility = View.VISIBLE
                 holder.binding.categoryContainer.text =
                     CustomTypeface.capitalizeEachWord(hobbyItem.hobby.categoryName)
@@ -101,7 +103,7 @@ class HobbiesAdapter(
 
     override fun onClick(v: View) {
         val hobbyItem = v.tag as HobbyItem
-        if (v.id == R.id.itemHobby) {
+        if (v.id == R.id.tvHobbyName) {
             onHobbyClickListener(hobbyItem.hobby)
         }
     }
