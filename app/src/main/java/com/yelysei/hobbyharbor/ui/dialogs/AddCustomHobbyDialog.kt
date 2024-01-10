@@ -1,6 +1,7 @@
 package com.yelysei.hobbyharbor.ui.dialogs
 
 import android.content.Context
+import android.text.InputType
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.inputmethod.EditorInfo
@@ -40,6 +41,7 @@ class AddCustomHobbyDialog(
     private val editPlace: MaterialAutoCompleteTextView = binding.placeInput
     private val editPeople: MaterialAutoCompleteTextView = binding.peopleInput
 
+
     lateinit var dialog: AlertDialog
 
     override fun show() {
@@ -50,10 +52,23 @@ class AddCustomHobbyDialog(
             .setView(binding.root)
             .setPositiveButton("Submit", null)
             .show()
+
         this.dialog = dialog
         setUpIMEActions()
+        setUpDropDownTextViews()
         dialog.getButton(AlertDialog.BUTTON_POSITIVE)?.setOnClickListener {
             submitAddCustomHobby()
+        }
+    }
+    private fun setUpDropDownTextViews() {
+        editCost.setOnClickListener {
+            focusEditText(it as EditText)
+        }
+        editPeople.setOnClickListener {
+            focusEditText(it as EditText)
+        }
+        editPlace.setOnClickListener {
+            focusEditText(it as EditText)
         }
     }
 
@@ -152,6 +167,9 @@ class AddCustomHobbyDialog(
     private fun focusEditText(editText: EditText) {
         editText.requestFocus()
         if (editText is MaterialAutoCompleteTextView) {
+            if (editText.inputType == InputType.TYPE_NULL) {
+                KeyboardUtils.hideKeyboard(editText)
+            }
             editText.showDropDown()
         }
     }
