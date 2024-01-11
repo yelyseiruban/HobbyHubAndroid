@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Repositories.init(applicationContext)
         super.onCreate(savedInstanceState)
-        val binding = ActivityMainBinding.inflate(layoutInflater).also { setContentView(it.root) }
+        ActivityMainBinding.inflate(layoutInflater).also { setContentView(it.root) }
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
         //prepare root nav controller

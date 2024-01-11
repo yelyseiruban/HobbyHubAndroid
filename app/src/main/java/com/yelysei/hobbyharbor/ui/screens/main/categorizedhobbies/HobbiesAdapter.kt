@@ -5,7 +5,6 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.yelysei.hobbyharbor.R
@@ -84,15 +83,6 @@ class HobbiesAdapter(
                 holder.binding.categoryContainer.visibility = View.VISIBLE
                 holder.binding.categoryContainer.text =
                     CustomTypeface.capitalizeEachWord(hobbyItem.hobby.categoryName)
-                holder.binding.categoryContainer.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                    ContextCompat.getDrawable(
-                        context,
-                        icons[hobbyItem.hobby.categoryName] ?: R.drawable.ic_default_category
-                    ),
-                    null,
-                    null,
-                    null
-                )
                 holder.binding.tvHobbyName.text =
                     CustomTypeface.capitalizeEachWord(hobbyItem.hobby.hobbyName)
             }
@@ -111,11 +101,6 @@ class HobbiesAdapter(
     companion object {
         private const val WITHOUT_CATEGORY = 1
         private const val WITH_CATEGORY = 2
-
-        /**
-         * categoryName to icon resource
-         */
-        private val icons: Map<String, Int> = mapOf()
     }
 
     data class HobbyItem(

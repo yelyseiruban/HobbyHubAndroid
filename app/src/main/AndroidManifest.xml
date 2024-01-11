@@ -23,6 +23,7 @@
         <activity
             android:name=".ui.screens.main.MainActivity"
             android:theme="@style/Theme.HobbyHarbor"
+            android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="adjustResize"
             android:exported="true">
             <intent-filter>

@@ -138,6 +138,11 @@ class CategorizedHobbiesFragment : BaseFragment() {
         binding.searchBar.navigationIcon?.setTint(iconColor)
     }
 
+    override fun onPause() {
+        super.onPause()
+        requireActivity().window.statusBarColor = defaultStatusBarColor
+    }
+
     private fun hideSearchView() {
         searchViewFocused = false
         binding.searchView.hide()
