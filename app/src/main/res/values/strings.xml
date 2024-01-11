@@ -98,5 +98,9 @@
     <string name="remove_images_title">Remove Images</string>
     <string name="remove_images_message">Are you sure you want remove these images?</string>
     <string name="deleted_items_toast">%1$s Deleted</string>
+    <string name="set_notification_title">Set Notification</string>
+    <string name="set_notification_message">The notification will appear if you don\'t do your hobby for</string>
+    <string name="notificaiton_removed">Notifications for %1$s removed</string>
+    <string name="notification_added">Notification for %1$s was added</string>
 
 </resources>

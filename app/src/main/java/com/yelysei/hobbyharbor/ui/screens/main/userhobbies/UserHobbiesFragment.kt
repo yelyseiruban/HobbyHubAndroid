@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yelysei.hobbyharbor.R
 import com.yelysei.hobbyharbor.Repositories
+import com.yelysei.hobbyharbor.SharedPreferences
 import com.yelysei.hobbyharbor.databinding.FragmentUserHobbiesBinding
 import com.yelysei.hobbyharbor.model.NoUserHobbiesFoundException
 import com.yelysei.hobbyharbor.model.userhobbies.entities.UserHobby
@@ -25,7 +26,12 @@ import com.yelysei.hobbyharbor.utils.viewModelCreator
 
 class UserHobbiesFragment : BaseFragment() {
 
-    private val viewModel by viewModelCreator { UserHobbiesViewModel(Repositories.userHobbiesRepository) }
+    private val viewModel by viewModelCreator {
+        UserHobbiesViewModel(
+            Repositories.userHobbiesRepository,
+            SharedPreferences.sharedStorage
+        )
+    }
 
     private lateinit var binding: FragmentUserHobbiesBinding
     private lateinit var adapter: UserHobbiesAdapter
@@ -171,7 +177,9 @@ class UserHobbiesFragment : BaseFragment() {
                 uhId,
                 hobbyName
             )
-        findNavController().navigate(direction)
+        findNavController().navigate(
+            direction
+        )
     }
 
     override fun onDestroyView() {

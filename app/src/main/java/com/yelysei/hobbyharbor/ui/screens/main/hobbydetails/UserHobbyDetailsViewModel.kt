@@ -12,11 +12,15 @@ import com.yelysei.hobbyharbor.model.userhobbies.UserHobbiesRepository
 import com.yelysei.hobbyharbor.model.userhobbies.entities.Experience
 import com.yelysei.hobbyharbor.model.userhobbies.entities.UserHobby
 import com.yelysei.hobbyharbor.model.userhobbies.room.entities.ProgressDbEntity
+import com.yelysei.hobbyharbor.utils.NotificationState
+import com.yelysei.hobbyharbor.utils.SharedStorage
 import kotlinx.coroutines.launch
+
 
 class UserHobbyDetailsViewModel(
     uhId: Int,
     private val userHobbiesRepository: UserHobbiesRepository,
+    private val sharedStorage: SharedStorage
 ) : ViewModel() {
 
     private val _userHobby = MutableLiveResult<UserHobby>(PendingResult())
@@ -77,6 +81,32 @@ class UserHobbyDetailsViewModel(
         viewModelScope.launch {
             userHobbiesRepository.updateProgress(progressDbEntity)
         }
+    }
+
+    fun deActiveNotification() {
+        val hobbyName = _userHobby.value.takeSuccess()?.hobby?.hobbyName
+            ?: throw java.lang.IllegalStateException("User hobby is not loaded")
+        sharedStorage.removeNotificationByHobbyName(hobbyName)
+    }
+
+    fun activeNotification(internalTimeInMilliseconds: Long) {
+        val hobbyName = _userHobby.value.takeSuccess()?.hobby?.hobbyName
+            ?: throw java.lang.IllegalStateException("User hobby is not loaded")
+        val hobbyId = _userHobby.value.takeSuccess()!!.hobby.id!!
+
+        val updatedNotificationState = NotificationState(
+            hobbyName, "channelId $hobbyName", hobbyId, internalTimeInMilliseconds, true
+        )
+        sharedStorage.changeOrAddNotificationStateObject(updatedNotificationState)
+    }
+
+    fun getNotificationId(): Int {
+        return _userHobby.value.takeSuccess()?.id ?: throw IllegalStateException("User hobby is not loaded")
+    }
+
+    fun previousInternalTimeInMilliseconds(): Long? {
+        val hobbyName = _userHobby.value.takeSuccess()!!.hobby.hobbyName
+        return sharedStorage.getInternalTimeInMillisecondsByHobbyName(hobbyName)
     }
 }
 
