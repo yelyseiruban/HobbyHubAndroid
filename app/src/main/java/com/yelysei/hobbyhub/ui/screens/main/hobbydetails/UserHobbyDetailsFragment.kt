@@ -146,8 +146,6 @@ class UserHobbyDetailsFragment : BaseFragment() {
             }
         }
 
-
-
         com.yelysei.hobbyhub.ui.screens.recyclerViewConfigureView(
             com.yelysei.hobbyhub.ui.screens.Configuration(
                 recyclerView = binding.recyclerViewUserExperiences,
