@@ -38,6 +38,9 @@ class CategorizedHobbiesViewModel(
     private val _categories = MutableLiveResult<List<String>>(PendingResult())
     val categories: LiveResult<List<String>> = _categories
 
+    private val _searchViewFocused = MutableLiveData(false)
+    val searchViewFocused: LiveData<Boolean> = _searchViewFocused
+
 
     init {
         load()
@@ -113,6 +116,10 @@ class CategorizedHobbiesViewModel(
             result.postValue(userHobbiesRepository.userHobbyExists(hobbyId))
         }
         return result
+    }
+
+    fun setSearchViewFocused(isFocused: Boolean) {
+        _searchViewFocused.value = isFocused
     }
 
 }

@@ -127,9 +127,9 @@
         <item name="boxStrokeColor">@color/lightThemeAccentOrange</item>
         <item name="boxBackgroundColor">@color/lightThemeDialogBackground</item>
         <item name="hintTextColor">@color/lightThemeAccentOrange</item>
-        <item name="cursorErrorColor">@color/lightThemeAccentOrange</item>
+        <item name="cursorErrorColor">@color/lightThemeErrorColor</item>
         <item name="endIconTint">@color/lightThemeFieldGray</item>
-        <item name="cursorColor">@color/lightThemeErrorColor</item>
+        <item name="cursorColor">@color/lightThemeFieldGray</item>
     </style>
 
     <style name="DropDownMenu" parent="Widget.Material3.AutoCompleteTextView.OutlinedBox">

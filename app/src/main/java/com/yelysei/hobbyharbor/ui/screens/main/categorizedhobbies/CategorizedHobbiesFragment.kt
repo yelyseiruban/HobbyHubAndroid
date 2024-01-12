@@ -36,10 +36,10 @@ class CategorizedHobbiesFragment : BaseFragment() {
     }
     private lateinit var binding: FragmentCategorizedHobbiesBinding
     private lateinit var addCustomHobbyDialog: AddCustomHobbyDialog
-    private var searchViewFocused: Boolean = false
     private var statusBarColorChanged: Boolean = false
     private var defaultStatusBarColor: Int = R.attr.defaultStatusBarBackground
     private var searchViewLikeStatusBarColor: Int = R.attr.searchViewLikeStatusBarBackground
+    private var searchViewFocused: Boolean = false
 
     private val callback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
@@ -84,14 +84,16 @@ class CategorizedHobbiesFragment : BaseFragment() {
             hideSearchView()
         }
 
+        binding.searchView.setupWithSearchBar(binding.searchBar)
+
+        binding.searchBar.setOnClickListener {
+            binding.searchView.show()
+            viewModel.setSearchViewFocused(true)
+        }
+
         binding.searchView.editText.addTextChangedListener(object :
             SearchBarOnTextChangeListener() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                searchViewFocused = true
-                if (!statusBarColorChanged) {
-                    requireActivity().window.statusBarColor = searchViewLikeStatusBarColor
-                }
-                statusBarColorChanged = true
                 viewModel.searchHobbies(s.toString())
                 binding.searchView.editText.requestFocus()
             }
@@ -104,10 +106,18 @@ class CategorizedHobbiesFragment : BaseFragment() {
         binding.recyclerViewSearchedCategorizedHobbies.layoutManager =
             LinearLayoutManager(requireContext())
         binding.recyclerViewSearchedCategorizedHobbies.adapter = searchedHobbiesAdapter
-        binding.searchView.setupWithSearchBar(binding.searchBar)
 
         com.yelysei.hobbyharbor.ui.screens.onTryAgain(binding.root) {
             viewModel.tryAgain()
+        }
+
+        viewModel.searchViewFocused.observe(viewLifecycleOwner) {
+            searchViewFocused = it
+            if (it == true) {
+                setStatusBarSearchViewLikeColor()
+            } else {
+                setStatusBarDefaultColor()
+            }
         }
 
         configureHobbiesRecyclerViews()
@@ -138,15 +148,29 @@ class CategorizedHobbiesFragment : BaseFragment() {
         binding.searchBar.navigationIcon?.setTint(iconColor)
     }
 
-    override fun onPause() {
-        super.onPause()
+    private fun setStatusBarDefaultColor() {
         requireActivity().window.statusBarColor = defaultStatusBarColor
     }
 
+    private fun setStatusBarSearchViewLikeColor() {
+        requireActivity().window.statusBarColor = searchViewLikeStatusBarColor
+    }
+
+    override fun onPause() {
+        super.onPause()
+        setStatusBarDefaultColor()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.setSearchViewFocused(searchViewFocused)
+    }
+
+
     private fun hideSearchView() {
-        searchViewFocused = false
+        viewModel.setSearchViewFocused(false)
         binding.searchView.hide()
-        requireActivity().window.statusBarColor = defaultStatusBarColor
+        setStatusBarDefaultColor()
         statusBarColorChanged = false
     }
 

@@ -147,7 +147,7 @@
         <item name="boxStrokeColor">@color/box_stroke_color</item>
         <item name="hintTextColor">@color/darkThemeMainTextColor</item>
         <item name="cursorColor">@color/darkThemeMainTextColor</item>
-        <item name="cursorErrorColor">@color/lightThemeErrorColor</item>
+        <item name="cursorErrorColor">@color/errorCursorColor</item>
     </style>
 
     <style name="EditTextStyle" parent="Widget.Material3.TextInputEditText.OutlinedBox">
@@ -160,7 +160,7 @@
         <item name="boxBackgroundColor">@android:color/transparent</item>
         <item name="hintTextColor">@color/darkThemeMainTextColor</item>
         <item name="endIconTint">@color/darkThemeMainTextColor</item>
-        <item name="cursorErrorColor">@color/lightThemeErrorColor</item>
+        <item name="cursorErrorColor">@color/errorCursorColor</item>
         <item name="cursorColor">@color/darkThemeMainTextColor</item>
     </style>
 
