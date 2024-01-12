@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HobbyHarbor</string>
+    <string name="app_name">Hobby Hub</string>
     <string name="my_hobbies">My Hobbies:</string>
     <string name="back_to_user_hobbies">Back to user hobbies</string>
     <string name="turn_on_turn_off_notification_for_hobby">Turn On/ Turn Off notification for hobby</string>

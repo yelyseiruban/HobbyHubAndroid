@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.yelysei.hobbyharbor"
+    namespace = "com.yelysei.hobbyhub"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.yelysei.hobbyharbor"
+        applicationId = "com.yelysei.hobbyhub"
         minSdk = 26
         targetSdk = 34
         versionCode = 1

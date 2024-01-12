@@ -14,6 +14,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "HobbyHarbor"
+rootProject.name = "HobbyHub"
 include(":app")
  

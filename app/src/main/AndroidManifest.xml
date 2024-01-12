@@ -18,13 +18,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.HobbyHarbor"
+        android:theme="@style/Theme.HobbyHub"
         tools:targetApi="31"
-        android:name=".App"
+        android:name="com.yelysei.hobbyhub.App"
         >
         <activity
-            android:name=".ui.screens.main.MainActivity"
-            android:theme="@style/Theme.HobbyHarbor"
+            android:name="com.yelysei.hobbyhub.ui.screens.main.MainActivity"
+            android:theme="@style/Theme.HobbyHub"
             android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="adjustResize"
             android:exported="true">
@@ -33,9 +33,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name=".utils.notifications.NotificationBroadcast" />
+        <receiver android:name="com.yelysei.hobbyhub.utils.notifications.NotificationBroadcast" />
         <receiver
-            android:name=".utils.BootCompleteReceiver"
+            android:name="com.yelysei.hobbyhub.utils.BootCompleteReceiver"
             android:enabled="false"
             android:exported="true">
             <intent-filter>
