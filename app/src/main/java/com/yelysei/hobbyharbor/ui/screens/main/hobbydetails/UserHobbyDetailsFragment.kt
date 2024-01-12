@@ -36,6 +36,7 @@ import com.yelysei.hobbyharbor.ui.fab.setMovableBehavior
 import com.yelysei.hobbyharbor.ui.screens.main.BaseFragment
 import com.yelysei.hobbyharbor.utils.CustomTypeface
 import com.yelysei.hobbyharbor.utils.notifications.NotificationBroadcast
+import com.yelysei.hobbyharbor.utils.notifications.UserHobbyReminder.removeNotification
 import com.yelysei.hobbyharbor.utils.permisions.PermissionsSettingsUtils
 import com.yelysei.hobbyharbor.utils.resources.AttributeUtils
 import com.yelysei.hobbyharbor.utils.viewModelCreator
@@ -217,22 +218,6 @@ class UserHobbyDetailsFragment : BaseFragment() {
         )
     }
 
-    private fun removeNotification() {
-        val intent = Intent(context, NotificationBroadcast::class.java).apply {
-            putExtra(NotificationBroadcast.EXTRA_CHANNEL_ID, getChannelId())
-            putExtra(NotificationBroadcast.EXTRA_NOTIFICATION_ID, viewModel.getNotificationId())
-            putExtra(NotificationBroadcast.EXTRA_NOTIFICATION_TITLE, CustomTypeface.capitalizeEachWord(args.hobbyName))
-            putExtra(NotificationBroadcast.EXTRA_NOTIFICATION_CONTENT, "It is time to do ${CustomTypeface.capitalizeEachWord(args.hobbyName)}")
-        }
-        val pendingIntent = PendingIntent.getBroadcast(context, viewModel.userHobby.value.takeSuccess()?.hobby?.id ?: throw IllegalStateException(), intent,
-            PendingIntent.FLAG_IMMUTABLE
-        )
-
-        val alarmManager = requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarmManager.cancel(pendingIntent)
-        pendingIntent.cancel()
-    }
-
     private fun createNotificationChannel() {
         val name = "Reminder ${args.hobbyName}"
         val description = "Channel for reminder ${args.hobbyName}"
@@ -293,7 +278,8 @@ class UserHobbyDetailsFragment : BaseFragment() {
                 stringResources.getString(R.string.notificaiton_removed, hobbyName)
             )
             viewModel.deActiveNotification()
-            removeNotification()
+            val hobbyId = viewModel.userHobby.value.takeSuccess()!!.hobby.id ?: throw IllegalStateException("User hobby is not loaded")
+            removeNotification(requireContext(), hobbyName, hobbyId)
             binding.buttonNotification.setImageResource(buttonNotificationResourceDeActive)
         }
         val previousInternalTimeInMilliseconds = viewModel.previousInternalTimeInMilliseconds()

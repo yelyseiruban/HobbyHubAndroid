@@ -21,6 +21,7 @@ import com.yelysei.hobbyharbor.model.userhobbies.entities.UserHobby
 import com.yelysei.hobbyharbor.ui.dialogs.ConfirmRemoveItemsDialog
 import com.yelysei.hobbyharbor.ui.fab.setMovableBehavior
 import com.yelysei.hobbyharbor.ui.screens.main.BaseFragment
+import com.yelysei.hobbyharbor.utils.notifications.UserHobbyReminder
 import com.yelysei.hobbyharbor.utils.resources.AttributeUtils
 import com.yelysei.hobbyharbor.utils.viewModelCreator
 
@@ -146,6 +147,9 @@ class UserHobbiesFragment : BaseFragment() {
     private fun removeSelectedUserHobbies(userHobbies: List<UserHobby>) {
         val onPositiveButtonClickListener = OnClickListener { _, _ ->
             viewModel.removeUserHobbies(userHobbies)
+            userHobbies.forEach {
+                UserHobbyReminder.removeNotification(requireContext(), it.hobby.hobbyName, it.hobby.id!!)
+            }
             uiActions.toast(
                 stringResources.getString(
                     R.string.deleted_items_toast,
