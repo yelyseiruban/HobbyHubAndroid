@@ -14,18 +14,25 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yelysei.hobbyharbor.R
 import com.yelysei.hobbyharbor.Repositories
+import com.yelysei.hobbyharbor.SharedPreferences
 import com.yelysei.hobbyharbor.databinding.FragmentUserHobbiesBinding
 import com.yelysei.hobbyharbor.model.NoUserHobbiesFoundException
 import com.yelysei.hobbyharbor.model.userhobbies.entities.UserHobby
 import com.yelysei.hobbyharbor.ui.dialogs.ConfirmRemoveItemsDialog
 import com.yelysei.hobbyharbor.ui.fab.setMovableBehavior
 import com.yelysei.hobbyharbor.ui.screens.main.BaseFragment
+import com.yelysei.hobbyharbor.utils.notifications.UserHobbyReminder
 import com.yelysei.hobbyharbor.utils.resources.AttributeUtils
 import com.yelysei.hobbyharbor.utils.viewModelCreator
 
 class UserHobbiesFragment : BaseFragment() {
 
-    private val viewModel by viewModelCreator { UserHobbiesViewModel(Repositories.userHobbiesRepository) }
+    private val viewModel by viewModelCreator {
+        UserHobbiesViewModel(
+            Repositories.userHobbiesRepository,
+            SharedPreferences.sharedStorage
+        )
+    }
 
     private lateinit var binding: FragmentUserHobbiesBinding
     private lateinit var adapter: UserHobbiesAdapter
@@ -140,6 +147,9 @@ class UserHobbiesFragment : BaseFragment() {
     private fun removeSelectedUserHobbies(userHobbies: List<UserHobby>) {
         val onPositiveButtonClickListener = OnClickListener { _, _ ->
             viewModel.removeUserHobbies(userHobbies)
+            userHobbies.forEach {
+                UserHobbyReminder.removeNotification(requireContext(), it.hobby.hobbyName, it.hobby.id!!)
+            }
             uiActions.toast(
                 stringResources.getString(
                     R.string.deleted_items_toast,
@@ -171,7 +181,9 @@ class UserHobbiesFragment : BaseFragment() {
                 uhId,
                 hobbyName
             )
-        findNavController().navigate(direction)
+        findNavController().navigate(
+            direction
+        )
     }
 
     override fun onDestroyView() {

@@ -8,10 +8,12 @@ import com.yelysei.hobbyharbor.model.results.PendingResult
 import com.yelysei.hobbyharbor.model.results.SuccessResult
 import com.yelysei.hobbyharbor.model.userhobbies.UserHobbiesRepository
 import com.yelysei.hobbyharbor.model.userhobbies.entities.UserHobby
+import com.yelysei.hobbyharbor.utils.SharedStorage
 import kotlinx.coroutines.launch
 
 class UserHobbiesViewModel(
-    private val userHobbiesRepository: UserHobbiesRepository
+    private val userHobbiesRepository: UserHobbiesRepository,
+    private val sharedStorage: SharedStorage
 ) : ViewModel() {
 
 
@@ -30,6 +32,9 @@ class UserHobbiesViewModel(
     fun removeUserHobbies(userHobbies: List<UserHobby>) {
         viewModelScope.launch {
             userHobbiesRepository.deleteUserHobbies(userHobbies)
+        }
+        userHobbies.forEach {
+            sharedStorage.removeNotificationByHobbyName(it.hobby.hobbyName)
         }
     }
 }
