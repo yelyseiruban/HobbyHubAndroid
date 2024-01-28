@@ -9,6 +9,7 @@ import java.io.ByteArrayOutputStream
 import java.io.FileNotFoundException
 import java.io.IOException
 import java.io.InputStream
+import java.util.UUID
 
 object UriUtils {
     fun getImageUrlWithAuthority(context: Context, uri: Uri): String? {
@@ -35,7 +36,7 @@ object UriUtils {
         val bytes = ByteArrayOutputStream()
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
         val path =
-            MediaStore.Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
+            MediaStore.Images.Media.insertImage(inContext.contentResolver, inImage, UUID.randomUUID().toString(), null)
         return Uri.parse(path)
     }
 }
