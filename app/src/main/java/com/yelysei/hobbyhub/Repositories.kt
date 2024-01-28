@@ -7,7 +7,6 @@ import com.yelysei.hobbyhub.model.hobbies.HobbiesRepository
 import com.yelysei.hobbyhub.model.hobbies.RoomHobbiesRepository
 import com.yelysei.hobbyhub.model.userhobbies.RoomUserHobbiesRepository
 import com.yelysei.hobbyhub.model.userhobbies.UserHobbiesRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 object Repositories {
@@ -21,12 +20,12 @@ object Repositories {
     }
 
     val hobbiesRepository: HobbiesRepository by lazy {
-        RoomHobbiesRepository(database.getHobbiesDao(), Dispatchers.IO, Dispatchers.Default)
+        RoomHobbiesRepository(database.getHobbiesDao())
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val userHobbiesRepository: UserHobbiesRepository by lazy {
-        RoomUserHobbiesRepository(database.getUserHobbiesDao(), Dispatchers.IO)
+        RoomUserHobbiesRepository(database.getUserHobbiesDao())
     }
 
     fun init(context: Context) {

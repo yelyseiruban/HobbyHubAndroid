@@ -6,15 +6,13 @@ import com.yelysei.hobbyhub.model.NoHobbiesBySpecifiedCategoryName
 import com.yelysei.hobbyhub.model.hobbies.entities.Hobby
 import com.yelysei.hobbyhub.model.hobbies.room.HobbiesDao
 import com.yelysei.hobbyhub.model.hobbies.room.entities.HobbyDbEntity
-import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class RoomHobbiesRepository(
-    private val hobbiesDao: HobbiesDao,
-    private val ioDispatcher: CoroutineDispatcher,
-    private val defaultDispatcher: CoroutineDispatcher
+    private val hobbiesDao: HobbiesDao
 ) : HobbiesRepository {
 
     override val currentHobbiesFlow: Flow<List<Hobby>>
@@ -39,13 +37,13 @@ class RoomHobbiesRepository(
      * implemented
      */
     override suspend fun getAvailableHobbiesForCategory(categoryName: String): List<Hobby> =
-        withContext(defaultDispatcher) {
+        withContext(Dispatchers.Default) {
             return@withContext hobbiesDao.findHobbiesByCategoryName(categoryName)?.map {
                 it.toHobby()
             } ?: throw NoHobbiesBySpecifiedCategoryName()
         }
 
-    override suspend fun addCustomHobby(hobby: Hobby): Int = withContext(ioDispatcher) {
+    override suspend fun addCustomHobby(hobby: Hobby): Int = withContext(Dispatchers.IO) {
         try {
             hobbiesDao.insertCustomHobby(HobbyDbEntity.fromHobby(hobby)).toInt()
         } catch (e: SQLiteConstraintException) {
@@ -54,13 +52,13 @@ class RoomHobbiesRepository(
     }
 
     override suspend fun getHobbiesByHobbyName(hobbyNameSearchInput: String): List<Hobby> =
-        withContext(ioDispatcher) {
+        withContext(Dispatchers.IO) {
             return@withContext hobbiesDao.findHobbiesByHobbyName(hobbyNameSearchInput)?.map {
                 it.toHobby()
             } ?: emptyList()
         }
 
-    override suspend fun hobbyExists(hobbyName: String): Boolean = withContext(ioDispatcher) {
+    override suspend fun hobbyExists(hobbyName: String): Boolean = withContext(Dispatchers.IO) {
         hobbiesDao.hobbyExists(hobbyName)
     }
 

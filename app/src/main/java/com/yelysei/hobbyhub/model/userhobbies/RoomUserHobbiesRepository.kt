@@ -15,7 +15,7 @@ import com.yelysei.hobbyhub.model.userhobbies.room.entities.ExperienceDbEntity
 import com.yelysei.hobbyhub.model.userhobbies.room.entities.ImageReferenceDbEntity
 import com.yelysei.hobbyhub.model.userhobbies.room.entities.ProgressDbEntity
 import com.yelysei.hobbyhub.model.userhobbies.room.entities.UserHobbyDbEntity
-import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
@@ -26,11 +26,10 @@ import kotlinx.coroutines.withContext
 
 @kotlinx.coroutines.ExperimentalCoroutinesApi
 class RoomUserHobbiesRepository(
-    private val userHobbiesDao: UserHobbiesDao,
-    private val ioDispatcher: CoroutineDispatcher
+    private val userHobbiesDao: UserHobbiesDao
 ) : UserHobbiesRepository {
 
-    override suspend fun getUserHobbyById(id: Int): Flow<UserHobby> = withContext(ioDispatcher) {
+    override suspend fun getUserHobbyById(id: Int): Flow<UserHobby> = withContext(Dispatchers.IO) {
         userHobbiesDao.findUserHobbyById(id)
             .flatMapLatest { userHobbyDbEntity ->
                 val userHobby = userHobbyDbEntity.toUserHobby()
@@ -48,7 +47,7 @@ class RoomUserHobbiesRepository(
             }
     }
 
-    override suspend fun addUserHobby(hobby: Hobby, goal: Int) = withContext(ioDispatcher) {
+    override suspend fun addUserHobby(hobby: Hobby, goal: Int) = withContext(Dispatchers.IO) {
         val progressId = userHobbiesDao.insertProgress(ProgressDbEntity(id = 0, goal)).toInt()
         try {
             userHobbiesDao.insertUserHobby(
@@ -64,7 +63,7 @@ class RoomUserHobbiesRepository(
     }
 
     override suspend fun addUserHobbyExperience(progressId: Int, experience: Experience) =
-        withContext(ioDispatcher) {
+        withContext(Dispatchers.IO) {
             userHobbiesDao.insertExperience(
                 ExperienceDbEntity.fromExperience(
                     experience,
@@ -74,7 +73,7 @@ class RoomUserHobbiesRepository(
         }
 
     override suspend fun updateUserHobbyExperience(progressId: Int, experience: Experience) =
-        withContext(ioDispatcher) {
+        withContext(Dispatchers.IO) {
             userHobbiesDao.updateExperience(
                 ExperienceDbEntity.fromExperience(
                     experience,
@@ -84,39 +83,39 @@ class RoomUserHobbiesRepository(
         }
 
     override suspend fun updateProgress(progressDbEntity: ProgressDbEntity): Unit =
-        withContext(ioDispatcher) {
+        withContext(Dispatchers.IO) {
             Log.d("Repository", "Updating progress: $progressDbEntity")
             userHobbiesDao.updateProgress(progressDbEntity)
             Log.d("Repository", "Progress updated successfully.")
         }
 
-    override suspend fun deleteUserHobby(userHobby: UserHobby) = withContext(ioDispatcher) {
+    override suspend fun deleteUserHobby(userHobby: UserHobby) = withContext(Dispatchers.IO) {
         userHobbiesDao.deleteUserHobby(UserHobbyDbEntity.fromUserHobby(userHobby))
     }
 
     override suspend fun deleteUserHobbies(userHobbies: List<UserHobby>) =
-        withContext(ioDispatcher) {
+        withContext(Dispatchers.IO) {
             userHobbiesDao.deleteUserHobbies(userHobbies.map { UserHobbyDbEntity.fromUserHobby(it) })
         }
 
-    override suspend fun userHobbyExists(hobbyId: Int) = withContext(ioDispatcher) {
+    override suspend fun userHobbyExists(hobbyId: Int) = withContext(Dispatchers.IO) {
         userHobbiesDao.userHobbyExists(hobbyId)
     }
 
     override suspend fun getUserExperienceById(experienceId: Int): Flow<Experience> =
-        withContext(ioDispatcher) {
+        withContext(Dispatchers.IO) {
             userHobbiesDao.getUserExperienceById(experienceId).map {
                 it.toExperience()
             }
         }
 
     override suspend fun updateNoteTextByExperienceId(noteText: String, experienceId: Int) =
-        withContext(ioDispatcher) {
+        withContext(Dispatchers.IO) {
             userHobbiesDao.updateNoteTextByExperienceId(noteText, experienceId)
         }
 
     override suspend fun insertUriReferences(uriReferences: List<String>, experienceId: Int) =
-        withContext(ioDispatcher) {
+        withContext(Dispatchers.IO) {
             val imageReferences = uriReferences.map {
                 ImageReferenceDbEntity(
                     id = 0,
@@ -128,7 +127,7 @@ class RoomUserHobbiesRepository(
         }
 
     override suspend fun getUriReferencesByExperienceId(experienceId: Int): Flow<List<ImageReference>> =
-        withContext(ioDispatcher) {
+        withContext(Dispatchers.IO) {
             userHobbiesDao.findImageReferencesByExperienceId(experienceId)
                 .map { imageReferenceDbEntities ->
                     imageReferenceDbEntities.map {
@@ -138,7 +137,7 @@ class RoomUserHobbiesRepository(
         }
 
     override suspend fun deleteImageReferences(imageReferences: List<ImageReference>) =
-        withContext(ioDispatcher) {
+        withContext(Dispatchers.IO) {
             userHobbiesDao.deleteImageReferences(imageReferences.map {
                 ImageReferenceDbEntity.fromImageReference(
                     it
@@ -146,7 +145,7 @@ class RoomUserHobbiesRepository(
             })
         }
 
-    override suspend fun getUserHobbies(): Flow<List<UserHobby>> = withContext(ioDispatcher) {
+    override suspend fun getUserHobbies(): Flow<List<UserHobby>> = withContext(Dispatchers.IO) {
         val userHobbiesFlow = userHobbiesDao.getUserHobbies().map {
             it.map { userHobbiesInTuple ->
                 val userHobby = userHobbiesInTuple.toUserHobby()
@@ -158,14 +157,14 @@ class RoomUserHobbiesRepository(
         return@withContext userHobbiesFlow
     }
 
-    private suspend fun getProgressById(id: Int): Flow<Progress> = withContext(ioDispatcher) {
+    private suspend fun getProgressById(id: Int): Flow<Progress> = withContext(Dispatchers.IO) {
         return@withContext userHobbiesDao.findProgressById(id).map {
             it.toProgress()
         }
     }
 
     private suspend fun getExperiencesByProgressId(progressId: Int): Flow<List<Experience>> =
-        withContext(ioDispatcher) {
+        withContext(Dispatchers.IO) {
             val experiencesDbEntityFlow = userHobbiesDao.findExperiencesByProgressId(progressId)
             return@withContext experiencesDbEntityFlow?.map { experienceDbEntity ->
                 experienceDbEntity.map {
